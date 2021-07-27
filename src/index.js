@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import MainScreen from './MainScreen/MainScreen';
+
+
 ReactDOM.render(
   <React.StrictMode>
     <MainScreen/>
