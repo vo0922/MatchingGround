@@ -12,7 +12,8 @@ const Routes = () => {
             <Switch>
                 <PrivateRouteL exact path="/login" component={Login}/>
                 <PrivateRouteL exact path="/login/callback" component={LoginCallBack}/>
-                <PrivateRoute exact path="/" component={Main} />
+                <PrivateRoute exact path="/" component={Main}/>
+                
             </Switch>
         </Router>
     );

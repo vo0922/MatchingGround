@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 function App() {
    return (
      <div className="App">
-       <Router/>
+      <Router />
      </div>
     );
 }
