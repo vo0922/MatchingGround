@@ -5,7 +5,11 @@ import LoginCallBack from '../Login/Callback'
 import Main from '../MainScreen/MainScreen'
 import PrivateRoute from './PrivateRoute';
 import PrivateRouteL from './PrivateRouteL';
+<<<<<<< Updated upstream
 import ManageGround from '../ManageGround/ManageGround';
+=======
+import ManageGround from '../ManageGround/NotGroundManager';
+>>>>>>> Stashed changes
 
 const Routes = () => {
     return (
@@ -13,8 +17,13 @@ const Routes = () => {
             <Switch>
                 <PrivateRouteL exact path="/login" component={Login}/>
                 <PrivateRouteL exact path="/login/callback" component={LoginCallBack}/>
+<<<<<<< Updated upstream
                 <PrivateRoute exact path="/" component={Main} />
                 <Route exact path="/manageground" component={ManageGround}/>
+=======
+                <PrivateRoute exact path="/" component={Main}/>
+                <PrivateRoute exact path="/manageground" component={ManageGround}/>
+>>>>>>> Stashed changes
             </Switch>
         </Router>
     );
