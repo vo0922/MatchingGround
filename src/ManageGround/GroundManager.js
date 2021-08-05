@@ -4,9 +4,27 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+    marginTop: 10,
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
+
 export default function GroundManager() {
+  const classes = useStyles();
+
   return (
     <React.Fragment>
       <MainLogo />
@@ -16,13 +34,28 @@ export default function GroundManager() {
           component="div"
           style={{ backgroundColor: "#F3F3F3", height: "80vh" }}
         >
-          <h2>
-            경기장 관리자가 아닙니다. 경기장을 등록하시려면 경기장 등록 버튼을
-            눌러주세요.
-          </h2>
-          <Button variant="outlined" color="primary">
-            경기장 등록 신청하기
-          </Button>
+          <Card className={classes.root}>
+            <CardContent>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
+                Word of the Day
+              </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                adjective
+              </Typography>
+              <Typography variant="body2" component="p">
+                well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
         </Typography>
       </Container>
     </React.Fragment>

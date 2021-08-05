@@ -5,7 +5,7 @@ import LoginCallBack from '../Login/Callback'
 import Main from '../MainScreen/MainScreen'
 import PrivateRoute from './PrivateRoute';
 import PrivateRouteL from './PrivateRouteL';
-import ManageGround from '../ManageGround/NotGroundManager';
+import ManageGround from '../ManageGround/ManageGround';
 
 const Routes = () => {
     return (
