@@ -41,7 +41,7 @@ export default function MainScreen_Teaminfo() {
             <Typography
               variant="h5"
               component="h2"
-              style={{ marginTop: 10, marginBottom: 10 }}
+              style={{ marginTop: 10, marginBottom: 10, }}
             >
               기린축구팀
             </Typography>

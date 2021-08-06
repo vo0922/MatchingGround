@@ -43,6 +43,21 @@ app.post('/callback', function (req, res) {
    });
  });
 
+app.post("/ground/info/manager", (req, res) =>{
+  const manager_id = req.body.manager_id;
+  connection.query("select * from groundinfo where manager_id = ?", [manager_id],
+  function(err, rows, fields){
+    if(err){
+      console.log("불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("경기장 정보 불러오기 성공");
+    }
+  });
+});
+
+
+
 app.listen(port, ()=>{
     console.log(`Connect at http://localhost:${port}`);
 });
