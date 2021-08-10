@@ -56,6 +56,19 @@ app.post("/ground/info/manager", (req, res) =>{
   });
 });
 
+app.post("/team/info", (req, res) =>{
+  const user_email = req.body.user_email;
+
+  connection.query("select team_name, team_image, team_count, win, lose, date_format(team_date, '%Y-%m-%d') AS 'team_date', team_class, team_introduce from Team where team_name = (select team_name from users where email = ?)", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log("불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
 
 
 app.listen(port, ()=>{
