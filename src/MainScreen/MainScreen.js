@@ -15,19 +15,19 @@ export default class MainScreen extends Component {
         <MainHeader />
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth="md" style={{marginTop:20}}>
+          <Container maxWidth="md" style={{marginTop:30}}>
             <Typography
               component="div"
               style={{
                 backgroundColor: "#F3F3F3",
-                height: "80vh",
+                height: "100vh",
               }}
             >
-              <Grid container spacing={3}>
-                <Grid item xs={6}>
+              <Grid container spacing={6}>
+                <Grid item xs>
                     <MainScreen_Myinfo/>    
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs>
                     <MainScreen_Teaminfo/>
                 </Grid>
               </Grid>

@@ -37,15 +37,13 @@ const useStyles = makeStyles({
 });
 
 
-
 export default function GroundManager() {
   const [groundinfo, setgroundinfo] = useState({
     ground_name: "",
     address: "",
     ground_count: "",
     price: "",
-    manager_id: "aaa",
-    //manager_id : window.sessionStorage.getItem('user_id'),
+    manager_id : window.sessionStorage.getItem('user_id'),
   });
 
   function getgroundinfo(){
@@ -80,9 +78,9 @@ export default function GroundManager() {
     createData("가격", groundinfo.price),
   ];
 
-  useEffect(() => {
-    getgroundinfo();
-  }, []);
+  // useEffect(() => {
+  //   getgroundinfo();
+  // }, []);
 
 
   const classes = useStyles();
@@ -97,12 +95,14 @@ export default function GroundManager() {
           style={{ backgroundColor: "#F3F3F3", height: "80vh" }}
         >
           <Grid container spacing={3}>
-            <Grid item xs={3}>
+            <Grid item xs/>
+            <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <img src="http://placeimg.com/128/128/any"></img>
               </Paper>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs/>
+            <Grid item xs={12}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>

@@ -1,9 +1,7 @@
-import React from "react";
+import {React, useState, useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
@@ -25,6 +23,43 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainScreen_Myinfo() {
   const classes = useStyles();
+  const [myinfo, setmyinfo] = useState({
+    profile_image : "",
+    user_name : "",
+    position : "",
+    birthyear : "",
+    height : "",
+    introduce : "",
+    //user_email : window.sessionStorage.getItem('id'),
+    email : "rilakkuma159@naver.com"
+  });
+
+  function getMyinfo() {
+    fetch("http://localhost:3001/myinfo", {
+      method : "post", // 통신방법
+      headers : {
+          "content-type" : "application/json",
+      },
+      body : JSON.stringify(myinfo),
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    setmyinfo({
+      profile_image : res[0].profile_image,
+      user_name : res[0].user_name,
+      position : res[0].position,
+      birthyear : res[0].birthyear,
+      height : res[0].height,
+      introduce : res[0].introduce,
+      email : "rilakkuma159@naver.com"
+      //email : window.sessionStorage.getItem('id')
+    });
+  });
+  }
+
+  useEffect(() => {
+    getMyinfo();
+  }, []);
 
   return (
     <div>
@@ -33,9 +68,7 @@ export default function MainScreen_Myinfo() {
         <CardContent>
             <Grid container spacing={3}>
             <Grid item xs={3}>
-            <Avatar alt="Temp" className={classes.large}>
-              Lee
-            </Avatar>
+            <Avatar alt="naver profile image" className={classes.large} src={myinfo.profile_image}  />        
           </Grid>
           <Grid item xs={9}>
             <Typography
@@ -43,17 +76,17 @@ export default function MainScreen_Myinfo() {
               component="h2"
               style={{ marginTop: 10, marginBottom: 10 }}
             >
-              이세형
+              {myinfo.user_name}
             </Typography>
 
             <Typography className={classes.pos} color="textSecondary">
-              ST / CB
+              {myinfo.position}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-              25세 / 173cm / 90 / 월드클래스
+              {myinfo.birthyear}년 생 / {myinfo.height}cm
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-              대구광역시
+              {myinfo.introduce}
             </Typography>
           </Grid>
             </Grid>
