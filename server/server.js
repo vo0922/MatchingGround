@@ -18,7 +18,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-
 app.post('/callback', function (req, res) {
    var api_url = 'https://openapi.naver.com/v1/nid/me';
    var token = req.body.token;
@@ -42,6 +41,52 @@ app.post('/callback', function (req, res) {
      }
    });
  });
+
+ app.post("/callback/adduser", (req,res)=>{
+  const email = req.body.email;
+  const profile_image = req.body.profile_image;
+  const user_name = req.body.user_name;
+  const birthyear = req.body.birthyear;
+  const gender = req.body.gender;
+  const mobile = req.body.mobile;
+
+  connection.query(
+      "INSERT INTO users (email, profile_image, user_name, birthyear, gender, mobile) select ?,?,?,?,?,? from dual where not exists(select *from users where email=?)",[email,profile_image,user_name,birthyear,gender,mobile,email],
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+          console.log("성공");
+      };
+  });
+});
+
+app.post("/reservation/list", (req,res)=>{
+
+  connection.query(
+      "select *from groundinfo",
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+      };
+  });
+});
+
+app.post("/reservation/detail", (req,res)=>{
+  const key = req.body.cardkey;
+  connection.query(
+      "select *from groundinfo where ground_name = ?", [key],
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+      };
+  });
+});
 
 app.listen(port, ()=>{
     console.log(`Connect at http://localhost:${port}`);
