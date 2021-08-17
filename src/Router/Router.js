@@ -11,6 +11,8 @@ import PrivateRouteGM from './PrivateRouteGM';
 import ManageGround from '../ManageGround/ManageGround';
 import GroundRegister from '../ManageGround/GroundRegister';
 import NotGroundManager from '../ManageGround/NotGroundManager';
+import Modals from '../ManageGround/Modals';
+
 
 const Routes = () => {
     return (
@@ -19,12 +21,16 @@ const Routes = () => {
                 <PrivateRouteL exact path="/login" component={Login}/>
                 <PrivateRouteL exact path="/login/callback" component={LoginCallBack}/>
                 <PrivateRoute exact path="/" component={Main}/>
+                <PrivateRoute exact path="/reservation" component={Reservation}/>
+                <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
 
                 <PrivateRouteGM exact path="/manageground" component={ManageGround}/>
                 <PrivateRoute exact path="/groundregister" component={GroundRegister}/>
                 <PrivateRoute exact path="/notgroundmanager" component={NotGroundManager}/>
-                <PrivateRoute exact path="/reservation" component={Reservation}/>
-                <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
+
+                <Route exact path="/modal" component={Modals}/>
+
+                
             </Switch>
         </Router>
     );

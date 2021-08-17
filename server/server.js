@@ -42,6 +42,52 @@ app.post('/callback', function (req, res) {
    });
  });
 
+ app.post("/callback/adduser", (req,res)=>{
+  const email = req.body.email;
+  const profile_image = req.body.profile_image;
+  const user_name = req.body.user_name;
+  const birthyear = req.body.birthyear;
+  const gender = req.body.gender;
+  const mobile = req.body.mobile;
+
+  connection.query(
+      "INSERT INTO users (email, profile_image, user_name, birthyear, gender, mobile) select ?,?,?,?,?,? from dual where not exists(select *from users where email=?)",[email,profile_image,user_name,birthyear,gender,mobile,email],
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+          console.log("성공");
+      };
+  });
+});
+
+app.post("/reservation/list", (req,res)=>{
+
+  connection.query(
+      "select *from groundinfo",
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+      };
+  });
+});
+
+app.post("/reservation/detail", (req,res)=>{
+  const key = req.body.cardkey;
+  connection.query(
+      "select *from groundinfo where ground_name = ?", [key],
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+      };
+  });
+});
+
 app.post("/ground/info/manager", (req, res) =>{
   const manager_id = req.body.manager_id;
   connection.query("select * from groundinfo where manager_id = ?", [manager_id],
@@ -60,7 +106,7 @@ var multer = require('multer');
 
 const storage = multer.diskStorage({
   destination : function(req, file, cb){
-    cb(null, "./uploads/");    
+    cb(null, "../public/uploads/");    
   },
   filename : function(req, file, cb) {
     cb(null, "photo" + Date.now() + file.originalname);
@@ -79,7 +125,7 @@ app.post('/ground/info/register', upload.single('photo'), function(req, res, nex
   const ground_count = req.body.ground_count;
   const address = req.body.address;
   const manager_id = req.body.manager_id;
-  const photo = req.file.path;
+  const photo = "uploads/"+req.file.filename;
   const phonenum = req.body.phonenum;
   const price = req.body.price;
   const parking_lot = req.body.parking_lot;
@@ -148,52 +194,6 @@ app.post("/team/info", (req, res) =>{
   });
 });
 
-
- app.post("/callback/adduser", (req,res)=>{
-  const email = req.body.email;
-  const profile_image = req.body.profile_image;
-  const user_name = req.body.user_name;
-  const birthyear = req.body.birthyear;
-  const gender = req.body.gender;
-  const mobile = req.body.mobile;
-
-  connection.query(
-      "INSERT INTO users (email, profile_image, user_name, birthyear, gender, mobile) select ?,?,?,?,?,? from dual where not exists(select *from users where email=?)",[email,profile_image,user_name,birthyear,gender,mobile,email],
-  function(err,rows,fields){
-      if(err){
-          console.log(err);
-      }else{
-          res.send(rows);
-          console.log("성공");
-      };
-  });
-});
-
-app.post("/reservation/list", (req,res)=>{
-
-  connection.query(
-      "select *from groundinfo",
-  function(err,rows,fields){
-      if(err){
-          console.log(err);
-      }else{
-          res.send(rows);
-      };
-  });
-});
-
-app.post("/reservation/detail", (req,res)=>{
-  const key = req.body.cardkey;
-  connection.query(
-      "select *from groundinfo where ground_name = ?", [key],
-  function(err,rows,fields){
-      if(err){
-          console.log(err);
-      }else{
-          res.send(rows);
-      };
-  });
-});
 
 app.listen(port, ()=>{
     console.log(`Connect at http://localhost:${port}`);
