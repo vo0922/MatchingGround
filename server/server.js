@@ -106,7 +106,7 @@ var multer = require('multer');
 
 const storage = multer.diskStorage({
   destination : function(req, file, cb){
-    cb(null, "./uploads/");    
+    cb(null, "../public/uploads/");    
   },
   filename : function(req, file, cb) {
     cb(null, "photo" + Date.now() + file.originalname);
@@ -125,7 +125,7 @@ app.post('/ground/info/register', upload.single('photo'), function(req, res, nex
   const ground_count = req.body.ground_count;
   const address = req.body.address;
   const manager_id = req.body.manager_id;
-  const photo = req.file.path;
+  const photo = "uploads/"+req.file.filename;
   const phonenum = req.body.phonenum;
   const price = req.body.price;
   const parking_lot = req.body.parking_lot;

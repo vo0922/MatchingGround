@@ -43,7 +43,8 @@ export default function GroundManager() {
     address: "",
     ground_count: "",
     price: "",
-    manager_id : window.sessionStorage.getItem('user_id'),
+    manager_id : window.sessionStorage.getItem('id'),
+    photo : "",
   });
 
   function getgroundinfo(){
@@ -63,6 +64,7 @@ export default function GroundManager() {
           ground_count: json[0].ground_count,
           price: json[0].price,
           manager_id: groundinfo.manager_id,
+          photo : json[0].photo,
         });
       });
   };
@@ -78,9 +80,9 @@ export default function GroundManager() {
     createData("가격", groundinfo.price),
   ];
 
-  // useEffect(() => {
-  //   getgroundinfo();
-  // }, []);
+   useEffect(() => {
+     getgroundinfo();
+   }, []);
 
 
   const classes = useStyles();
@@ -98,7 +100,7 @@ export default function GroundManager() {
             <Grid item xs/>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
-                <img src="http://placeimg.com/128/128/any"></img>
+                <img src={groundinfo.photo}></img>
               </Paper>
             </Grid>
             <Grid item xs/>

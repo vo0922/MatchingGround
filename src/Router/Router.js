@@ -11,6 +11,8 @@ import PrivateRouteGM from './PrivateRouteGM';
 import ManageGround from '../ManageGround/ManageGround';
 import GroundRegister from '../ManageGround/GroundRegister';
 import NotGroundManager from '../ManageGround/NotGroundManager';
+import Modals from '../ManageGround/Modals';
+
 
 const Routes = () => {
     return (
@@ -25,6 +27,10 @@ const Routes = () => {
                 <PrivateRouteGM exact path="/manageground" component={ManageGround}/>
                 <PrivateRoute exact path="/groundregister" component={GroundRegister}/>
                 <PrivateRoute exact path="/notgroundmanager" component={NotGroundManager}/>
+
+                <Route exact path="/modal" component={Modals}/>
+
+                
             </Switch>
         </Router>
     );
