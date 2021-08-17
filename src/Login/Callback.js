@@ -23,7 +23,7 @@ const Callback = () => {
             .then((res)=>res.json())
             .then((res)=>{
                 console.log(res);
-                window.sessionStorage.setItem('id', res.response.id);
+                window.sessionStorage.setItem('id', res.response.email);
                 window.location.replace('/');
             });
         }

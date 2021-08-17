@@ -43,6 +43,113 @@ app.post('/callback', function (req, res) {
    });
  });
 
+app.post("/ground/info/manager", (req, res) =>{
+  const manager_id = req.body.manager_id;
+  connection.query("select * from groundinfo where manager_id = ?", [manager_id],
+  function(err, rows, fields){
+    if(err){
+      console.log("불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("경기장 정보 불러오기 성공");
+    }
+  });
+});
+
+var multer = require('multer');
+
+
+const storage = multer.diskStorage({
+  destination : function(req, file, cb){
+    cb(null, "./uploads/");    
+  },
+  filename : function(req, file, cb) {
+    cb(null, "photo" + Date.now() + file.originalname);
+  }
+});
+
+var upload = multer({ storage : storage });
+
+app.post('/ground/info/register', upload.single('photo'), function(req, res, next){
+  console.log('/ground/info/register', req.body);
+  console.log(req.file);
+  console.log(req.file.filename);
+  console.log(req.body.ground_name);
+
+  const ground_name = req.body.ground_name;
+  const ground_count = req.body.ground_count;
+  const address = req.body.address;
+  const manager_id = req.body.manager_id;
+  const photo = req.file.path;
+  const phonenum = req.body.phonenum;
+  const price = req.body.price;
+  const parking_lot = req.body.parking_lot;
+  const shower_room = req.body.shower_room;
+  const foot_rent = req.body.foot_rent;
+  const wifi = req.body.wifi;
+  const ball_rent = req.body.ball_rent;
+  const uniform_rent = req.body.uniform_rent;
+  
+  connection.query("insert into groundinfo(ground_name, ground_count, address, manager_id, photo, phonenum, price, parking_lot, shower_room, foot_rent, wifi, ball_rent, uniform_rent) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",[ground_name, ground_count, address, manager_id, photo, phonenum, price, parking_lot, shower_room, foot_rent, wifi, ball_rent, uniform_rent],
+  function(err, rows, fields){
+    if(err){
+      console.log("경기장 등록 실패" + err);
+      res.send({msg:"경기장 등록에 실패했습니다. 경기장 이름을 변경해주세요."});
+    } else {
+      console.log("경기장 등록 성공");
+      res.send({msg:"경기장 등록이 완료되었습니다."});
+    }
+  });
+  
+});
+
+
+
+app.post("/myinfo", (req, res) =>{
+  const email = req.body.email;
+  connection.query("select * from users where email = ?", [email],
+  function(err, rows, fields){
+    if(err){
+      console.log("불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("내정보 불러오기 성공");
+    }
+  });
+});
+
+app.post("/router/groundmanager", (req, res) =>{
+  const id = req.body.email;
+  console.log(req.body.email);
+
+  connection.query("select ground_manager from users where email = ?", [id],
+  function(err, rows, fields){
+    if(err){
+      console.log("경기장 관리자 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("경기장 관리자 정보 불러오기 성공");
+    }
+  });
+});
+
+
+
+app.post("/team/info", (req, res) =>{
+  const user_email = req.body.user_email;
+
+  connection.query("select team_name, team_image, team_count, win, lose, date_format(team_date, '%Y-%m-%d') AS 'team_date', team_class, team_introduce from Team where team_name = (select team_name from users where email = ?)", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log("불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
+
+
 app.listen(port, ()=>{
     console.log(`Connect at http://localhost:${port}`);
 });
