@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from '../Login/Login'
 import LoginCallBack from '../Login/Callback'
 import Main from '../MainScreen/MainScreen'
+import Reservation from '../ReservationGround/ReservationGrund'
+import ReservationDetail from '../ReservationGround/ReservationDetail'
 import PrivateRoute from './PrivateRoute';
 import PrivateRouteL from './PrivateRouteL';
 import PrivateRouteGM from './PrivateRouteGM';
@@ -21,6 +23,8 @@ const Routes = () => {
                 <PrivateRouteGM exact path="/manageground" component={ManageGround}/>
                 <PrivateRoute exact path="/groundregister" component={GroundRegister}/>
                 <PrivateRoute exact path="/notgroundmanager" component={NotGroundManager}/>
+                <PrivateRoute exact path="/reservation" component={Reservation}/>
+                <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
             </Switch>
         </Router>
     );
