@@ -44,7 +44,7 @@ const Callback = () => {
             .then((res)=>res.json())
             .then((res)=>{
                 console.log(res.response);
-                window.sessionStorage.setItem('id', res.response.id);
+                window.sessionStorage.setItem('id', res.response.email);
                 submitId(res.response.email, res.response.profile_image, res.response.name, res.response.birthyear, res.response.gender, res.response.mobile_e164);
             });
         }

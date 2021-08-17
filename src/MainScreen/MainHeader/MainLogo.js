@@ -96,6 +96,8 @@ function PersistentDrawerRight({history}) {
   const clickaction = (text) => {
     if(text==='내 정보'){
       history.push('/myin');
+    }else if(text==='경기장 관리'){
+      history.push('/manageground');
     }else if(text==='로그아웃'){
       window.sessionStorage.clear();
       history.push('/Login');
@@ -170,7 +172,7 @@ function PersistentDrawerRight({history}) {
       <Divider />
       <List>
         {['공지사항', '경기장 관리'].map((text, index) => (
-          <ListItem button key={text}>
+          <ListItem button key={text} onClick={()=>{clickaction(text)}}>
             <ListItemIcon>
               {index===0 && <Report/>}
               {index===1 && <ArtTrackIcon/>} 

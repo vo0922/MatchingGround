@@ -7,6 +7,10 @@ import Reservation from '../ReservationGround/ReservationGrund'
 import ReservationDetail from '../ReservationGround/ReservationDetail'
 import PrivateRoute from './PrivateRoute';
 import PrivateRouteL from './PrivateRouteL';
+import PrivateRouteGM from './PrivateRouteGM';
+import ManageGround from '../ManageGround/ManageGround';
+import GroundRegister from '../ManageGround/GroundRegister';
+import NotGroundManager from '../ManageGround/NotGroundManager';
 
 const Routes = () => {
     return (
@@ -17,6 +21,10 @@ const Routes = () => {
                 <PrivateRoute exact path="/" component={Main}/>
                 <PrivateRoute exact path="/reservation" component={Reservation}/>
                 <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
+
+                <PrivateRouteGM exact path="/manageground" component={ManageGround}/>
+                <PrivateRoute exact path="/groundregister" component={GroundRegister}/>
+                <PrivateRoute exact path="/notgroundmanager" component={NotGroundManager}/>
             </Switch>
         </Router>
     );
