@@ -1,17 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import { CssBaseline, Typography, Container, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@material-ui/core";
 import { minWidth } from "@material-ui/system";
 
 const useStyles = makeStyles({
@@ -27,8 +18,8 @@ const useStyles = makeStyles({
   },
   paper: {
     margin: "50px auto",
-    width: 128,
-    height: 128,
+    width: 256,
+    height: 256,
   },
   table: {
     marginTop: 10,
@@ -91,16 +82,16 @@ export default function GroundManager() {
     <React.Fragment>
       <MainLogo />
       <CssBaseline />
-      <Container maxWidth="md">
+      <Container maxWidth="md" style={{backgroundColor : "#F3F3F3"}}>
         <Typography
           component="div"
-          style={{ backgroundColor: "#F3F3F3", height: "80vh" }}
+          style={{ height: "100vh" }}
         >
           <Grid container spacing={3}>
             <Grid item xs/>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
-                <img src={groundinfo.photo}></img>
+                <img src={groundinfo.photo} height="256px" width="256px"></img>
               </Paper>
             </Grid>
             <Grid item xs/>
@@ -125,6 +116,13 @@ export default function GroundManager() {
                   ))}
                 </TableBody>
               </Table>
+            </Grid>
+            <Grid item xs={3}/>
+            <Grid item xs={3}>
+              <Button variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
+            </Grid>
+            <Grid item xs={3}>
+              <Button variant="outlined" color="primary" style={{ width: "100%" }}>경기장 예약 관리</Button>
             </Grid>
           </Grid>
         </Typography>

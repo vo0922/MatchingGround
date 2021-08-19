@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-  const PrivateRouteGM = ({component: Component, ...rest}) => { 
-    const [groundmanager, setGroundmanager] = useState({
+  const PrivateRouteNotGM = ({component: Component, ...rest}) => { 
+    const [notgroundmanager, setNotGroundmanager] = useState({
       email:window.sessionStorage.getItem('id'),
-      ground_manager : 1,
+      ground_manager : 0,
     });
     
     function getGroundManager(){
@@ -13,29 +13,27 @@ import { Route, Redirect } from 'react-router-dom';
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(groundmanager),
+        body: JSON.stringify(notgroundmanager),
       })
         .then((res) => res.json())
         .then((json) => {
-          setGroundmanager({
-            ground_manager : json[0].ground_manager
-          });
-          console.log(groundmanager.ground_manager);
-            
+          setNotGroundmanager({
+            ground_manager : json[0].ground_manager});
         });
     }
 
       useEffect(() => {
         getGroundManager();
+        console.log(notgroundmanager.ground_manager);
       }, [])
 
       return (
           <Route {...rest} render={props => (
-            groundmanager.ground_manager ?
+            !notgroundmanager.ground_manager ?
                 <Component {...props}/>
-                :<Redirect to="/notgroundmanager" />
+                :<Redirect to="/manageground" />
           )} />
       );
   };
 
-export default PrivateRouteGM;
+export default PrivateRouteNotGM;
