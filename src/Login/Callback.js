@@ -21,7 +21,7 @@ const Callback = () => {
         })
         .then((res)=>res.json())
         .then((res)=>{
-            window.location.replace('/');
+
         });
     }
     function GetProfile() {
@@ -33,7 +33,6 @@ const Callback = () => {
             const token = {
                 token : loca,
             }
-
             fetch("http://localhost:3001/callback", {
                 method : "post", // 통신방법
                 headers : {
@@ -43,9 +42,26 @@ const Callback = () => {
             })
             .then((res)=>res.json())
             .then((res)=>{
-                console.log(res.response);
                 window.sessionStorage.setItem('id', res.response.email);
                 submitId(res.response.email, res.response.profile_image, res.response.name, res.response.birthyear, res.response.gender, res.response.mobile_e164);
+                const email = {
+                    email : res.response.email,
+                }
+                fetch("http://localhost:3001/myinfo" , {
+                    method : "post", // 통신방법
+                    headers : {
+                        "content-type" : "application/json",
+                    },
+                    body : JSON.stringify(email),
+                })
+                .then((res)=>res.json())
+                .then((res)=>{
+                    window.sessionStorage.setItem('ground_manager', res[0].ground_manager);
+                    window.sessionStorage.setItem('team_manager', res[0].team_manager);
+                    window.sessionStorage.setItem('team_name', res[0].team_name);
+
+                    window.location.replace('/');
+                });
             });
         }
     }

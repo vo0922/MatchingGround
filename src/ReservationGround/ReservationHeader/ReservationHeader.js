@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import ReservationLogo from './ReservationLogo'
+import MainLogo from '../../MainScreen/MainHeader/MainLogo'
 import ReservationTab from './ReservationTab'
 export default class MainHeader extends Component {
     render() {
         return (
             <div>
-                <ReservationLogo/>
+                <MainLogo/>
                 <ReservationTab/>
             </div>
         )

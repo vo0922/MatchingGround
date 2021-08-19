@@ -97,7 +97,7 @@ function PersistentDrawerRight({history}) {
     if(text==='내 정보'){
       history.push('/myin');
     }else if(text==='경기장 관리'){
-      history.push('/manageground');
+      history.push('/notgroundmanager');
     }else if(text==='로그아웃'){
       window.sessionStorage.clear();
       history.push('/Login');

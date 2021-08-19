@@ -4,11 +4,14 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import MainLogo from '../MainScreen/MainHeader/MainLogo'
 import { withRouter } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+
 
 function ReservationDetail({location}) {
     const [ground, setground] = useState({
         title: '',
         content: '',
+        img: '',
     });
 
     const reqground = () => {
@@ -24,7 +27,9 @@ function ReservationDetail({location}) {
                 setground({
                     title: res[0].ground_name,
                     content: res[0].grund_address,
+                    img: "/" + res[0].photo
                 })
+                console.log(ground.img)
             });
     };
 
@@ -38,7 +43,10 @@ function ReservationDetail({location}) {
       <CssBaseline />
       <Container maxWidth="md">
         <Typography component="div" style={{ backgroundColor: 'white', height: '100vh' }} >
+        <Grid container direction="column" justifyContent="center" alignItems="center">
             <h1>{ground.title}</h1>
+            <img src={ground.img} />
+        </Grid>
         </Typography>
       </Container>
     </React.Fragment>

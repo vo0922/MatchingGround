@@ -125,7 +125,8 @@ function GroundRegister({history}) {
       .then((res) => res.json())
       .then((data) => {
         alert(data.msg)
-        history.push('/manageground');
+        window.sessionStorage.setItem('ground_manager', data.success);
+        history.push('/groundmanager');
       });
   }
 
