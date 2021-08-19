@@ -165,7 +165,6 @@ app.post("/myinfo", (req, res) =>{
 
 app.post("/router/groundmanager", (req, res) =>{
   const id = req.body.email;
-  console.log(req.body.email);
 
   connection.query("select ground_manager from users where email = ?", [id],
   function(err, rows, fields){
