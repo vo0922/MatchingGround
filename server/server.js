@@ -142,7 +142,7 @@ app.post('/ground/info/register', upload.single('photo'), function(req, res, nex
       res.send({msg:"경기장 등록에 실패했습니다. 경기장 이름을 변경해주세요."});
     } else {
       console.log("경기장 등록 성공");
-      res.send({msg:"경기장 등록이 완료되었습니다."});
+      res.send({msg:"경기장 등록이 완료되었습니다.", success:1});
     }
   });
   

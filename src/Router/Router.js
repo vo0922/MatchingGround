@@ -26,13 +26,12 @@ const Routes = () => {
                 <PrivateRoute exact path="/reservation" component={Reservation}/>
                 <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
 
-                <PrivateRouteGM exact path="/manageground" component={ManageGround}/>
+                <PrivateRouteGM exact path="/groundmanager" component={ManageGround}/>
                 <PrivateRouteNotGM exact path="/groundregister" component={GroundRegister}/>
                 <PrivateRouteNotGM exact path="/notgroundmanager" component={NotGroundManager}/>
 
                 <Route exact path="/modal" component={Modals}/>
 
-                
             </Switch>
         </Router>
     );

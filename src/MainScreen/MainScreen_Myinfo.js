@@ -30,8 +30,7 @@ export default function MainScreen_Myinfo() {
     birthyear : "",
     height : "",
     introduce : "",
-    //user_email : window.sessionStorage.getItem('id'),
-    email : "rilakkuma159@naver.com"
+    email : window.sessionStorage.getItem('id'),
   });
 
   function getMyinfo() {
@@ -51,8 +50,7 @@ export default function MainScreen_Myinfo() {
       birthyear : res[0].birthyear,
       height : res[0].height,
       introduce : res[0].introduce,
-      email : "rilakkuma159@naver.com"
-      //email : window.sessionStorage.getItem('id')
+      email : window.sessionStorage.getItem('id')
     });
   });
   }
@@ -80,10 +78,10 @@ export default function MainScreen_Myinfo() {
             </Typography>
 
             <Typography className={classes.pos} color="textSecondary">
-              {myinfo.position}
+              {myinfo.position === 'none' ? "포지션 : 없음." : myinfo.position}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-              {myinfo.birthyear}년 생 / {myinfo.height}cm
+              {myinfo.birthyear}년 생 / {myinfo.height === 'none' ? "키 : 없음." : myinfo.height + "cm"}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
               {myinfo.introduce}
