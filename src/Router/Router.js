@@ -13,6 +13,7 @@ import ManageGround from '../ManageGround/ManageGround';
 import GroundRegister from '../ManageGround/GroundRegister';
 import NotGroundManager from '../ManageGround/NotGroundManager';
 import Modals from '../ManageGround/Modals';
+import GroundManager from '../ManageGround/GroundManager';
 
 
 const Routes = () => {
