@@ -4,6 +4,7 @@ const port = 3001; // react의 기본값은 3000이니까 3000이 아닌 아무 
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql"); // mysql 모듈 사용
+const request = require("request");
 
 var connection = mysql.createConnection({
     host : "smartit-16.iptime.org",
@@ -42,6 +43,51 @@ app.post('/callback', function (req, res) {
      }
    });
  });
+
+ app.post("/callback/adduser", (req,res)=>{
+    const email = req.body.email;
+    const profile_image = req.body.profile_image;
+    const user_name = req.body.user_name;
+    const birthyear = req.body.birthyear;
+    const gender = req.body.gender;
+    const mobile = req.body.mobile;
+  
+    connection.query(
+        "INSERT INTO users (email, profile_image, user_name, birthyear, gender, mobile) select ?,?,?,?,?,? from dual where not exists(select *from users where email=?)",[email,profile_image,user_name,birthyear,gender,mobile,email],
+    function(err,rows,fields){
+        if(err){
+            console.log(err);
+        }else{
+            res.send(rows);
+            console.log("성공");
+        };
+    });
+  });
+
+  app.post("/myinfo", (req,res)=>{
+      connection.query(
+        "SELECT *FROM users where email = ?",[req.body.id],
+    function(err,rows,fields){
+        if(err){
+            console.log(err);
+        }else{
+            res.send(rows);
+            //console.log("성공");
+        };
+    });
+  });
+
+  app.post("/myinfo/modify", (req,res)=>{
+      connection.query(
+        "UPDATE users set mobile = ?, height = ?, position = ?, introduce = ? where email=?",[req.body.mobile,req.body.height,req.body.position,req.body.introduce,req.body.id],
+    function(err,rows,fields){
+        if(err){
+            console.log(err);
+        }else{
+            //console.log("성공");
+        };
+    });
+  });
 
 app.listen(port, ()=>{
     console.log(`Connect at http://localhost:${port}`);

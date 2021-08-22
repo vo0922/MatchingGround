@@ -5,6 +5,9 @@ import LoginCallBack from '../Login/Callback'
 import Main from '../MainScreen/MainScreen'
 import PrivateRoute from './PrivateRoute';
 import PrivateRouteL from './PrivateRouteL';
+import Myinfo from '../MyInfo/MyInfo';
+import MyModify from '../MyInfo/MyModify'
+import TeamInfo from '../TeamInfo/TeamInfo';
 
 const Routes = () => {
     return (
@@ -13,6 +16,9 @@ const Routes = () => {
                 <PrivateRouteL exact path="/login" component={Login}/>
                 <PrivateRouteL exact path="/login/callback" component={LoginCallBack}/>
                 <PrivateRoute exact path="/" component={Main}/>
+                <PrivateRoute exact path="/myinfo" component={Myinfo}/>
+                <PrivateRoute exact path="/myinfo/modify" component={MyModify}/>
+                <PrivateRoute exact path="/teaminfo" component={TeamInfo}/>
                 
             </Switch>
         </Router>
