@@ -14,6 +14,8 @@ import GroundRegister from '../ManageGround/GroundRegister';
 import NotGroundManager from '../ManageGround/NotGroundManager';
 import Modals from '../ManageGround/Modals';
 import GroundManager from '../ManageGround/GroundManager';
+import GroundModify from '../ManageGround/GroundModify';
+import ManageReservation from '../ManageGround/ManageReservation';
 
 
 const Routes = () => {
@@ -27,6 +29,8 @@ const Routes = () => {
                 <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
 
                 <PrivateRouteGM exact path="/groundmanager" component={ManageGround}/>
+                <PrivateRouteGM exact path="/groundmanager/modify" component={GroundModify}/>
+                <PrivateRouteGM exact path="/groundmanager/managereservation" component={ManageReservation}/>
                 <PrivateRouteNotGM exact path="/groundregister" component={GroundRegister}/>
                 <PrivateRouteNotGM exact path="/notgroundmanager" component={NotGroundManager}/>
 

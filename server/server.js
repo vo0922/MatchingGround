@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+// 로그인 콜백
 app.post('/callback', function (req, res) {
    var api_url = 'https://openapi.naver.com/v1/nid/me';
    var token = req.body.token;
@@ -42,6 +43,7 @@ app.post('/callback', function (req, res) {
    });
  });
 
+ // 신규유저 등록
  app.post("/callback/adduser", (req,res)=>{
   const email = req.body.email;
   const profile_image = req.body.profile_image;
@@ -62,6 +64,7 @@ app.post('/callback', function (req, res) {
   });
 });
 
+// 모든 경기장 정보 불러오기
 app.post("/reservation/list", (req,res)=>{
 
   connection.query(
@@ -75,6 +78,7 @@ app.post("/reservation/list", (req,res)=>{
   });
 });
 
+// 예약 상세정보 불러오기
 app.post("/reservation/detail", (req,res)=>{
   const key = req.body.cardkey;
   connection.query(
@@ -88,6 +92,26 @@ app.post("/reservation/detail", (req,res)=>{
   });
 });
 
+// 경기장(날짜)별 예약정보 불러오기
+app.post("/manage/ground/reservation", (req,res)=>{
+  const ground_name = req.body.ground_name;
+  const r_date = req.body.r_date;
+  const r_time = req.body.r_time;
+  console.log(ground_name + r_date + r_time);
+
+  connection.query(
+      "select * from reservation where ground_name = ? and r_date = ? and r_time = ?", [ground_name, r_date, r_time],
+  function(err,rows,fields){
+      if(err){
+          console.log("예약정보 불러오기 실패" + err);
+      }else{
+          console.log("예약정보 불러오기 성공");
+          res.send(rows);
+      };
+  });
+});
+
+// 경기장 정보 불러오기
 app.post("/ground/info/manager", (req, res) =>{
   const manager_id = req.body.manager_id;
   connection.query("select * from groundinfo where manager_id = ?", [manager_id],
@@ -101,9 +125,8 @@ app.post("/ground/info/manager", (req, res) =>{
   });
 });
 
+// 경기장 정보 등록
 var multer = require('multer');
-
-
 const storage = multer.diskStorage({
   destination : function(req, file, cb){
     cb(null, "../public/uploads/");    
@@ -148,8 +171,23 @@ app.post('/ground/info/register', upload.single('photo'), function(req, res, nex
   
 });
 
+// 경기장 정보 불러오기
+app.post("/ground/info/modify", (req, res) =>{
+  const manager_id = req.body.manager_id;
+
+  connection.query("select * from groundinfo where manager_id = ?", [manager_id],
+  function(err, rows, fields){
+    if(err){
+      console.log("경기장 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("경기장 정보 불러오기 성공");
+    }
+  });
+});
 
 
+// 내 정보 불러오기
 app.post("/myinfo", (req, res) =>{
   const email = req.body.email;
   connection.query("select * from users where email = ?", [email],
@@ -163,6 +201,8 @@ app.post("/myinfo", (req, res) =>{
   });
 });
 
+
+// 경기장 관리자 여부 불러오기
 app.post("/router/groundmanager", (req, res) =>{
   const id = req.body.email;
 
@@ -178,14 +218,14 @@ app.post("/router/groundmanager", (req, res) =>{
 });
 
 
-
+// 팀정보 불러오기
 app.post("/team/info", (req, res) =>{
   const user_email = req.body.user_email;
 
   connection.query("select team_name, team_image, team_count, win, lose, date_format(team_date, '%Y-%m-%d') AS 'team_date', team_class, team_introduce from Team where team_name = (select team_name from users where email = ?)", [user_email],
   function(err, rows, fields){
     if(err){
-      console.log("불러오기 실패" + err);
+      console.log("팀 정보 불러오기 실패" + err);
     } else {
       res.send(rows);
       console.log("팀 정보 불러오기 성공");

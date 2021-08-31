@@ -5,8 +5,7 @@ import NotGroundManager from "./NotGroundManager";
 
 export default class ManageGround extends Component {
   render() {
-    return (
-        
+    return (    
         <div>
             <GroundManager/>
         </div>

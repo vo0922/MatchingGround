@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
@@ -28,7 +30,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function GroundManager() {
+function GroundManager({history}) {
   const [groundinfo, setgroundinfo] = useState({
     ground_name: "",
     address: "",
@@ -71,6 +73,15 @@ export default function GroundManager() {
     createData("가격", groundinfo.price),
   ];
 
+  function link_reservation(){
+    history.push({
+      pathname:"/groundmanager/managereservation",
+      state:{
+        groundinfo:groundinfo,
+      },
+    });
+  }
+
    useEffect(() => {
      getgroundinfo();
    }, []);
@@ -87,14 +98,23 @@ export default function GroundManager() {
           component="div"
           style={{ height: "100vh" }}
         >
+          
           <Grid container spacing={3}>
-            <Grid item xs/>
+            <Grid item xs={3}/>
+            <Grid item xs={6}>
+              <Typography component="h4" variant="h4" style={{textAlign:"center"}}>
+                {groundinfo.ground_name} 경기장
+              </Typography>
+            </Grid>  
+            <Grid item xs={3}/>
+            
+            <Grid item xs={3}/>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <img src={groundinfo.photo} height="256px" width="256px"></img>
               </Paper>
             </Grid>
-            <Grid item xs/>
+            <Grid item xs={3}/>
             <Grid item xs={12}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
@@ -119,10 +139,12 @@ export default function GroundManager() {
             </Grid>
             <Grid item xs={3}/>
             <Grid item xs={3}>
-              <Button variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
+              <Link to="/groundmanager/modify">
+                <Button variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
+              </Link>
             </Grid>
             <Grid item xs={3}>
-              <Button variant="outlined" color="primary" style={{ width: "100%" }}>경기장 예약 관리</Button>
+                <Button onClick={link_reservation} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 예약 관리</Button>
             </Grid>
           </Grid>
         </Typography>
@@ -130,3 +152,5 @@ export default function GroundManager() {
     </React.Fragment>
   );
 }
+
+export default withRouter(GroundManager);
