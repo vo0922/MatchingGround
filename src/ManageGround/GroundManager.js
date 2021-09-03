@@ -50,7 +50,7 @@ function GroundManager({history}) {
     })
       .then((res) => res.json())
       .then((json) => {
-        //console.log(json);
+        console.log(json);
         setgroundinfo({
           ground_name: json[0].ground_name,
           address: json[0].address,
@@ -59,6 +59,7 @@ function GroundManager({history}) {
           manager_id: groundinfo.manager_id,
           photo : json[0].photo,
         });
+        
       });
   };
 

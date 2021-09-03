@@ -111,6 +111,41 @@ app.post("/manage/ground/reservation", (req,res)=>{
   });
 });
 
+// 괸리자 권한 예약 삭제
+app.post("/manage/ground/reservationcancel", (req,res)=>{
+  const r_no = req.body.r_no;
+
+  connection.query(
+      "delete from reservation where r_no = ?",[r_no],
+  function(err,rows,fields){
+      if(err){
+          console.log("예약코드 : " + r_no + " 예약 삭제 실패" + err);
+      }else{
+          console.log("예약코드 : " + r_no + " 예약 삭제 완료");
+          res.send({msg:"예약코드 : " + r_no + " 예약 삭제 완료"});
+      };
+  });
+});
+
+// 관리자가 직접 예약하기
+app.post("/manage/ground/reservationmanager", (req,res)=>{
+  const ground_name = req.body.ground_name;
+  const r_date = req.body.r_date;
+  const r_time = req.body.r_time;
+  const ground_num = req.body.ground_num;
+  const user_email = "관리자예약"
+
+  connection.query(
+      "insert into reservation(ground_name, ground_num, user_email, r_date, r_time) values(?,?,?,?,?)", [ground_name, ground_num, user_email ,r_date, r_time],
+  function(err,rows,fields){
+      if(err){
+          console.log("관리자 예약 실패" + err);
+      }else{
+          res.send({msg: "날짜 : " + r_date + " 시간 : " + r_time + "타임 예약완료"});
+      };
+  });
+});
+
 // 경기장 정보 불러오기
 app.post("/ground/info/manager", (req, res) =>{
   const manager_id = req.body.manager_id;
