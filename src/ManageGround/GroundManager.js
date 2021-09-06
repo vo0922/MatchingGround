@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import { CssBaseline, Typography, Container, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@material-ui/core";
 import { minWidth } from "@material-ui/system";
+import {LocalParking, Bathtub} from '@material-ui/icons';
 
 const useStyles = makeStyles({
   root: {
@@ -19,9 +20,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   paper: {
-    margin: "50px auto",
-    width: 256,
-    height: 256,
+    maxHeight: 512,
   },
   table: {
     marginTop: 10,
@@ -38,7 +37,14 @@ function GroundManager({history}) {
     price: "",
     manager_id : window.sessionStorage.getItem('id'),
     photo : "",
+    parking_lot : "",
+    shower_room : "",
+    foot_rent : "",
+    wifi : "",
+    ball_rent : "",
+    uniform_rent : "",
   });
+
 
   function getgroundinfo(){
     fetch("http://localhost:3001/ground/info/manager", {
@@ -58,6 +64,12 @@ function GroundManager({history}) {
           price: json[0].price,
           manager_id: groundinfo.manager_id,
           photo : json[0].photo,
+          parking_lot : json[0].parking_lot,
+          shower_room : json[0].shower_room,
+          foot_rent : json[0].foot_rent,
+          wifi : json[0].wifi,
+          ball_rent : json[0].ball_rent,
+          uniform_rent : json[0].uniform_rent,
         });
         
       });
@@ -69,9 +81,9 @@ function GroundManager({history}) {
 
   const rows = [
     createData("경기장이름", groundinfo.ground_name),
-    createData("경기장위치", groundinfo.address),
-    createData("구장 수", groundinfo.ground_count),
-    createData("가격", groundinfo.price),
+    createData("경기장주소", groundinfo.address),
+    createData("구장 수", groundinfo.ground_count + " 개"),
+    createData("가격", groundinfo.price + " 원"),
   ];
 
   function link_reservation(){
@@ -101,31 +113,22 @@ function GroundManager({history}) {
         >
           
           <Grid container spacing={3}>
-            <Grid item xs={3}/>
-            <Grid item xs={6}>
-              <Typography component="h4" variant="h4" style={{textAlign:"center"}}>
+            <Grid item xs={12}>
+              <Typography component="h4" variant="h4" style={{textAlign:"center", marginTop:"20px"}}>
                 {groundinfo.ground_name} 경기장
               </Typography>
             </Grid>  
-            <Grid item xs={3}/>
             
-            <Grid item xs={3}/>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <img src={groundinfo.photo} height="256px" width="256px"></img>
+                <img src={groundinfo.photo} height="300px"></img>
               </Paper>
             </Grid>
-            <Grid item xs={3}/>
-            <Grid item xs={12}>
+
+            <Grid item xs={6}>
+              <Typography component="h6" variant="h6">경기장 정보</Typography>
               <Table className={classes.table} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell width="200px">제목</TableCell>
-                    <TableCell align="center" width="auto">
-                      내용
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
+                
                 <TableBody>
                   {rows.map((row) => (
                     <TableRow key={row.category}>
@@ -138,13 +141,23 @@ function GroundManager({history}) {
                 </TableBody>
               </Table>
             </Grid>
+            <Grid item xs={6}>
+              <Typography component="h6" variant="h6" >편의 시설</Typography>
+              {groundinfo.parking_lot === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
+              {groundinfo.shower_room === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
+              {groundinfo.foot_rent === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
+              {groundinfo.wifi === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
+              {groundinfo.ball_rent === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
+              {groundinfo.uniform_rent === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
+            </Grid>
+
             <Grid item xs={3}/>
-            <Grid item xs={3}>
+            <Grid item xs={3} style={{marginTop:20}}>
               <Link to="/groundmanager/modify">
                 <Button variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
               </Link>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} style={{marginTop:20}}>
                 <Button onClick={link_reservation} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 예약 관리</Button>
             </Grid>
           </Grid>
