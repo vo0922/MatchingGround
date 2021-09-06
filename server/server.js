@@ -88,6 +88,38 @@ app.post("/reservation/detail", (req,res)=>{
   });
 });
 
+app.post("/reservation/detail/list", (req,res)=>{
+  const key = req.body.cardkey;
+  connection.query(
+      "select *from groundlist where ground_name = ?", [key],
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+      };
+  });
+});
+
+
+app.post("/reservation/detail/book", (req,res)=>{
+  const ground_name = req.body.ground_name;
+  const r_date = req.body.r_date;
+  const ground_num = req.body.ground_num;
+  console.log(r_date);
+  connection.query(
+      "select *from reservation where ground_name = ? and r_date = ? and ground_num = ? order by r_time asc", [ground_name, r_date, ground_num],
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+      };
+  });
+});
+
+
+
 app.post("/ground/info/manager", (req, res) =>{
   const manager_id = req.body.manager_id;
   connection.query("select * from groundinfo where manager_id = ?", [manager_id],
@@ -116,6 +148,7 @@ const storage = multer.diskStorage({
 var upload = multer({ storage : storage });
 
 app.post('/ground/info/register', upload.single('photo'), function(req, res, next){
+  
   console.log('/ground/info/register', req.body);
   console.log(req.file);
   console.log(req.file.filename);
@@ -149,7 +182,6 @@ app.post('/ground/info/register', upload.single('photo'), function(req, res, nex
 });
 
 
-
 app.post("/myinfo", (req, res) =>{
   const email = req.body.email;
   connection.query("select * from users where email = ?", [email],
@@ -176,7 +208,6 @@ app.post("/router/groundmanager", (req, res) =>{
     }
   });
 });
-
 
 
 app.post("/team/info", (req, res) =>{

@@ -55,7 +55,7 @@ export default function Signin() {
   const classes = useStyles();
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
-
+  //네이버 로그인 UI
   function NaverLogin() {
     const naverLogin = new naver.LoginWithNaverId({
       clientId: "MSl2rw4UPkjlxqHE2_qJ",
@@ -70,7 +70,7 @@ export default function Signin() {
   useEffect(() => {
     NaverLogin();
   });
-
+  //네이버 로그인 API 요청
   const handleSubmit = async e => {
     e.preventDefault();
     const response = await loginUser({
