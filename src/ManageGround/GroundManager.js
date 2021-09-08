@@ -36,6 +36,7 @@ function GroundManager({history}) {
     ground_count: "",
     price: "",
     manager_id : window.sessionStorage.getItem('id'),
+    phonenum : "",
     photo : "",
     parking_lot : "",
     shower_room : "",
@@ -63,6 +64,7 @@ function GroundManager({history}) {
           ground_count: json[0].ground_count,
           price: json[0].price,
           manager_id: groundinfo.manager_id,
+          phonenum:json[0].phonenum,
           photo : json[0].photo,
           parking_lot : json[0].parking_lot,
           shower_room : json[0].shower_room,
@@ -82,6 +84,7 @@ function GroundManager({history}) {
   const rows = [
     createData("경기장이름", groundinfo.ground_name),
     createData("경기장주소", groundinfo.address),
+    createData("전화번호", groundinfo.phonenum),
     createData("구장 수", groundinfo.ground_count + " 개"),
     createData("가격", groundinfo.price + " 원"),
   ];
@@ -89,6 +92,15 @@ function GroundManager({history}) {
   function link_reservation(){
     history.push({
       pathname:"/groundmanager/managereservation",
+      state:{
+        groundinfo:groundinfo,
+      },
+    });
+  }
+
+  function link_Modify(){
+    history.push({
+      pathname:"/groundmanager/modify",
       state:{
         groundinfo:groundinfo,
       },
@@ -153,9 +165,7 @@ function GroundManager({history}) {
 
             <Grid item xs={3}/>
             <Grid item xs={3} style={{marginTop:20}}>
-              <Link to="/groundmanager/modify">
-                <Button variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
-              </Link>
+                <Button onClick={link_Modify} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
             </Grid>
             <Grid item xs={3} style={{marginTop:20}}>
                 <Button onClick={link_reservation} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 예약 관리</Button>

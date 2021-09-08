@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormControlLabel, Grid, Modal, Button, TextField, Container, Typography, CssBaseline, Checkbox } from "@material-ui/core";
+import { FormControlLabel, Grid, Modal, Button, TextField, Container, Typography, CssBaseline, Checkbox, InputAdornment, MenuItem} from "@material-ui/core";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import DaumPostcode from "react-daum-postcode";
 
@@ -50,6 +50,11 @@ const postCodeStyle = {
 
 function GroundRegister({history}) {
   const classes = useStyles();
+  const [selectGroundCount, setSelectGroundCount] = React.useState(1);
+  const handleChange_groundcount = (e) => {
+    e.preventDefault();
+    setSelectGroundCount(e.target.value);
+  }
 
   // 주소 modal 열기, 닫기 state
   const [open, setOpen] = React.useState(false);
@@ -102,7 +107,7 @@ function GroundRegister({history}) {
     const formData = new FormData();
     formData.append("ground_name", e.target.ground_name.value);
     formData.append("ground_count", e.target.ground_count.value);
-    formData.append("address", e.target.address2.value + e.target.address3.value);
+    formData.append("address", e.target.address2.value + " " + e.target.address3.value);
     formData.append("phonenum", e.target.phonenum.value);
     formData.append("manager_id", window.sessionStorage.getItem("id"));
     formData.append("photo", e.target.photo.files[0]);
@@ -138,7 +143,7 @@ function GroundRegister({history}) {
         <Container
           maxWidth="md"
           className={classes.container}
-          style={{ backgroundColor: "#F3F3F3" }}
+          style={{ backgroundColor: "#F3F3F3", height:"100%"}}
         >
           <Typography component="div" style={{ height: "100vh" }}>
             <Typography
@@ -161,13 +166,15 @@ function GroundRegister({history}) {
                     id="ground_name"
                     name="ground_name"
                     label="경기장 이름"
-                    placeholder="경기장 이름을 입력하세요."
+                    placeholder="경기장 이름을 20자 이내로 입력하세요."
                     fullWidth
                     className={classes.textField2}
                     margin="normal"
+                    maxRows="20"
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    inputProps={{maxLength:20}}
                   />
                 </Grid>
                 <Grid item xs={10}>
@@ -175,7 +182,7 @@ function GroundRegister({history}) {
                     id="address2"
                     name="address2"
                     label="경기장 주소"
-                    placeholder="경기장 주소를 입력하세요."
+                    placeholder="오른쪽 주소찾기 버튼을 클릭하여 주소를 찾으세요."
                     fullWidth
                     value={isAddress}
                     className={classes.textField2}
@@ -213,10 +220,12 @@ function GroundRegister({history}) {
                     label="구장 전화번호"
                     id="phonenum"
                     name="phonenum"
+                    type="number"
                     className={classes.textField2}
                     margin="normal"
+                    maxRows="11"
                     fullWidth
-                    placeholder="구장 전화번호를 입력하세요."
+                    placeholder="전화번호를 ' - ' 없이 입력하세요. ex)01012345678"
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -226,13 +235,21 @@ function GroundRegister({history}) {
                 <Grid item xs={3} />
                 <Grid item xs={6}>
                   <TextField
+                    select
                     label="구장 수"
                     id="ground_count"
                     name="ground_count"
-                    className={classes.textField}
+                    value={selectGroundCount}
+                    onChange={handleChange_groundcount}
                     margin="normal"
                     helperText="구장 개수를 입력하세요."
-                  />
+                  >
+                    <MenuItem key = {1} value = {1}>1개</MenuItem>
+                    <MenuItem key = {2} value = {2}>2개</MenuItem>
+                    <MenuItem key = {3} value = {3}>3개</MenuItem>
+                    <MenuItem key = {4} value = {4}>4개</MenuItem>
+                    <MenuItem key = {5} value = {5}>5개</MenuItem>
+                  </TextField>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -242,6 +259,10 @@ function GroundRegister({history}) {
                     className={classes.textField}
                     margin="normal"
                     helperText="구장 대여 가격을 입력하세요."
+                    type="number"
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">₩</InputAdornment>,
+                    }}
                   />
                 </Grid>
 

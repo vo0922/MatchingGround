@@ -15,6 +15,11 @@ import {
   TableRow,
   Button,
   TextField,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  DialogTitle,
 } from "@material-ui/core";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 
@@ -44,8 +49,36 @@ function ManageReservation({ location }) {
   let month = today_date.getMonth() + 1;
   let day = today_date.getDate();
   let current_date = year + (month >= 10 ? "-" : "-0") + month + (day >= 10 ? "-" : "-0") + day;
-
   var r_date = current_date; // 초기 날짜 오늘날짜로 설정
+
+  // 관리자 권한 예약 이름 설정 메시지 열기, 닫기 함수
+  const [managerReservationOpen, setManagerReservationOpen] = useState(false);
+  const [ReservationManagerData, setReservationManagerData] = useState({
+    r_time : "",
+    ground_num : "",
+    r_date : "",
+    ground_name : "",
+    reservation_name : "",
+  });
+  const handleManagerReservationOpen = (id) =>{
+    setManagerReservationOpen(true);
+    setReservationManagerData({
+      r_time : id.substring(0,1),
+      ground_num : id.substring(2,3),
+      r_date : r_date,
+      ground_name : groundinfo.ground_name,
+      reservation_name : "",
+    });
+  }
+  const handleManagerReservationClose = () => {
+    setManagerReservationOpen(false);
+  }
+  const handleReservationName = (e) => {
+    setReservationManagerData({
+      ...ReservationManagerData,
+      reservation_name : e.target.value
+    })
+  }
 
   // 예약 날짜 변경(onChange) 함수
   const date_handleChange = (e) => {
@@ -53,12 +86,11 @@ function ManageReservation({ location }) {
 
     for (var i = 1; i <= 8; i++) {
       getReservation(i)
-    }   
+    }
   };
 
   // 예약 취소 함수(onClick)
   const ReservationCancel = (id) => {
-
     fetch("http://localhost:3001/manage/ground/reservationcancel", {
       method: "post",
       headers: {
@@ -78,26 +110,18 @@ function ManageReservation({ location }) {
   }
 
   // 관리자예약하기 함수(onClick)
-  const ReservationManager = (id) => {
-
-    var r_time = id.substring(0,1);
-    var ground_num = id.substring(2,3);
-
+  const ReservationManager = () => {
     fetch("http://localhost:3001/manage/ground/reservationmanager", {
       method: "post",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({
-        ground_name : groundinfo.ground_name,
-        r_date : r_date,
-        r_time : r_time,
-        ground_num : ground_num,
-      }),
+      body: JSON.stringify(ReservationManagerData),
     })
       .then((res) => res.json())
       .then((json) => {
         alert(json.msg);
+        setManagerReservationOpen(false);
         for (var i = 1; i <= 8; i++) {
           getReservation(i)
         }
@@ -152,7 +176,7 @@ function ManageReservation({ location }) {
         {ground.map((ground) => (
           ground.body !== "예약없음" ? 
           <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="secondary" size="small" onClick={() => {ReservationCancel(ground.id)}}>예약취소</Button></TableCell> : 
-          <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="primary" size="small" onClick={() => {ReservationManager(ground.id)}}>관리자 직접예약</Button></TableCell>
+          <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="primary" size="small" onClick={() => {handleManagerReservationOpen(ground.id)}}>관리자직접예약</Button></TableCell>
         ))} 
       </TableRow>
     );
@@ -220,6 +244,21 @@ function ManageReservation({ location }) {
             </Table>
           </TableContainer>
         </Typography>
+
+        <Dialog open={managerReservationOpen} onClose={handleManagerReservationClose} area-labelledby = "삭제 확인 메시지" >
+          <DialogTitle>{"예약할 사람의 이름을 입력하세요."}</DialogTitle>              
+              <DialogContent>
+                  <TextField id = "reservation_name" name="reservation_name" onChange={handleReservationName} label="예약자 이름" fullWidth/>
+                  <DialogActions>
+                    <Button onClick={handleManagerReservationClose} color="primary">
+                      닫기
+                    </Button>
+                    <Button onClick={ReservationManager} color="primary" autoFocus>
+                      예약하기
+                    </Button>
+                  </DialogActions>
+              </DialogContent>
+            </Dialog>
       </Container>
     </React.Fragment>
   );

@@ -4,6 +4,8 @@ const port = 3001; // react의 기본값은 3000이니까 3000이 아닌 아무 
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql"); // mysql 모듈 사용
+const multer = require('multer');
+const form_data = multer();
 
 var connection = mysql.createConnection({
     host : "smartit-16.iptime.org",
@@ -13,10 +15,10 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+//app.use(form_data.array());
 
 // 로그인 콜백
 app.post('/callback', function (req, res) {
@@ -133,15 +135,16 @@ app.post("/manage/ground/reservationmanager", (req,res)=>{
   const r_date = req.body.r_date;
   const r_time = req.body.r_time;
   const ground_num = req.body.ground_num;
-  const user_email = "관리자예약"
+  const reservation_name = req.body.reservation_name;
+  console.log(ground_name + ", " + r_date + ", " + r_time + ", " + ground_name, + ", " + reservation_name);
 
   connection.query(
-      "insert into reservation(ground_name, ground_num, user_email, r_date, r_time) values(?,?,?,?,?)", [ground_name, ground_num, user_email ,r_date, r_time],
+      "insert into reservation(ground_name, ground_num, user_email, r_date, r_time) values(?,?,?,?,?)", [ground_name, ground_num, reservation_name , r_date, r_time],
   function(err,rows,fields){
       if(err){
           console.log("관리자 예약 실패" + err);
       }else{
-          res.send({msg: "날짜 : " + r_date + " 시간 : " + r_time + "타임 예약완료"});
+          res.send({msg: "예약자 이름 : " + reservation_name + " 날짜 : " + r_date + " 시간 : " + r_time + "타임 예약완료"});
       };
   });
 });
@@ -161,8 +164,7 @@ app.post("/ground/info/manager", (req, res) =>{
 });
 
 // 경기장 정보 등록
-var multer = require('multer');
-const storage = multer.diskStorage({
+const storage_register = multer.diskStorage({
   destination : function(req, file, cb){
     cb(null, "../public/uploads/");    
   },
@@ -171,9 +173,9 @@ const storage = multer.diskStorage({
   }
 });
 
-var upload = multer({ storage : storage });
+var upload_register = multer({ storage : storage_register }); 
 
-app.post('/ground/info/register', upload.single('photo'), function(req, res, next){
+app.post('/ground/info/register', upload_register.single('photo'), function(req, res, next){
   console.log('/ground/info/register', req.body);
   console.log(req.file);
   console.log(req.file.filename);
@@ -206,6 +208,71 @@ app.post('/ground/info/register', upload.single('photo'), function(req, res, nex
   
 });
 
+// 경기장 정보 수정(사진이 수정됐을 때)
+const storage_modify = multer.diskStorage({
+  destination : function(req, file, cb){
+    cb(null, "../public/uploads/");    
+  },
+  filename : function(req, file, cb) {
+    cb(null, "photo" + Date.now() + file.originalname);
+  }
+});
+
+var upload_modify = multer({ storage : storage_modify }); 
+
+app.post('/ground/info/modify/photo', upload_modify.single('photo'), function(req, res, next){
+  const ground_name = req.body.ground_name;
+  const ground_count = req.body.ground_count;
+  const address = req.body.address;
+  const photo = "uploads/"+req.file.filename;
+  const phonenum = req.body.phonenum;
+  const price = req.body.price;
+  const parking_lot = req.body.parking_lot;
+  const shower_room = req.body.shower_room;
+  const foot_rent = req.body.foot_rent;
+  const wifi = req.body.wifi;
+  const ball_rent = req.body.ball_rent;
+  const uniform_rent = req.body.uniform_rent;
+  
+  connection.query("update groundinfo set ground_count = ?, address = ?, photo = ?, phonenum = ?, price = ?, parking_lot = ?, shower_room = ?, foot_rent = ?, wifi = ?, ball_rent = ?, uniform_rent = ? where ground_name = ?",[ground_count, address, photo, phonenum, price, parking_lot, shower_room, foot_rent, wifi, ball_rent, uniform_rent, ground_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("경기장 정보 수정(사진수정) 실패" + err);
+      res.send({msg:"경기장 등록에 실패했습니다. 경기장 이름을 변경해주세요."});
+    } else {
+      console.log("경기장 정보 수정(사진수정) 성공");
+      res.send({msg:"경기장 정보 수정(사진수정)이 완료되었습니다.", success:1});
+    }
+  });
+  
+});
+
+// 경기장 정보 수정(사진이 수정되지 않았을 때)
+app.post('/ground/info/modify/notphoto', form_data.array(), function(req, res){
+  const ground_name = req.body.ground_name;
+  const ground_count = req.body.ground_count;
+  const address = req.body.address;
+  const phonenum = req.body.phonenum;
+  const price = req.body.price;
+  const parking_lot = req.body.parking_lot;
+  const shower_room = req.body.shower_room;
+  const foot_rent = req.body.foot_rent;
+  const wifi = req.body.wifi;
+  const ball_rent = req.body.ball_rent;
+  const uniform_rent = req.body.uniform_rent;
+  
+  connection.query("update groundinfo set ground_count = ?, address = ?, phonenum = ?, price = ?, parking_lot = ?, shower_room = ?, foot_rent = ?, wifi = ?, ball_rent = ?, uniform_rent = ? where ground_name = ?",[ground_count, address, phonenum, price, parking_lot, shower_room, foot_rent, wifi, ball_rent, uniform_rent, ground_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("경기장 수정 실패" + err);
+      res.send({msg:"경기장 정보 수정에 실패했습니다. 내용을 다시 확인해주세요."});
+    } else {
+      console.log("경기장 수정 성공");
+      res.send({msg:"경기장 정보 수정이 완료되었습니다.", success:1});
+    }
+  });
+});
+
 // 경기장 정보 불러오기
 app.post("/ground/info/modify", (req, res) =>{
   const manager_id = req.body.manager_id;
@@ -219,6 +286,23 @@ app.post("/ground/info/modify", (req, res) =>{
       console.log("경기장 정보 불러오기 성공");
     }
   });
+});
+
+// 경기장 삭제
+app.post("/ground/info/modify/delete", (req, res) =>{
+  const ground_name = req.body.ground_name;
+  console.log(ground_name);
+
+  connection.query("delete from groundinfo where ground_name = ?", [ground_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("경기장 정보 삭제하기 실패" + err);
+    } else {
+      res.send({msg:"경기장이 성공적으로 삭제되었습니다."});
+      console.log("경기장 정보 삭제하기 성공");
+    }
+  });
+
 });
 
 
