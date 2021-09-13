@@ -93,6 +93,20 @@ function ReservationCard({history}) {
                })
             });
   }
+  function search() {
+    fetch("http://localhost:3001/reservation/search", {
+      method : "POST", // 통신방법
+      headers : {
+        "content-type" : "application/json",
+      },
+      body: JSON.stringify({address: "대구"}),
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    console.log(res);
+  });
+  }
+
   //경기장 클릭 이벤트
   const cardclick = (cardkey) => {
     history.push({

@@ -20,7 +20,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 
-function ReservationDetail({location}) {
+function ReservationDetail({location, history}) {
   //구장 정보
     const [ground, setground] = useState({
       title: '',
@@ -99,8 +99,6 @@ function ReservationDetail({location}) {
             });
     }
 
-    var r_date = current_date;
-    var ground_num = 1;
     var ground_name = location.state.cardkey;
     var time = new Array(9).fill(false);
     var timelabel = ["08:00 ~ 10:00","10:00 ~ 12:00","12:00 ~ 14:00","14:00 ~ 16:00","16:00 ~ 18:00","18:00 ~ 20:00","20:00 ~ 22:00","22:00 ~ 24:00"]
@@ -132,19 +130,50 @@ function ReservationDetail({location}) {
     const timeradio = (i) => {
       return (reservation.time[i] ? <FormControlLabel value={String(i)} control={<Radio color="primary" />} label={timelabel[i-1]} disabled/> : <FormControlLabel value={String(i)} control={<Radio color="primary" />} label={timelabel[i-1]} />);
     }
-
     useEffect(() => {
         reqground();
         reqgroundlist();
-        reqreservation(ground_num);
     },[])
+
+    const [r_date, setr_date] = useState(current_date);
+    const [ground_num, setground_num] = useState(1);
+    
+    useEffect(() => {
+      reqreservation();
+  },[r_date, ground_num])
     //예약 정보 검색
     const handleSearch = (e) => {
-      if(e.target.id==="date")
-        r_date = e.target.value;
+      var datecheck = 1;
+      if(e.target.id==="r_date"){
+        var dateSplit = e.target.value.split('-');
+        if(parseInt(year) == parseInt(dateSplit[0])){
+          if(parseInt(month) == parseInt(dateSplit[1])){
+            if(parseInt(day) <= parseInt(dateSplit[2])){
+              setr_date(e.target.value);
+              console.log(e.target.value);
+            } else {
+              datecheck = 0;
+            }
+          } else if(parseInt(month) < parseInt(dateSplit[1])){
+            setr_date(e.target.value);
+            console.log(e.target.value);
+          } else {
+            datecheck = 0;
+          }
+        } else if(parseInt(year) < parseInt(dateSplit[0])){
+          setr_date(e.target.value);
+          console.log(e.target.value);
+        } else {
+          datecheck = 0;
+        }
+        if(!datecheck){
+          alert(e.target.value + "는 지난 날짜 입니다.");
+          document.getElementById('r_date').value = current_date;
+        }
+      }
       if(e.target.id==="ground_num")
-        ground_num = e.target.value;
-      reqreservation();
+        setground_num(e.target.value);
+      //reqreservation();
     }
     //예약 값 가져오기
     const handleRadio = (e) => {
@@ -158,6 +187,69 @@ function ReservationDetail({location}) {
         setcheckbox({checkbox:"0"})
       }
     }
+
+    const onreservation = (e) => {
+      e.preventDefault();
+      var check1 = e.target.checked1.checked;
+      var check2 = e.target.checked2.checked;
+      if(!check1){check2=false}
+
+      const formData = new FormData();
+      if(!e.target.r_time.value){
+        alert("예약 시간을 선택해주세요.")
+      } else{
+      formData.append("ground_name", ground_name);
+      formData.append("ground_num", e.target.ground_num.value);
+      formData.append("user_email", window.sessionStorage.getItem('id'));
+      formData.append("team_name", window.sessionStorage.getItem('team_name'));
+      formData.append("r_date", e.target.r_date.value);
+      formData.append("r_time", e.target.r_time.value);
+      formData.append("address", ground.address);
+      formData.append("reservation_success", Number(check2));
+
+
+      if(!check1 && !check2){
+        fetch("http://localhost:3001/reservation/detail/reservation", {
+          method: "post",
+          body: formData,
+      })
+          .then((res) => res.json())
+          .then((res) => {
+            alert(res.alert_text);
+            history.push('/reservation');
+          });
+      } else if(check1 && !check2){
+        fetch("http://localhost:3001/reservation/detail/matchlist", {
+          method: "post",
+          body: formData,
+      })
+          .then((res) => res.json())
+          .then((res) => {
+            alert(res.alert_text);
+            history.push('/reservation');
+          });
+      } else if(check1 && check2){
+        fetch("http://localhost:3001/reservation/detail/reservation", {
+          method: "post",
+          body: formData,
+      })
+          .then((res) => res.json())
+          .then((res) => {
+
+          });
+          fetch("http://localhost:3001/reservation/detail/matchlist", {
+            method: "post",
+            body: formData,
+        })
+            .then((res) => res.json())
+            .then((res) => {
+            alert(res.alert_text);
+            history.push('/reservation');
+            });
+      }
+    }
+    }
+
 
   return (
     <React.Fragment>
@@ -191,11 +283,15 @@ function ReservationDetail({location}) {
               ) : null}
             </Grid>
           </Grid>
+          <form onSubmit={onreservation}   
+              noValidate
+              autoComplete="off"
+              encType="multipart/form-data">
           <Grid container spacing={3} style={{ marginTop: 30 }}>
             <Grid item xs={3} style={{ marginLeft: 10 }}>
-              <form noValidate>
                 <TextField
-                  id="date"
+                  id="r_date"
+                  name="r_date"
                   label="날짜 선택"
                   type="date"
                   defaultValue={current_date}
@@ -204,7 +300,6 @@ function ReservationDetail({location}) {
                     shrink: true,
                   }}
                 />
-              </form>
             </Grid>
             <Grid item xs={8}>
               <Grid style={{ display: "flex" }}>
@@ -256,7 +351,7 @@ function ReservationDetail({location}) {
                 </InputLabel>
                 <NativeSelect
                   inputProps={{
-                    name: "count",
+                    name: "ground_num",
                     id: "ground_num",
                   }}
                   onChange={handleSearch}
@@ -271,7 +366,7 @@ function ReservationDetail({location}) {
                 <RadioGroup
                   row
                   aria-label="position"
-                  name="position"
+                  name="r_time"
                   defaultValue={1}
                   id="r_time"
                   onChange={handleRadio}
@@ -296,6 +391,7 @@ function ReservationDetail({location}) {
                     value="1"
                     control={<Checkbox color="primary" />}
                     label="상대방과 매칭 희망"
+                    name = "checked1"
                     labelPlacement="end"
                     onChange={handleChecked}
                   />
@@ -304,6 +400,7 @@ function ReservationDetail({location}) {
                       value="0"
                       control={<Checkbox color="primary" />}
                       label="매치가 성사되지 않아도 경기장 예약"
+                      name = "checked2"
                       labelPlacement="end"
                       style={{ marginLeft: 100 }}
                       disabled
@@ -313,6 +410,7 @@ function ReservationDetail({location}) {
                       value="0"
                       control={<Checkbox color="primary" />}
                       label="매치가 성사되지 않아도 경기장 예약"
+                      name = "checked2"
                       labelPlacement="end"
                       style={{ marginLeft: 100 }}
                     />
@@ -327,10 +425,11 @@ function ReservationDetail({location}) {
             alignItems="center"
             style={{ marginTop: 20 }}
           >
-            <Button variant="contained" color="primary">
+            <Button variant="contained" type="submit" color="primary">
               예약 신청하기
             </Button>
           </Grid>
+          </form>
         </Typography>
       </Container>
     </React.Fragment>

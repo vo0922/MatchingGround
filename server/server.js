@@ -4,6 +4,8 @@ const port = 3001; // react의 기본값은 3000이니까 3000이 아닌 아무 
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql"); // mysql 모듈 사용
+const multer = require('multer');
+const form_data = multer();
 
 var connection = mysql.createConnection({
     host : "smartit-16.iptime.org",
@@ -75,6 +77,27 @@ app.post("/reservation/list", (req,res)=>{
   });
 });
 
+ app.post('/reservation/search', function(req, res, next){
+  var request = require('request');
+  const key = "F88B9F55-4CFE-36C2-A8C5-1A55768CD1F2";
+  const addr = 'https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADSIGG_INFO&key='
+  const addr2 = '&domain=localhost:3000&columns=sig_kor_nm&geometry=false&attibute=false&format:json&attrfilter=full_nm:like:'
+  var search = req.body.address;
+  var finaladdr = addr + key + addr2 + encodeURI(search);
+  var options = {
+    url : finaladdr,
+  }
+  request.get(options, function(error, response, body){
+    if(error){
+      console.log(error)
+    } else{
+      var obj = JSON.parse(body);
+      var data = obj.response.result.featureCollection.features;
+      res.send(data);
+    }
+  });
+ });
+
 app.post("/reservation/detail", (req,res)=>{
   const key = req.body.cardkey;
   connection.query(
@@ -106,7 +129,6 @@ app.post("/reservation/detail/book", (req,res)=>{
   const ground_name = req.body.ground_name;
   const r_date = req.body.r_date;
   const ground_num = req.body.ground_num;
-  console.log(r_date);
   connection.query(
       "select *from reservation where ground_name = ? and r_date = ? and ground_num = ? order by r_time asc", [ground_name, r_date, ground_num],
   function(err,rows,fields){
@@ -118,7 +140,47 @@ app.post("/reservation/detail/book", (req,res)=>{
   });
 });
 
+app.post('/reservation/detail/reservation', form_data.array(),function(req, res, next){
+  const ground_name = req.body.ground_name;
+  const ground_num = req.body.ground_num;
+  const user_email = req.body.user_email;
+  const r_date = req.body.r_date;
+  const r_time = req.body.r_time;
+  const team_name = req.body.team_name;
+  connection.query(
+    "insert into reservation(ground_name, ground_num, user_email, team_name, r_date, r_time) select ?,?,?,?,?,? from dual where not exists(select *from reservation where ground_name=? and r_time=? and r_date=?)", [ground_name, ground_num, user_email, team_name, r_date, r_time, ground_name, r_time, r_date],
+  function(err, rows,fields){
+    if(err){
+      console.log(err);
+    }else{
+      res.send({alert_text : "예약 완료"});
+      console.log("예약 성공");
+    }
+  }
+  )
+});
 
+app.post('/reservation/detail/matchlist', form_data.array(),function(req, res, next){
+  const ground_name = req.body.ground_name;
+  const ground_num = req.body.ground_num;
+  const user_email = req.body.user_email;
+  const r_date = req.body.r_date;
+  const r_time = req.body.r_time;
+  const team_name = req.body.team_name;
+  const reservation_success = req.body.reservation_success;
+  const address = req.body.address;
+  connection.query(
+    "insert into matchlist(user_email, team_name, ground_name, r_date, r_time, ground_num, match_success, reservation_success, address) values (?,?,?,?,?,?,?,?,?)", [user_email, team_name, ground_name, r_date, r_time, ground_num, 0, reservation_success, address],
+  function(err, rows,fields){
+    if(err){
+      console.log(err);
+    }else{
+      res.send({alert_text : "매치신청 완료"});
+      console.log("매치신청 성공");
+    }
+  }
+  )
+});
 
 app.post("/ground/info/manager", (req, res) =>{
   const manager_id = req.body.manager_id;
@@ -133,8 +195,6 @@ app.post("/ground/info/manager", (req, res) =>{
   });
 });
 
-var multer = require('multer');
-
 
 const storage = multer.diskStorage({
   destination : function(req, file, cb){
@@ -147,7 +207,7 @@ const storage = multer.diskStorage({
 
 var upload = multer({ storage : storage });
 
-app.post('/ground/info/register', upload.single('photo'), function(req, res, next){
+app.post('/ground/info/register',form_data.array() ,upload.single('photo'), function(req, res, next){
   
   console.log('/ground/info/register', req.body);
   console.log(req.file);
