@@ -7,8 +7,8 @@ import Reservation from '../ReservationGround/ReservationGrund'
 import ReservationDetail from '../ReservationGround/ReservationDetail'
 import PrivateRoute from './PrivateRoute';
 import PrivateRouteL from './PrivateRouteL';
-import PrivateRouteGM from './PrivateRouteGM';
 import PrivateRouteNotGM from './PrivateRouteNotGM';
+import PrivateRouteGM from './PrivateRouteGM'
 import ManageGround from '../ManageGround/ManageGround';
 import GroundRegister from '../ManageGround/GroundRegister';
 import NotGroundManager from '../ManageGround/NotGroundManager';

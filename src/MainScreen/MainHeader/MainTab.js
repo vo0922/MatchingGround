@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 export default function LabelTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
+  //탭 값 가져오기
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
