@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormControlLabel, Grid, Modal, Button, TextField, Container, Typography, CssBaseline, Checkbox, InputAdornment, MenuItem} from "@material-ui/core";
+import { FormControlLabel, Grid, Modal, Button, TextField, Container, Typography, CssBaseline, Checkbox, InputAdornment, MenuItem, DialogContentText, Dialog, DialogContent, DialogActions} from "@material-ui/core";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import DaumPostcode from "react-daum-postcode";
 
@@ -48,13 +48,24 @@ const postCodeStyle = {
   padding: "7px",
 };
 
-function GroundRegister({history}) {
+function GroundModify({history, location}) {
   const classes = useStyles();
-  const [selectGroundCount, setSelectGroundCount] = React.useState(1);
+  const groundinfo = location.state.groundinfo; // 경기장관리에서 경기장정보 받아와서 초기화
+  const [selectGroundCount, setSelectGroundCount] = React.useState(groundinfo.ground_count);
   const handleChange_groundcount = (e) => {
     e.preventDefault();
     setSelectGroundCount(e.target.value);
   }
+  
+  // 삭제확인 메시지 열기, 닫기 함수
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const handleDeleteDialogOpen = () =>{
+    setDeleteDialogOpen(true);
+  }
+  const handleDeleteDialogClose = () => {
+    setDeleteDialogOpen(false);
+  }
+
 
   // 주소 modal 열기, 닫기 state
   const [open, setOpen] = React.useState(false);
@@ -67,7 +78,7 @@ function GroundRegister({history}) {
     setOpen(false);
   };
   // 다음 도로명 주소 찾기 로직
-  const [isAddress, setIsAddress] = useState("");
+  const [isAddress, setIsAddress] = useState(groundinfo.address);
   const [isZoneCode, setIsZoneCode] = useState();
   const [IsPostOpen, setIsPostOpen] = useState(true);
   const handleComplete = (data) => {
@@ -99,11 +110,6 @@ function GroundRegister({history}) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(e.target.photo.files[0] == null){
-      alert("사진을 등록해주세요");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("ground_name", e.target.ground_name.value);
     formData.append("ground_count", e.target.ground_count.value);
@@ -119,22 +125,60 @@ function GroundRegister({history}) {
     formData.append("ball_rent", e.target.ball_rent.checked);
     formData.append("uniform_rent", e.target.uniform_rent.checked);
 
-    groundRegister(formData);
+    if(e.target.photo.files[0] != null){
+      groundModify_photo(formData);
+    }
+    else{
+      groundModify_notphoto(formData);
+    }
+    
   };
 
-  function groundRegister(groundinfo) {
-    fetch("http://localhost:3001/ground/info/register", {
+  function groundModify_photo(groundinfo) {
+    fetch("http://localhost:3001/ground/info/modify/photo", {
       method: "post",
       body: groundinfo,
     })
       .then((res) => res.json())
       .then((data) => {
         alert(data.msg)
-        window.sessionStorage.setItem('ground_manager', data.success);
-        history.push('/groundmanager');
+        
+      });
+      history.push('/groundmanager');
+  }
+
+  function groundModify_notphoto(groundinfo) {
+    fetch("http://localhost:3001/ground/info/modify/notphoto", {
+      method: "post",
+      body: groundinfo,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data.msg)
+        
+      });
+      history.push('/groundmanager');
+  }
+
+  function ground_delete(){
+    fetch("http://localhost:3001/ground/info/modify/delete", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(groundinfo),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setDeleteDialogOpen(false);
+        alert(data.msg);
+        history.push('/');
+        window.sessionStorage.setItem('ground_manager', 0);
       });
   }
 
+  useEffect(() => {
+  }, [])
   return (
     <div>
       <React.Fragment>
@@ -151,7 +195,7 @@ function GroundRegister({history}) {
               variant="h4"
               style={{ textAlign: "center", paddingTop: 20 }}
             >
-              경기장 등록하기
+              경기장정보 수정하기
             </Typography>
 
             <form
@@ -166,13 +210,15 @@ function GroundRegister({history}) {
                     id="ground_name"
                     name="ground_name"
                     label="경기장 이름"
-                    placeholder="경기장 이름을 20자 이내로 입력하세요."
+                    helperText="경기장 이름은 수정할 수 없습니다."
                     fullWidth
+                    value={groundinfo.ground_name}
                     className={classes.textField2}
                     margin="normal"
                     maxRows="20"
                     InputLabelProps={{
                       shrink: true,
+                      readOnly: true,
                     }}
                     inputProps={{maxLength:20}}
                   />
@@ -182,7 +228,7 @@ function GroundRegister({history}) {
                     id="address2"
                     name="address2"
                     label="경기장 주소"
-                    placeholder="오른쪽 주소찾기 버튼을 클릭하여 주소를 찾으세요."
+                    placeholder="주소를 수정하시려면 오른쪽 주소찾기 버튼을 눌러주세요."
                     fullWidth
                     value={isAddress}
                     className={classes.textField2}
@@ -220,15 +266,16 @@ function GroundRegister({history}) {
                     label="구장 전화번호"
                     id="phonenum"
                     name="phonenum"
-                    type="number"
+                    type="number"                    
                     className={classes.textField2}
                     margin="normal"
-                    maxRows="11"
                     fullWidth
+                    defaultValue={groundinfo.phonenum}
                     placeholder="전화번호를 ' - ' 없이 입력하세요. ex)01012345678"
                     InputLabelProps={{
                       shrink: true,
                     }}
+
                   />
                 </Grid>
                 <Grid item xs={3} />
@@ -260,6 +307,7 @@ function GroundRegister({history}) {
                     margin="normal"
                     helperText="구장 대여 가격을 입력하세요."
                     type="number"
+                    defaultValue={groundinfo.price}
                     InputProps={{
                       startAdornment: <InputAdornment position="start">₩</InputAdornment>,
                     }}
@@ -276,7 +324,7 @@ function GroundRegister({history}) {
                     multiple
                   />
                 </Grid>
-                <Grid item xs={6} />
+                <Grid item xs={6}><Typography component="h6" variant="h6">사진을 수정하지 않으시면, 기존 사진이 그대로 사용됩니다.</Typography></Grid>
                 <Grid item xs={2}>
                   <Typography component="h6" variant="h6">이용가능시설</Typography>
                 </Grid>
@@ -286,6 +334,7 @@ function GroundRegister({history}) {
                       <Checkbox
                         name="parking_lot"
                         color="primary"
+                        defaultChecked={groundinfo.parking_lot === 'true' ? true : false }
                       />
                     }
                     label="주차장"
@@ -295,6 +344,7 @@ function GroundRegister({history}) {
                       <Checkbox
                         name="shower_room"
                         color="primary"
+                        defaultChecked={groundinfo.shower_room === 'true' ? true : false }
                       />
                     }
                     label="샤워장"
@@ -304,6 +354,7 @@ function GroundRegister({history}) {
                       <Checkbox
                         name="foot_rent"
                         color="primary"
+                        defaultChecked={groundinfo.foot_rent === 'true' ? true : false }
                       />
                     }
                     label="풋살화"
@@ -313,6 +364,7 @@ function GroundRegister({history}) {
                       <Checkbox
                         name="wifi"
                         color="primary"
+                        defaultChecked={groundinfo.wifi === 'true' ? true : false }
                       />
                     }
                     label="와이파이"
@@ -322,6 +374,7 @@ function GroundRegister({history}) {
                       <Checkbox
                         name="ball_rent"
                         color="primary"
+                        defaultChecked={groundinfo.ball_rent === 'true' ? true : false }
                       />
                     }
                     label="축구공"
@@ -331,6 +384,7 @@ function GroundRegister({history}) {
                       <Checkbox
                         name="uniform_rent"
                         color="primary"
+                        defaultChecked={groundinfo.uniform_rent === 'true' ? true : false }
                       />
                     }
                     label="조끼"
@@ -346,7 +400,7 @@ function GroundRegister({history}) {
                     className={classes.Button}
                     style={{ width: "100%" }}
                   >
-                    등록완료
+                    수정완료
                   </Button>
                 </Grid>
                 <Grid item xs={3}>
@@ -356,8 +410,9 @@ function GroundRegister({history}) {
                     color="secondary"
                     className={classes.Button}
                     style={{ width: "100%" }}
+                    onClick={handleDeleteDialogOpen}
                   >
-                    초기화
+                    경기장 삭제
                   </Button>
                 </Grid>
                 <Grid item xs={3} />
@@ -370,6 +425,21 @@ function GroundRegister({history}) {
             >
               {modalbody}
             </Modal>
+            <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose} area-labelledby = "삭제 확인 메시지">
+              <DialogContent>
+                <DialogContentText>
+                  경기장을 정말 삭제하시겠습니까? 삭제 이후에는 되돌릴 수 없습니다.
+                </DialogContentText>
+                <DialogActions>
+                  <Button onClick={handleDeleteDialogClose} color="primary">
+                    닫기
+                  </Button>
+                  <Button onClick={ground_delete} color="secondary" autoFocus>
+                    삭제하기
+                  </Button>
+                </DialogActions>
+              </DialogContent>
+            </Dialog>
           </Typography>
         </Container>
       </React.Fragment>
@@ -377,4 +447,4 @@ function GroundRegister({history}) {
   );
 }
 
-export default withRouter(GroundRegister);
+export default withRouter(GroundModify);

@@ -39,22 +39,24 @@ export default function NotGroundManager() {
               경기장 관리자가 아닙니다. 경기장을 등록하시려면 경기장 등록 버튼을
               눌러주세요.
             </Typography>
-            <Link to="/groundregister">
+            
               <Grid container spacing={3}>
                 <Grid item xs />
                 <Grid item xs={6}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    className={classes.button}
-                    size="large"
-                  >
-                    경기장 등록 신청하기
-                  </Button>
+                  <Link to="/groundregister">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      className={classes.button}
+                      size="large"
+                    >
+                      경기장 등록 신청하기
+                    </Button>
+                  </Link>
                 </Grid>
                 <Grid item xs />
               </Grid>
-            </Link>
+            
           </Typography>
         </Container>
       </React.Fragment>
