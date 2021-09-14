@@ -21,12 +21,11 @@ const Callback = () => {
         })
         .then((res)=>res.json())
         .then((res)=>{
-
         });
     }
     function GetProfile() {
         window.location.href.includes('access_token') && GetUser();
-        
+
         function GetUser() {
             const location = window.location.href.split('=')[1];
             const loca = location.split('&')[0];
