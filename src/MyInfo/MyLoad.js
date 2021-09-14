@@ -1,43 +1,36 @@
-import React, { Component, useState, useEffect } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-import { Autorenew } from '@material-ui/icons';
+import { Avatar, Grid, Typography, Button, Container, TextField } from '@material-ui/core';
+import Mytotal from './Mytotal';
+import MainLogo from '../MainScreen/MainHeader/MainLogo';
+import { withRouter } from 'react-router';
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#cfe8fc',
+const useStyles = makeStyles(() =>({
+  
+  title: {
+    fontSize: 36,
+    textAlign: 'center'
   },
-
-  text: {
-    textAlign : 'center',
+  photo: {
+    height: '75%',
+    width: "75%",
   },
-  image:{
-    border: '1px solid black',
-    borderRadius: 50,
-    textAlign : 'center',
+  data: {
+    fontSize: 20,
   },
-
-  intro: {
-
+  title_introduce:{
+    textAlign: 'center',
+    fontSize: 28,
   },
-
-  button: {
-    background: 'gray',
-    borderRadius: 3,
-    color: 'white',
-    border: '1px solid black',
-    height: 48,
-    padding: '0 50px',
+  introduce: {
+    fontSize: 20,
   },
-
+  table: {
+    minWidth: 650,
+  },
 }));
 
-export default function SimpleContainer() {
-  
+function MyModify() {
   const classes = useStyles();
 
   const [info, setinfo] = useState({
@@ -49,8 +42,9 @@ export default function SimpleContainer() {
     position : '',
     team_name : '',
     introduce : '',
-    id : window.sessionStorage.getItem('id'),
+    email : window.sessionStorage.getItem('id'),
 });
+
 
 //정보 API
 const myinfomation = () => {
@@ -72,7 +66,7 @@ const myinfomation = () => {
           position : json[0].position,
           team_name : json[0].team_name,
           introduce : json[0].introduce,
-          id : info.id,
+          email : info.email,
       });
       console.log(json);            
   })
@@ -80,41 +74,78 @@ const myinfomation = () => {
 
 useEffect(() => {
   myinfomation();
-}, [])
+}, []);  
+
+  const clickevent = (e) => {
+    window.location.href = "/myinfo/modify"
+  }
 
   return (
-    <React.Fragment>
-      <CssBaseline />      
-      <Container>      
-        <Typography component="div" className={classes.root}>
-        <Container className={classes.root}>
-        <div className={classes.image}>
-          {info.profile_image}
-        </div>
-        </Container>
-        <br/>
-        <Container className={classes.text}>
-        <div>
-        이름 : {info.user_name} / 출생년도 : {info.birthyear}<br/>
-        팀이름 : {info.team_name}<br/>
-        <hr/>
-        전화번호 : {info.mobile}<br/>
-        키 : {info.height}<br/>
-        포지션 : {info.position}<br/>
-        </div>
-        <hr/>자기소개<br/>
-        </Container>
+    <div>
+      <MainLogo />
+      <Container maxWidth="md" style={{ backgroundColor : '#FFFAFA'}}>
         
-        <div>
-          {info.introduce}
-        </div>        
-        </Typography>
-        
-        <Link to="/myinfo/modify">
-          <button className={classes.button}>수정하기</button>
-        </Link>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography className={classes.title}>내 정보</Typography>
+        </Grid>
 
-      </Container>
-    </React.Fragment>
+        <Grid item xs={3}>
+          <Avatar src={info.profile_image} className={classes.photo} />
+        </Grid>
+
+        <Grid item xs={5}>
+          <Typography className={classes.data} color="textSecondary">
+            이름 : {info.user_name} <br />
+            포지션 : {info.position} <br />
+            출생년도 : {info.birthyear} <br />
+            키 : {info.height} <br />
+            전화번호 : {info.mobile} <br />
+            소속 팀 이름 : {info.team_name}
+          </Typography>
+        </Grid>
+
+        <Grid item xs={4}>
+          <Typography className={classes.title_introduce}>자기소개</Typography>
+          
+          <TextField
+          multiline
+          fullWidth
+          rows={4}
+          defaultValue={info.introduce}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="outlined"
+        />
+        </Grid>
+
+        <Grid item xs={9}></Grid>
+
+        <Grid item xs={3}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            onClick={clickevent}
+          >
+            수정하기
+          </Button>
+        </Grid>
+        </Grid><br/>
+        </Container>
+        <Container maxWidth="md">
+        <Grid item xs={12}>
+          <Typography className={classes.introduce}>최근전적</Typography>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Mytotal />
+        </Grid>
+        </Container>
+      
+    </div>
   );
-}
+  }
+
+  export default withRouter(MyModify);

@@ -16,9 +16,13 @@ import Modals from '../ManageGround/Modals';
 import GroundManager from '../ManageGround/GroundManager';
 import GroundModify from '../ManageGround/GroundModify';
 import ManageReservation from '../ManageGround/ManageReservation';
-import Myinfo from '../MyInfo/MyInfo';
-import MyModify from '../MyInfo/MyModify'
+import MyInfo from '../MyInfo/MyInfo';
+import MyModify from '../MyInfo/MyModify';
 import TeamInfo from '../TeamInfo/TeamInfo';
+import TeamNot from '../TeamInfo/TeamNot';
+import PrivateRouteTeam from './PrivateRouteTeam';
+import PrivateRouteNotTeam from './PrivateRouteNotTeam';
+import TeamMake from '../TeamInfo/TeamMake';
 
 const Routes = () => {
     return (
@@ -38,9 +42,12 @@ const Routes = () => {
 
                 <Route exact path="/modal" component={Modals}/>
 
-                <PrivateRoute exact path="/myinfo" component={Myinfo}/>
+                <PrivateRoute exact path="/myinfo" component={MyInfo}/>
                 <PrivateRoute exact path="/myinfo/modify" component={MyModify}/>
-                <PrivateRoute exact path="/teaminfo" component={TeamInfo}/>
+
+                <PrivateRouteTeam exact path="/team" component={TeamInfo}/>
+                <PrivateRouteNotTeam exact path="/teamnot" component={TeamNot}/>
+                <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>
                 
             </Switch>
         </Router>

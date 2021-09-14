@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import MainLogo from '../MainScreen/MainHeader/MainLogo';
 import MyLoad from './MyLoad';
+import MainLogo from '../MainScreen/MainHeader/MainLogo';
 
 class MyInfo extends Component {
     render() {

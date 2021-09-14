@@ -95,7 +95,9 @@ function PersistentDrawerRight({history}) {
 
   const clickaction = (text) => {
     if(text==='내 정보'){
-      history.push('/myin');
+      history.push('/myinfo');
+    }else if(text==='내 팀정보'){
+      history.push('/team');
     }else if(text==='경기장 관리'){
       history.push('/notgroundmanager');
     }else if(text==='로그아웃'){
