@@ -203,7 +203,7 @@ function ManageReservation({ location }) {
     <React.Fragment>
       <MainLogo />
       <CssBaseline />
-      <Container maxWidth="md" style={{ backgroundColor: "#F3F3F3" }}>
+      <Container maxWidth="lg" style={{ backgroundColor: "#F3F3F3" }}>
         <Typography component="div" style={{ height: "100vh" }}>
           <Typography
             component="h4"

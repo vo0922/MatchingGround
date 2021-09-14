@@ -142,8 +142,9 @@ function GroundModify({history, location}) {
       .then((res) => res.json())
       .then((data) => {
         alert(data.msg)
-        history.push('/groundmanager');
+        
       });
+      history.push('/groundmanager');
   }
 
   function groundModify_notphoto(groundinfo) {
@@ -154,8 +155,9 @@ function GroundModify({history, location}) {
       .then((res) => res.json())
       .then((data) => {
         alert(data.msg)
-        history.push('/groundmanager');
+        
       });
+      history.push('/groundmanager');
   }
 
   function ground_delete(){

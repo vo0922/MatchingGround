@@ -118,7 +118,7 @@ function GroundManager({history}) {
     <React.Fragment>
       <MainLogo />
       <CssBaseline />
-      <Container maxWidth="md" style={{backgroundColor : "#F3F3F3"}}>
+      <Container maxWidth="md" style={{backgroundColor : "white"}}>
         <Typography
           component="div"
           style={{ height: "100vh" }}
@@ -126,14 +126,14 @@ function GroundManager({history}) {
           
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Typography component="h4" variant="h4" style={{textAlign:"center", marginTop:"20px"}}>
+              <Typography component="h4" variant="h4" style={{textAlign:"center", marginTop:"50px", marginBottom:"50px"}}>
                 {groundinfo.ground_name} 경기장
               </Typography>
             </Grid>  
             
             <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <img src={groundinfo.photo} height="300px"></img>
+              <Paper className={classes.paper} style={{backgroundColor : "#F3F3F3"}}>
+                <img src={groundinfo.photo} width="100%" height="512px"></img>
               </Paper>
             </Grid>
 

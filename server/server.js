@@ -45,6 +45,31 @@ app.post('/callback', function (req, res) {
    });
  });
 
+ app.post('/location', function(req, res, next){
+  var request = require('request');
+  const key = "F88B9F55-4CFE-36C2-A8C5-1A55768CD1F2";
+  const addr = 'https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADSIGG_INFO&key='
+  const addr2 = '&domain=localhost:3000&columns=sig_kor_nm&geometry=false&attibute=false&format:json&attrfilter=full_nm:like:'
+  const requ = req.body.loc;
+
+  var finaladdr = addr + key + addr2 + encodeURI(requ);
+
+  var options = {
+    url : finaladdr,
+  }
+
+  request.get(options, function(error, response, body){
+    if(error){
+      console.log(error)
+    } else{
+      var obj = JSON.parse(body);
+      console.log(obj.response.result.featureCollection.features);
+      res.send(obj);
+    }
+  });
+  
+ });
+
  // 신규유저 등록
  app.post("/callback/adduser", (req,res)=>{
   const email = req.body.email;
@@ -166,10 +191,10 @@ app.post("/ground/info/manager", (req, res) =>{
 // 경기장 정보 등록
 const storage_register = multer.diskStorage({
   destination : function(req, file, cb){
-    cb(null, "../public/uploads/");    
+    cb(null, "../public/groundimage/");
   },
   filename : function(req, file, cb) {
-    cb(null, "photo" + Date.now() + file.originalname);
+    cb(null, "groundimage" + Date.now() + file.originalname);
   }
 });
 
@@ -185,7 +210,7 @@ app.post('/ground/info/register', upload_register.single('photo'), function(req,
   const ground_count = req.body.ground_count;
   const address = req.body.address;
   const manager_id = req.body.manager_id;
-  const photo = "uploads/"+req.file.filename;
+  const photo = "groundimage/"+req.file.filename;
   const phonenum = req.body.phonenum;
   const price = req.body.price;
   const parking_lot = req.body.parking_lot;
@@ -211,10 +236,10 @@ app.post('/ground/info/register', upload_register.single('photo'), function(req,
 // 경기장 정보 수정(사진이 수정됐을 때)
 const storage_modify = multer.diskStorage({
   destination : function(req, file, cb){
-    cb(null, "../public/uploads/");    
+    cb(null, "../public/groundimage/");    
   },
   filename : function(req, file, cb) {
-    cb(null, "photo" + Date.now() + file.originalname);
+    cb(null, "groundimage" + Date.now() + file.originalname);
   }
 });
 
@@ -224,7 +249,7 @@ app.post('/ground/info/modify/photo', upload_modify.single('photo'), function(re
   const ground_name = req.body.ground_name;
   const ground_count = req.body.ground_count;
   const address = req.body.address;
-  const photo = "uploads/"+req.file.filename;
+  const photo = "groundimage/"+req.file.filename;
   const phonenum = req.body.phonenum;
   const price = req.body.price;
   const parking_lot = req.body.parking_lot;
