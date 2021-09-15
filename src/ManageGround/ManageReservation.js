@@ -80,6 +80,17 @@ function ManageReservation({ location }) {
     })
   }
 
+  // 삭제확인 다이얼로그 
+  const [ReservationCancelOpen, setReservationCancelOpen] = useState(false);
+  const [ReservationCancelData, setReservationCancelData] = useState("");
+  const handleReservationCancelOpen = (id) =>{
+    setReservationCancelOpen(true);
+    setReservationCancelData(id);
+  }
+  const handleReservationCancelClose = () => {
+    setReservationCancelOpen(false);
+  }
+
   // 예약 날짜 변경(onChange) 함수
   const date_handleChange = (e) => {
     r_date = e.target.value;
@@ -90,14 +101,14 @@ function ManageReservation({ location }) {
   };
 
   // 예약 취소 함수(onClick)
-  const ReservationCancel = (id) => {
+  const ReservationCancel = () => {
     fetch("http://localhost:3001/manage/ground/reservationcancel", {
       method: "post",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        r_no : id,
+        r_no : ReservationCancelData,
       }),
     })
       .then((res) => res.json())
@@ -106,6 +117,7 @@ function ManageReservation({ location }) {
         for (var i = 1; i <= 8; i++) {
           getReservation(i)
         }
+        setReservationCancelOpen(false);
       });
   }
 
@@ -175,7 +187,7 @@ function ManageReservation({ location }) {
         </TableCell>
         {ground.map((ground) => (
           ground.body !== "예약없음" ? 
-          <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="secondary" size="small" onClick={() => {ReservationCancel(ground.id)}}>예약취소</Button></TableCell> : 
+          <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="secondary" size="small" onClick={() => {handleReservationCancelOpen(ground.id)}}>예약취소</Button></TableCell> : 
           <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="primary" size="small" onClick={() => {handleManagerReservationOpen(ground.id)}}>관리자직접예약</Button></TableCell>
         ))} 
       </TableRow>
@@ -245,7 +257,7 @@ function ManageReservation({ location }) {
           </TableContainer>
         </Typography>
 
-        <Dialog open={managerReservationOpen} onClose={handleManagerReservationClose} area-labelledby = "삭제 확인 메시지" >
+        <Dialog open={managerReservationOpen} onClose={handleManagerReservationClose} area-labelledby = "관리자 예약시 예약자명 입력 다이얼로그" >
           <DialogTitle>{"예약할 사람의 이름을 입력하세요."}</DialogTitle>              
               <DialogContent>
                   <TextField id = "reservation_name" name="reservation_name" onChange={handleReservationName} label="예약자 이름" fullWidth/>
@@ -255,6 +267,20 @@ function ManageReservation({ location }) {
                     </Button>
                     <Button onClick={ReservationManager} color="primary" autoFocus>
                       예약하기
+                    </Button>
+                  </DialogActions>
+              </DialogContent>
+            </Dialog>
+
+        <Dialog open={ReservationCancelOpen} onClose={handleReservationCancelClose} area-labelledby = "삭제 확인 메시지" >
+          <DialogTitle>{"정말 예약을 취소하시겠습니까?"}</DialogTitle>
+              <DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleReservationCancelClose} color="primary">
+                      닫기
+                    </Button>
+                    <Button onClick={ReservationCancel} color="secondary" autoFocus>
+                      예약취소하기
                     </Button>
                   </DialogActions>
               </DialogContent>

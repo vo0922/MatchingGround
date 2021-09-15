@@ -23,6 +23,7 @@ import TeamNot from '../TeamInfo/TeamNot';
 import PrivateRouteTeam from './PrivateRouteTeam';
 import PrivateRouteNotTeam from './PrivateRouteNotTeam';
 import TeamMake from '../TeamInfo/TeamMake';
+import MatchList from '../MatchList/MatchList';
 
 const Routes = () => {
     return (
@@ -31,6 +32,7 @@ const Routes = () => {
                 <PrivateRouteL exact path="/login" component={Login}/>
                 <PrivateRouteL exact path="/login/callback" component={LoginCallBack}/>
                 <PrivateRoute exact path="/" component={Main}/>
+
                 <PrivateRoute exact path="/reservation" component={Reservation}/>
                 <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
 
@@ -48,7 +50,8 @@ const Routes = () => {
                 <PrivateRouteTeam exact path="/team" component={TeamInfo}/>
                 <PrivateRouteNotTeam exact path="/teamnot" component={TeamNot}/>
                 <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>
-                
+
+                <PrivateRoute exact path="/matchlist" component={MatchList}/>                
             </Switch>
         </Router>
     );

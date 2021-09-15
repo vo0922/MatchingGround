@@ -30,6 +30,9 @@ export default class MainScreen extends Component {
                 <Grid item xs>
                     <MainScreen_Teaminfo/>
                 </Grid>
+                <Grid item xs={12}>
+                              
+                </Grid>
               </Grid>
 
               

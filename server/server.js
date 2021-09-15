@@ -517,6 +517,25 @@ app.post("/team/info", (req, res) =>{
   });
 });
 
+// 매치리스트 불러오기
+app.post("/matchlist", (req, res) =>{
+  const r_date = req.body.r_date;
+  const address = req.body.address;
+  const ground_name = req.body.ground_name;
+  const team_name = req.body.team_name
+
+  connection.query("select * from matchlist where r_date like ? and address like ? and ground_name like ? and team_name like ?", [r_date, address, ground_name, team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("매치리스트 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("매치리스트 정보 불러오기 성공");
+    }
+  });
+});
+
+
 
 app.listen(port, ()=>{
     console.log(`Connect at http://localhost:${port}`);
