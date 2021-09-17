@@ -110,7 +110,7 @@ app.post('/matchlist/locationsearch', function(req, res, next){
   var request = require('request');
   const key = "F88B9F55-4CFE-36C2-A8C5-1A55768CD1F2";
   const addr = 'https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADSIGG_INFO&key='
-  const addr2 = '&domain=localhost:3000&columns=sig_kor_nm&geometry=false&attibute=false&format:json&attrfilter=full_nm:like:'
+  const addr2 = '&domain=localhost:3000&columns=sig_kor_nm&geometry=false&attibute=false&size=100&format:json&attrfilter=full_nm:like:'
   var search = req.body.address;
   var finaladdr = addr + key + addr2 + encodeURI(search);
   var options = {
