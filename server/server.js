@@ -535,6 +535,54 @@ app.post("/matchlist", (req, res) =>{
   });
 });
 
+// 매치 신청하기
+app.post("/matchlist/matchapply", (req, res) =>{
+  const send_id = req.body.send_id;
+  const receive_id = req.body.receive_id;
+  const title = req.body.send_id + "님이 매치를 신청하셨습니다.";
+  const contents = "수락하시겠습니까?";
+  
+  connection.query("insert into mail(send_id, receive_id, send_date, title, contents) values (?, ?, sysdate(), ?, ?)", [send_id, receive_id, title, contents],
+  function(err, rows, fields){
+    if(err){
+      console.log("매치신청 실패" + err);
+    } else {
+      res.send({success:1});
+      console.log("매치가 성공적으로 신청되었습니다.");
+    }
+  });
+});
+
+// 쪽지 갯수 받아오기
+app.post("/mail/count", (req, res) =>{
+  const user_email = req.body.user_email
+  
+  connection.query("select count(*) as mailcount from mail where receive_id = ? and readed = 0", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log("새쪽지 갯수 받아오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("새쪽지 갯수 받아오기 성공" + rows);
+    }
+  });
+});
+
+// 쪽지 갯수 받아오기
+app.post("/mail/list", (req, res) =>{
+  const user_email = req.body.user_email
+  
+  connection.query("select * from mail where receive_id = ?", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log("쪽지 리스트 받아오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("쪽지 리스트 받아오기 성공" + rows[0].mailcount);
+    }
+  });
+});
+
 
 
 app.listen(port, ()=>{

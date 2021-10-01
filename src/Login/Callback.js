@@ -1,5 +1,7 @@
 import { getSuggestedQuery } from '@testing-library/react';
 import React, { useState, useEffect } from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress'
 
 const Callback = () => {
 
@@ -71,7 +73,14 @@ const Callback = () => {
       });
 
     return(
-        <div>콜백</div>
+        <div>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={true}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+      </div>
     );
 }
 

@@ -102,16 +102,14 @@ export default function MainScreen_Teaminfo() {
         <Card className={classes.root}>
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item xs={4}>
-              <Avatar alt="Temp" className={classes.large}>
-                NotTeam
-              </Avatar>
-            </Grid>
+            <Grid item xs={2}/>
+            
             <Grid item xs={8}>
-              <Typography color="textSecondary" style={{textAlign:"center", fontSize:15}}>가입된 팀이 없습니다.</Typography>
+              <Typography color="textSecondary" style={{textAlign:"center", fontSize:15, marginTop:5}}>가입된 팀이 없습니다.</Typography>
               <Button variant="outlined" color="primary" style={{marginTop:10, marginBottom:6,}} fullWidth>팀 생성하기</Button>
               <Button variant="outlined" color="primary" style={{marginTop:6, marginBottom:6,}} fullWidth>팀 가입하기</Button>
             </Grid>
+            <Grid item xs={2}/>
           </Grid>
         </CardContent>
         
