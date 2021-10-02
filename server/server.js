@@ -93,9 +93,11 @@ app.post('/matchlist/locationsearch', function(req, res, next){
 
  // 경기장 정보 불러와서 리스트화
  app.post("/reservation/list", (req,res)=>{
-
+  var city = '%' + req.body.city + '%';
+  var country = '%' + req.body.country + '%';
+  var text = '%' + req.body.text + '%';
   connection.query(
-      "select *from groundinfo",
+      "select *from groundinfo where address like ? and address like ? and ground_name like ?",[city, country, text],
   function(err,rows,fields){
       if(err){
           console.log(err);
@@ -110,7 +112,7 @@ app.post('/matchlist/locationsearch', function(req, res, next){
   var request = require('request');
   const key = "F88B9F55-4CFE-36C2-A8C5-1A55768CD1F2";
   const addr = 'https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADSIGG_INFO&key='
-  const addr2 = '&domain=localhost:3000&columns=sig_kor_nm&geometry=false&attibute=false&format:json&attrfilter=full_nm:like:'
+  const addr2 = '&domain=localhost:3000&size=100&columns=sig_kor_nm&geometry=false&attibute=false&format:json&attrfilter=full_nm:like:'
   var search = req.body.address;
   var finaladdr = addr + key + addr2 + encodeURI(search);
   var options = {
@@ -180,13 +182,31 @@ app.post('/reservation/detail/reservation', form_data.array(),function(req, res,
   const r_time = req.body.r_time;
   const team_name = req.body.team_name;
   connection.query(
-    "insert into reservation(ground_name, ground_num, user_email, team_name, r_date, r_time) select ?,?,?,?,?,? from dual where not exists(select *from reservation where ground_name=? and r_time=? and r_date=?)", [ground_name, ground_num, user_email, team_name, r_date, r_time, ground_name, r_time, r_date],
+    "insert into reservation(ground_name, ground_num, user_email, team_name, r_date, r_time) select ?,?,?,?,?,? from dual where not exists(select *from reservation where ground_name=? and ground_num=? and r_time=? and r_date=?)", [ground_name, ground_num, user_email, team_name, r_date, r_time, ground_name, ground_num, r_time, r_date],
   function(err, rows,fields){
     if(err){
       console.log(err);
     }else{
       res.send({alert_text : "예약 완료"});
       console.log("예약 성공");
+    }
+  }
+  )
+});
+
+// 경기장 예약 중복체크
+app.post('/reservation/detail/overlap', form_data.array(),function(req, res, next){
+  const ground_name = req.body.ground_name;
+  const ground_num = req.body.ground_num;
+  const r_date = req.body.r_date;
+  const r_time = req.body.r_time;
+  connection.query(
+    "select *from reservation where ground_name = ? and ground_num = ? and r_date = ? and r_time = ?", [ground_name, ground_num, r_date, r_time],
+  function(err, rows,fields){
+    if(err){
+      console.log(err);
+    }else{
+      res.send(rows);
     }
   }
   )
@@ -513,6 +533,46 @@ app.post("/team/info", (req, res) =>{
     } else {
       res.send(rows);
       console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
+
+// 공지사항 리스트
+app.post("/notice/list", (req, res) =>{
+
+  connection.query("select *from notice order by _id desc",
+  function(err, rows, fields){
+    if(err){
+    } else {
+      res.send(rows);
+    }
+  });
+});
+
+// 공지사항 글작성
+app.post("/notice/write", form_data.array(), function(req, res){
+  const title = req.body.title;
+  const content = req.body.content;
+
+  connection.query("insert into notice (title, content) values(?, ?)",[title, content],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      console.log("글작성 성공");
+      res.send({msg:"작성 완료"});
+    }
+  });
+});
+
+// 공지사항 글삭제
+app.post("/notice/delete", (req, res)=>{
+  console.log(req.body.id);
+  connection.query("delete from notice where _id = ?",[req.body.id],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      console.log("글삭제 성공");
+      res.send({msg:"삭제 완료"});
     }
   });
 });

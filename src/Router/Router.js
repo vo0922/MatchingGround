@@ -23,6 +23,7 @@ import TeamNot from '../TeamInfo/TeamNot';
 import PrivateRouteTeam from './PrivateRouteTeam';
 import PrivateRouteNotTeam from './PrivateRouteNotTeam';
 import TeamMake from '../TeamInfo/TeamMake';
+import Notice from '../Notice/Notice'
 
 const Routes = () => {
     return (
@@ -33,6 +34,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/" component={Main}/>
                 <PrivateRoute exact path="/reservation" component={Reservation}/>
                 <PrivateRoute exact path="/reservation/detail" component={ReservationDetail}/>
+                <PrivateRoute exact path="/notice" component={Notice}/>
 
                 <PrivateRouteGM exact path="/groundmanager" component={ManageGround}/>
                 <PrivateRouteGM exact path="/groundmanager/modify" component={GroundModify}/>

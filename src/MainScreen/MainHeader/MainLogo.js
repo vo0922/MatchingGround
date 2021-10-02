@@ -84,7 +84,7 @@ function PersistentDrawerRight({history}) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  //드로어 클릭 이벤트
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -92,20 +92,22 @@ function PersistentDrawerRight({history}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  //매뉴 드로어 클릭 이벤트
   const clickaction = (text) => {
     if(text==='내 정보'){
-      history.push('/myinfo');
-    }else if(text==='내 팀정보'){
-      history.push('/team');
+      history.push('/myin');
     }else if(text==='경기장 관리'){
       history.push('/notgroundmanager');
+    }else if(text==='공지사항'){
+      history.push('/notice')
+    }else if(text==='내 팀정보') {
+      history.push('/team')
     }else if(text==='로그아웃'){
       window.sessionStorage.clear();
       history.push('/Login');
     }
   };
-
+  //홈 아이콘
   function HomeIcon(props) {
     return (
       <SvgIcon {...props}>

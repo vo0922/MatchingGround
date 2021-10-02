@@ -2,7 +2,7 @@ import { getSuggestedQuery } from '@testing-library/react';
 import React, { useState, useEffect } from 'react';
 
 const Callback = () => {
-
+    //유저 정보 state
     const submitId = (email,profile_image,user_name,birthyear,gender,mobile)=>{
         const post ={
           email : email,
@@ -21,11 +21,13 @@ const Callback = () => {
         })
         .then((res)=>res.json())
         .then((res)=>{
+
         });
     }
+    //유저 프로필 가져오기
     function GetProfile() {
         window.location.href.includes('access_token') && GetUser();
-
+        
         function GetUser() {
             const location = window.location.href.split('=')[1];
             const loca = location.split('&')[0];
