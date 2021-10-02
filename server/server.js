@@ -464,7 +464,7 @@ app.post("/myinfo", (req, res) =>{
 // 내 정보 수정하기
 const myinfo_storage = multer.diskStorage({
   destination : function(req, file, cb){
-    cb(null, "../public/myinfo_uploads/");    
+    cb(null, "../public/profileimage/");    
   },
   filename : function(req, file, cb) {
     cb(null, "profile_image" + Date.now() + file.originalname);
@@ -475,7 +475,7 @@ var myinfo_upload = multer({ storage : myinfo_storage });
 
 app.post("/myinfo/modify", myinfo_upload.single("profile_image"), (req,res)=>{
   connection.query(
-    "UPDATE users set profile_image = ?, mobile = ?, height = ?, position = ?, introduce = ? where email=?",["myinfo_uploads/"+req.file.filename, req.body.mobile, req.body.height, req.body.position, req.body.introduce, req.body.email],
+    "UPDATE users set profile_image = ?, mobile = ?, height = ?, position = ?, introduce = ? where email=?",["profileimage/"+req.file.filename, req.body.mobile, req.body.height, req.body.position, req.body.introduce, req.body.email],
 function(err,rows,fields){
     if(err){
         console.log(err);
@@ -489,7 +489,7 @@ function(err,rows,fields){
 // 팀 정보 수정하기
 const teaminfo_storage = multer.diskStorage({
   destination : function(req, file, cb){
-    cb(null, "../public/team_image_uploads/");    
+    cb(null, "../public/teamlogo/");    
   },
   filename : function(req, file, cb) {
     cb(null, "team_image" + Date.now() + file.originalname);
