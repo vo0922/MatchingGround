@@ -1,139 +1,32 @@
 import React, { Component, useState, useEffect } from 'react';
 import { withRouter,Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Modal from '@material-ui/core/Modal';
 import MainLogo from '../MainScreen/MainHeader/MainLogo';
 import { Container } from '@material-ui/core';
-
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-formControl: {
-    minWidth: 120,
-  },
-});
-
+import Grid from '@material-ui/core/Grid';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import SendIcon from '@mui/icons-material/Send';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 
 function TeamMake({history}) {
-  const classes = useStyles();
 
-  const [info, setinfo] = useState({
-    profile_image : '',
-    user_name : '',
-    birthyear : '',
-    height : '',
-    mobile : '',
-    position : '',
-    team_name : '',
-    introduce : '',
-    email : window.sessionStorage.getItem('id'),
-});
+  const [age, setAge] = React.useState('');
 
-const [teaminfo, setteaminfo] = useState({
-  team_name : '',
-});
-
-
-  // 클럽 수준 핸들러
-  const [inputs, setinputs] = useState({
-    team_class: '',
-    team_age: '',
-  }); 
-
-  const handleonchange = (e) => {
-
-    setinputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (event) => {
+    setAge(event.target.value);
   };
 
-  // 중복확인 핸들러
-  const [team_check, setteam_check] = useState({
-    team_check: '',
-    team_name: window.sessionStorage.getItem('team_name'),
-  })
-  const handleoncheck = (e) => {
-    
-  }
-
-
-  //오늘 날짜
-
+//오늘 날짜
   let today_date = new Date();
-    let year = today_date.getFullYear();
-    let month = today_date.getMonth() + 1;
-    let day = today_date.getDate();
-    let team_date =
-      year +
-      (month >= 10 ? "-" : "-0") +
-      month +
-      (day >= 10 ? "-" : "-0") +
-      day;
-
-
-//정보 API
-const myinfomation = () => {
-  fetch("http://localhost:3001/myinfo", {
-      method : "post",
-      headers : {
-          "content-type" : "application/json",
-      },
-      body : JSON.stringify(info),
-  })
-  .then((res)=>res.json())
-  .then((json)=>{
-      setinfo({
-          profile_image : json[0].profile_image,
-          user_name : json[0].user_name,
-          birthyear : json[0].birthyear,
-          height : json[0].height,
-          mobile : json[0].mobile,
-          position : json[0].position,
-          team_name : json[0].team_name,
-          introduce : json[0].introduce,
-          email : info.email,
-      });
-      console.log(json);            
-  })
-}
-
-// 팀 이름 중복확인 API
-const teamcheck = () => {
-  fetch("http://localhost:3001/teamcheck", {
-      method : "post",
-      headers : {
-          "content-type" : "application/json",
-      },
-      body : JSON.stringify(team_check),
-  })
-  .then((res)=>res.json())
-  .then((json)=>{
-      console.log(json);            
-  })
-}
+  let year = today_date.getFullYear();
+  let month = today_date.getMonth() + 1;
+  let day = today_date.getDate();
+  let team_date = year + (month >= 10 ? "-" : "-0") + month + (day >= 10 ? "-" : "-0") + day;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -144,18 +37,17 @@ const teamcheck = () => {
       }
   
     const formData = new FormData();
-    formData.append("team_image", e.target.team_image.files[0]);
-    formData.append("team_name", e.target.team_name.value);
-    formData.append("team_manage_name", e.target.team_manage_name.value);
-    formData.append("activity_area", e.target.activity_area.value);
-    formData.append("team_class", e.target.team_class.value);  
-    formData.append("team_age", e.target.team_age.value);
-    formData.append("team_date", e.target.team_date.value);
-    formData.append("introduce", e.target.introduce.value);
-    formData.append("user_email", window.sessionStorage.getItem("id"));  
   
     teammodify(formData);
   };
+
+  let boxstyle={
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > :not(style)': {
+    m: 0.2,
+  },
+}
 
   //팀 생성 API
   function teammodify (teaminfo) {
@@ -174,121 +66,107 @@ const teamcheck = () => {
 
 
   useEffect(() => {
-    myinfomation();
+
   }, [])
 
 
   return (
-    <Container maxWidth="md" style={{}}>
-      <MainLogo />
-      <Typography component="div" variant="h5">
-        클럽 생성하기
-      </Typography>
+
+    <Container maxWidth="md">
+          <MainLogo />
+    <Typography component="div" style={{ backgroundColor: '#F3F3F3', height: '90vh', paddingTop: 20}} >    
+      <Grid
+          container
+          direction="column"
+      >
+            <h1>팀 만들기</h1>
+      </Grid>
       <form
         onSubmit={handleSubmit}
         noValidate
         autoComplete="off"
         encType="multipart/form-data"
       >
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
+      <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ marginTop: 30 }} direction="column">
+        <Grid>
+        <Box
+          sx={boxstyle}>
+          <Paper style={{width: 100,height:100,textAlign: 'center',lineHeight:"50px" }}><h5>클럽로고</h5></Paper>
+          <Paper elevation={0} style={{width: 200,}} />
+          <Paper elevation={0} style={{width: 400,lineHeight:"100px"}} ><input type="file" /></Paper>
+        </Box>
+        <Box
+          sx={boxstyle}>
+          <Paper style={{width: 100,textAlign: 'center'}}><h5>클럽명</h5></Paper>
+          <Paper elevation={0} style={{width: 603, textAlign: 'center'}} ><TextField id="outlined-basic" label="클럽명" variant="outlined" style={{marginTop:4,width:500}}/></Paper>
+        </Box>
+        <Box
+          sx={boxstyle}>
+          <Paper style={{width: 100,textAlign: 'center'}}><h5>활동지역</h5></Paper>
+          <Paper elevation={0} style={{width: 603, textAlign: 'center'}} >
+        <Select
+          value={age}
+          onChange={handleChange}
+          style={{marginTop:4,width:200}}
         >
-          <Grid item xs={3}>
-            <TextField
-              id="team_name"
-              name="team_name"
-              label="클럽명"
-              placeholder="클럽명"
-              margin="normal"
-              //onChange={handleonchange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <Button
-              //onClick={check}
-              variant="outlined"
-              color="primary"
-              size="large"
-            >
-              중복확인
-            </Button>
-          </Grid>
-          <Grid item xs={12} />
-          <Grid item xs={3}>
-            <TextField
-              id="activity_area"
-              label="활동지역"
-              placeholder="ex)대구광역시 동구"
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <Button variant="outlined" color="primary" size="large">
-              주소찾기
-            </Button>
-          </Grid>
-        </Grid>
-        <Typography component="div" variant="h5">
-          <hr />
-          클럽 로고
-        </Typography>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
+          <MenuItem value={10}>Twenty</MenuItem>
+          <MenuItem value={21}>Twenty one</MenuItem>
+          <MenuItem value={22}>Twenty one and a half</MenuItem>
+        </Select>
+        </Paper>
+        </Box>
+        <Box
+          sx={boxstyle}>
+          <Paper style={{width: 100,textAlign: 'center', height:200,lineHeight:"150px"}}><h5>클럽 소개말</h5></Paper>
+          <Paper elevation={0} style={{width: 603, textAlign: 'center'}} >
+          <TextField
+          id="outlined-multiline-static"
+          multiline
+          rows={7}
+          style={{width: 500, marginTop:4}}
+        />
+          </Paper>
+        </Box>
+        <Box
+          sx={boxstyle}>
+          <Paper style={{width: 100,textAlign: 'center'}}><h5>클럽 수준</h5></Paper>
+          <Paper elevation={0} style={{width: 250, textAlign: 'center'}} >
+          <Select
+          value={age}
+          onChange={handleChange}
+          style={{marginTop:4,width:150}}
         >
-          <Typography>
-            <input
-              accept="image/*"
-              id="team_image"
-              name="team_image"
-              type="file"
-            />
-          </Typography>
-        </Grid>
-        <Typography component="div" variant="h5">
-          <hr />
-          클럽 소개
-        </Typography>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
+          <MenuItem value={10}>Twenty</MenuItem>
+          <MenuItem value={21}>Twenty one</MenuItem>
+          <MenuItem value={22}>Twenty one and a half</MenuItem>
+        </Select>
+          </Paper>
+          <Paper style={{width: 100,textAlign: 'center'}}><h5>클럽 연령대</h5></Paper>
+          <Paper elevation={0} style={{width: 247, textAlign: 'center'}} >
+          <Select
+          value={age}
+          onChange={handleChange}
+          style={{marginTop:4,width:150}}
         >
-          <Grid item xs={5}>
-            <TextField
-              required
-              id="introduce"
-              label="소개 내용"
-              placeholder="팀 소개를 위해 작성"
-              variant="outlined"
-              multiline
-              fullWidth
-            />
-          </Grid>
+          <MenuItem value={10}>Twenty</MenuItem>
+          <MenuItem value={21}>Twenty one</MenuItem>
+          <MenuItem value={22}>Twenty one and a half</MenuItem>
+        </Select>
+          </Paper>
+        </Box>
         </Grid>
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
+      <Grid>
+        <Button
+        endIcon={<SendIcon />}
+        variant="contained"
+        style={{width: 706,height: 60}}
         >
-          <Button type="submit" variant="contained" color="primary">
-            만들기
-          </Button>
+        클럽 생성하기
+        </Button>
         </Grid>
+      </Grid>
       </form>
+      </Typography>
     </Container>
   );
 }

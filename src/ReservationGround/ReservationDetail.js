@@ -187,7 +187,7 @@ function ReservationDetail({location, history}) {
         setcheckbox({checkbox:"0"})
       }
     }
-
+    var loop = 0;
     const onreservation = (e) => {
       e.preventDefault();
       var check1 = e.target.checked1.checked;
@@ -207,46 +207,57 @@ function ReservationDetail({location, history}) {
       formData.append("address", ground.address);
       formData.append("reservation_success", Number(check2));
 
-
-      if(!check1 && !check2){
-        fetch("http://localhost:3001/reservation/detail/reservation", {
-          method: "post",
-          body: formData,
-      })
-          .then((res) => res.json())
-          .then((res) => {
-            alert(res.alert_text);
-            history.push('/reservation');
-          });
-      } else if(check1 && !check2){
-        fetch("http://localhost:3001/reservation/detail/matchlist", {
-          method: "post",
-          body: formData,
-      })
-          .then((res) => res.json())
-          .then((res) => {
-            alert(res.alert_text);
-            history.push('/reservation');
-          });
-      } else if(check1 && check2){
-        fetch("http://localhost:3001/reservation/detail/reservation", {
-          method: "post",
-          body: formData,
-      })
-          .then((res) => res.json())
-          .then((res) => {
-
-          });
-          fetch("http://localhost:3001/reservation/detail/matchlist", {
-            method: "post",
-            body: formData,
-        })
-            .then((res) => res.json())
-            .then((res) => {
-            alert(res.alert_text);
-            history.push('/reservation');
-            });
-      }
+      fetch("http://localhost:3001/reservation/detail/overlap", {
+        method: "post",
+        body: formData,
+    })
+        .then((res) => res.json())
+        .then((res) => {
+          loop = res.length;
+          if(!loop){
+            if(!check1 && !check2){
+              fetch("http://localhost:3001/reservation/detail/reservation", {
+                method: "post",
+                body: formData,
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                  alert(res.alert_text);
+                  history.push('/reservation');
+                });
+            } else if(check1 && !check2){
+              fetch("http://localhost:3001/reservation/detail/matchlist", {
+                method: "post",
+                body: formData,
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                  alert(res.alert_text);
+                  history.push('/reservation');
+                });
+            } else if(check1 && check2){
+              fetch("http://localhost:3001/reservation/detail/reservation", {
+                method: "post",
+                body: formData,
+            })
+                .then((res) => res.json())
+                .then((res) => {
+      
+                });
+                fetch("http://localhost:3001/reservation/detail/matchlist", {
+                  method: "post",
+                  body: formData,
+              })
+                  .then((res) => res.json())
+                  .then((res) => {
+                  alert(res.alert_text);
+                  history.push('/reservation');
+                  });
+            }
+          }else{
+            alert('다른 시간을 예약하세요.')
+          }
+        });
     }
     }
 
