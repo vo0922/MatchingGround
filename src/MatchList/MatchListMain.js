@@ -254,8 +254,6 @@ export default function MatchListMain() {
         address : "%" + location + " " + locationdetail + "%"
       });
     }
-
-    
   }
 
   // 광역시, 도 기반으로 시,군,구 데이터 받아와 버튼렌더링
