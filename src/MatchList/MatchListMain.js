@@ -99,7 +99,6 @@ export default function MatchListMain() {
     datesetValue(newValue);
     var search_date = new Date(today.setDate(today.getDate() + newValue))
     var search_date2 = search_date.getFullYear() + "-" +((search_date.getMonth()+1) < 10 ? "0" + (search_date.getMonth()+1) : search_date.getMonth()+1) + "-" + (search_date.getDate() < 10 ? "0" + search_date.getDate() : search_date.getDate())
-    console.log(search_date2)
 
     setsearchdata({
       ...searchdata,
@@ -195,6 +194,14 @@ export default function MatchListMain() {
                     <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
                       매치신청
                     </Button>
+                    {/* {json.user_email !== window.sessionStorage.getItem('id') ? 
+                    <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
+                      매치신청
+                    </Button>
+                    : <Button disabled variant="outlined" >
+                      매치신청
+                    </Button>} */}
+                    
                   </Grid>
                 </Container>
               </CardContent>
@@ -223,7 +230,7 @@ export default function MatchListMain() {
       })
       return;
     }
-    console.log(newAlignment);
+
     searchlocation(newAlignment, e.target.id);
 
     setsearchdata({
@@ -247,7 +254,7 @@ export default function MatchListMain() {
         address : "%" + location + " " + locationdetail + "%"
       });
     }
-    console.log(location + ", " + locationdetail)
+
     
   }
 
@@ -262,8 +269,6 @@ export default function MatchListMain() {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
-        
         setlocationdetail({
           body: res.map((res) => (
             <Button key={res.properties.sig_kor_nm} onClick={() => handleLocationDetail(location_short, res.properties.sig_kor_nm)} value={res.properties.sig_kor_nm} style={{ fontSize: 12 }}>
@@ -440,16 +445,16 @@ export default function MatchListMain() {
           {"매치를 신청하시겠습니까?"}
         </DialogTitle>
         <DialogContent>
+          <hr/>
           <DialogContentText id="alert-dialog-description" style={{fontSize:15}}>
-            <hr/>
             날짜 : {applyContent.r_date} <br/>
             시간 : {timelabel[applyContent.r_time]} <br/>
             경기장 : {applyContent.ground_name} <br/>
             주소 : {applyContent.address} <br/>
             매치 개설자 : {applyContent.user_email} <br/>
             팀 이름 : {applyContent.team_name === "none" ? "개인매치" : applyContent.team_name} <br/>
-            <hr/>
           </DialogContentText>
+          <hr/>
           <DialogContentText color="primary">
             <br/>
             매치 내용 확인 후 신청하기 버튼을 누르세요.

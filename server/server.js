@@ -563,22 +563,35 @@ app.post("/mail/count", (req, res) =>{
       console.log("새쪽지 갯수 받아오기 실패" + err);
     } else {
       res.send(rows);
-      console.log("새쪽지 갯수 받아오기 성공" + rows);
+      console.log("새쪽지 갯수 받아오기 성공");
     }
   });
 });
 
-// 쪽지 갯수 받아오기
+// 쪽지 리스트 받아오기
 app.post("/mail/list", (req, res) =>{
   const user_email = req.body.user_email
   
-  connection.query("select * from mail where receive_id = ?", [user_email],
+  connection.query("select * from mail where receive_id = ? order by mail_no desc", [user_email],
   function(err, rows, fields){
     if(err){
       console.log("쪽지 리스트 받아오기 실패" + err);
     } else {
       res.send(rows);
-      console.log("쪽지 리스트 받아오기 성공" + rows[0].mailcount);
+    }
+  });
+});
+
+// 알림 읽었을 때 읽음 표시
+app.post("/mail/read", (req, res) =>{
+  const user_email = req.body.user_email
+  
+  connection.query("update mail set readed = 1 where receive_id = ?", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log(user_email + "님의 메일 확인여부 확인 실패" + err);
+    } else {
+      console.log(user_email + "님이 메일을 모두 확인함");
     }
   });
 });

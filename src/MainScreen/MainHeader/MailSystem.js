@@ -7,17 +7,20 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { fontSize } from "@mui/system";
 
 export default function MailSystem() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     getMailList();
+    mailread();
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    getMailCount();
   };
 
   const open = Boolean(anchorEl);
@@ -53,23 +56,43 @@ export default function MailSystem() {
     })
       .then((res) => res.json())
       .then((res) => {
+        if(res.length === 0){
+          setmailList({
+            body:
+            <Typography style={{fontSize:15, textAlign:"center"}}>알림이 없어요 ㅜ_ㅜ</Typography>
+          })
+          return;
+        }
         setmailList({
-          body: res.map((res) => (
+          body: res.map((res) => (            
             <div key={res.mail_no}>
               <ListItem alignItems="flex-start">
                 <ListItemText
-                  primary={<Typography style={{fontSize:14, fontWeight:"bold", marginBottom:5}}>{res.title}</Typography>}
+                  primary={
+                    !res.readed ? 
+                    <div>
+                      <Typography color="secondary" style={{fontSize:10}}>새 알림!</Typography>
+                      <Typography color="primary" style={{ fontSize:12, marginBottom:5, fontWeight:"bold"}}>{res.title}</Typography>
+                    </div>
+                   : <Typography color="text.secondary" style={{fontStyle:"italic", fontSize:12, marginBottom:5}}>{res.title}</Typography>}
                   secondary={
                     <Fragment>
                       <Typography
-                        sx={{ display: "inline" }}
+                        sx={{ display: "inline", fontSize:12 }}
                         component="span"
                         variant="body2"
                         color="text.primary"
                       >
                         신청자 : {res.send_id}<br/>
                       </Typography>
-                      {res.contents}
+                      <Typography
+                        sx={{ display: "inline", fontSize:12 }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {res.contents}
+                      </Typography>
                     </Fragment>
                   }
                 />
@@ -79,6 +102,20 @@ export default function MailSystem() {
           )),
         });
       });
+  }
+
+  function mailread(){
+    fetch("http://localhost:3001/mail/read", {
+      method: "post", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ user_email: window.sessionStorage.getItem("id") }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        
+    });
   }
 
   useEffect(() => {
@@ -108,7 +145,7 @@ export default function MailSystem() {
         style={{maxHeight:"50%"}}
       >
         <List
-          sx={{ width: "100%", maxWidth: 300, bgcolor: "background.paper" }}
+          sx={{ width: "100%", minWidth: 300, bgcolor: "background.paper" }}
         >
           {mailList.body}
         </List>
