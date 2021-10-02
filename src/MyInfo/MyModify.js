@@ -127,6 +127,7 @@ function Modify({ history, location }) {
   };
 
   let profile_preview = null;
+  var profileimage_url = info.profile_image.substring(0,4);
   if (image.file !== "") {
     profile_preview = (
       <img
@@ -139,7 +140,7 @@ function Modify({ history, location }) {
     profile_preview = (
       <img
         className="profile_preview"
-        src={'../' + info.profile_image}
+        src={info.profile_image.substring(0,4) === "http" ? info.profile_image : '../' + info.profile_image}
         style={{ width: 256, height: 256 }}
       ></img>
     );
