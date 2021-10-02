@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -26,6 +26,9 @@ import { createTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import { ThemeProvider } from '@material-ui/styles';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import MailSystem from './MailSystem'
 
 const drawerWidth = 240;
 const color = grey[50];
@@ -80,10 +83,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PersistentDrawerRight({history}) {
+function MainLogo({history}) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -114,6 +117,36 @@ function PersistentDrawerRight({history}) {
     );
   }
 
+  const [myinfo, setmyinfo] = useState({
+    profile_image : "",
+    user_name : "",
+    email : window.sessionStorage.getItem('id'),
+  });
+
+  function getMyinfo() {
+    fetch("http://localhost:3001/myinfo", {
+      method : "post", // 통신방법
+      headers : {
+          "content-type" : "application/json",
+      },
+      body : JSON.stringify(myinfo),
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    setmyinfo({
+      profile_image : res[0].profile_image,
+      user_name : res[0].user_name,
+      email : window.sessionStorage.getItem('id')
+    });
+  });
+  }
+
+
+
+  useEffect(() => {
+    getMyinfo()
+  }, [])
+
   return (
     <div className={classes.root}>
       <CssBaseline/>
@@ -125,10 +158,20 @@ function PersistentDrawerRight({history}) {
         })}
       >
         <Toolbar>
-        <Link to = "/"><HomeIcon color="action"/></Link>
+          <Link to = "/"><HomeIcon color="action"/></Link>
           <Typography variant="h6" noWrap className={classes.title}>
             &nbsp;&nbsp; 매칭그라운드
           </Typography>
+          <Link to='/myinfo' style={{textDecoration:'none'}}>
+          <Chip
+            avatar={<Avatar alt="toolbar_profile" src={myinfo.profile_image} />}
+            label={myinfo.user_name}
+            variant="outlined"
+            style={{marginRight:20}}
+          />
+          </Link>
+          <MailSystem/>
+          
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -138,6 +181,7 @@ function PersistentDrawerRight({history}) {
           >
             <MenuIcon />
           </IconButton>
+          
         </Toolbar>
       </AppBar>
       </ThemeProvider>
@@ -199,4 +243,4 @@ function PersistentDrawerRight({history}) {
   );
 }
 
-export default withRouter(PersistentDrawerRight);
+export default withRouter(MainLogo);

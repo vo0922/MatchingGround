@@ -11,11 +11,11 @@ import MainScreen_Teaminfo from "./MainScreen_Teaminfo";
 export default class MainScreen extends Component {
   render() {
     return (
-      <div>
+      <div style={{backgroundImage:'url(https://source.unsplash.com/random)'}}>
         <MainHeader />
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth="md" style={{marginTop:30}}>
+          <Container maxWidth="md" style={{marginTop:25,}}>
             <Typography
               component="div"
               style={{
@@ -29,6 +29,9 @@ export default class MainScreen extends Component {
                 </Grid>
                 <Grid item xs>
                     <MainScreen_Teaminfo/>
+                </Grid>
+                <Grid item xs={12}>
+                              
                 </Grid>
               </Grid>
 

@@ -110,7 +110,7 @@ app.post('/matchlist/locationsearch', function(req, res, next){
   var request = require('request');
   const key = "F88B9F55-4CFE-36C2-A8C5-1A55768CD1F2";
   const addr = 'https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_ADSIGG_INFO&key='
-  const addr2 = '&domain=localhost:3000&columns=sig_kor_nm&geometry=false&attibute=false&format:json&attrfilter=full_nm:like:'
+  const addr2 = '&domain=localhost:3000&columns=sig_kor_nm&geometry=false&attibute=false&size=100&format:json&attrfilter=full_nm:like:'
   var search = req.body.address;
   var finaladdr = addr + key + addr2 + encodeURI(search);
   var options = {
@@ -516,6 +516,86 @@ app.post("/team/info", (req, res) =>{
     }
   });
 });
+
+// 매치리스트 불러오기
+app.post("/matchlist", (req, res) =>{
+  const r_date = req.body.r_date;
+  const address = req.body.address;
+  const ground_name = req.body.ground_name;
+  const team_name = req.body.team_name
+
+  connection.query("select * from matchlist where r_date like ? and address like ? and ground_name like ? and team_name like ?", [r_date, address, ground_name, team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("매치리스트 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("매치리스트 정보 불러오기 성공");
+    }
+  });
+});
+
+// 매치 신청하기
+app.post("/matchlist/matchapply", (req, res) =>{
+  const send_id = req.body.send_id;
+  const receive_id = req.body.receive_id;
+  const title = req.body.send_id + "님이 매치를 신청하셨습니다.";
+  const contents = "수락하시겠습니까?";
+  
+  connection.query("insert into mail(send_id, receive_id, send_date, title, contents) values (?, ?, sysdate(), ?, ?)", [send_id, receive_id, title, contents],
+  function(err, rows, fields){
+    if(err){
+      console.log("매치신청 실패" + err);
+    } else {
+      res.send({success:1});
+      console.log("매치가 성공적으로 신청되었습니다.");
+    }
+  });
+});
+
+// 쪽지 갯수 받아오기
+app.post("/mail/count", (req, res) =>{
+  const user_email = req.body.user_email
+  
+  connection.query("select count(*) as mailcount from mail where receive_id = ? and readed = 0", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log("새쪽지 갯수 받아오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("새쪽지 갯수 받아오기 성공");
+    }
+  });
+});
+
+// 쪽지 리스트 받아오기
+app.post("/mail/list", (req, res) =>{
+  const user_email = req.body.user_email
+  
+  connection.query("select * from mail where receive_id = ? order by mail_no desc", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log("쪽지 리스트 받아오기 실패" + err);
+    } else {
+      res.send(rows);
+    }
+  });
+});
+
+// 알림 읽었을 때 읽음 표시
+app.post("/mail/read", (req, res) =>{
+  const user_email = req.body.user_email
+  
+  connection.query("update mail set readed = 1 where receive_id = ?", [user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log(user_email + "님의 메일 확인여부 확인 실패" + err);
+    } else {
+      console.log(user_email + "님이 메일을 모두 확인함");
+    }
+  });
+});
+
 
 
 app.listen(port, ()=>{
