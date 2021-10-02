@@ -582,7 +582,7 @@ app.post("/mail/count", (req, res) =>{
     if(err){
       console.log("새쪽지 갯수 받아오기 실패" + err);
     } else {
-      res.send(rows, {msg:"쪽지"});
+      res.send(rows);
       console.log("새쪽지 갯수 받아오기 성공");
     }
   });
