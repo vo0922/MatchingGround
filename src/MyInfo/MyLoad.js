@@ -1,25 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Grid, Typography, Button, Container, TextField } from '@material-ui/core';
-import Mytotal from './Mytotal';
-import MainLogo from '../MainScreen/MainHeader/MainLogo';
-import { withRouter } from 'react-router';
+import React, { useState, useEffect, Fragment } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Avatar,
+  Grid,
+  Typography,
+  Button,
+  Container,
+  TextField,
+  TableRow,
+  TableCell,
+  Table,
+  TableHead,
+  TableBody,
+} from "@material-ui/core";
+import Mytotal from "./Mytotal";
+import MainLogo from "../MainScreen/MainHeader/MainLogo";
+import { withRouter } from "react-router";
 
-const useStyles = makeStyles(() =>({
-  
+const useStyles = makeStyles(() => ({
   title: {
     fontSize: 36,
-    textAlign: 'center'
+    textAlign: "center",
   },
   photo: {
-    height: '75%',
-    width: "75%",
+    height: 256,
+    width: 256,
+    alignItems: "center",
   },
   data: {
     fontSize: 20,
   },
-  title_introduce:{
-    textAlign: 'center',
+  title_introduce: {
+    textAlign: "center",
     fontSize: 28,
   },
   introduce: {
@@ -30,122 +42,147 @@ const useStyles = makeStyles(() =>({
   },
 }));
 
-function MyModify() {
+function MyLoad({ history }) {
   const classes = useStyles();
 
-  const [info, setinfo] = useState({
-    profile_image : '',
-    user_name : '',
-    birthyear : '',
-    height : '',
-    mobile : '',
-    position : '',
-    team_name : '',
-    introduce : '',
-    email : window.sessionStorage.getItem('id'),
-});
-
-
-//정보 API
-const myinfomation = () => {
-  fetch("http://localhost:3001/myinfo", {
-      method : "post",
-      headers : {
-          "content-type" : "application/json",
+  function link_Modify(){
+    history.push({
+      pathname:"/myinfo/modify",
+      state:{
+        info:info,
       },
-      body : JSON.stringify(info),
-  })
-  .then((res)=>res.json())
-  .then((json)=>{
-      setinfo({
-          profile_image : json[0].profile_image,
-          user_name : json[0].user_name,
-          birthyear : json[0].birthyear,
-          height : json[0].height,
-          mobile : json[0].mobile,
-          position : json[0].position,
-          team_name : json[0].team_name,
-          introduce : json[0].introduce,
-          email : info.email,
+    });
+  } 
+
+  const [info, setinfo] = useState({
+    profile_image: "",
+    user_name: "",
+    birthyear: "",
+    height: "",
+    mobile: "",
+    position: "",
+    team_name: "",
+    introduce: "",
+    email: window.sessionStorage.getItem("id"),
+  });
+
+  //정보 API
+  const myinfomation = () => {
+    fetch("http://localhost:3001/myinfo", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(info),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setinfo({
+          profile_image: json[0].profile_image,
+          user_name: json[0].user_name,
+          birthyear: json[0].birthyear,
+          height: json[0].height,
+          mobile: json[0].mobile,
+          position: json[0].position,
+          team_name: json[0].team_name,
+          introduce: json[0].introduce,
+          email: info.email,
+        });
+        console.log(json);
       });
-      console.log(json);            
-  })
-}
+  };
 
-useEffect(() => {
-  myinfomation();
-}, []);  
-
-  const clickevent = (e) => {
-    window.location.href = "/myinfo/modify"
+  function createData(name, content) {
+    return { name, content };
   }
+
+  const rows = [
+    createData("이름 ", info.user_name),
+    createData("전화번호 ", info.mobile),
+    createData("출생년도 ", info.birthyear),
+    createData("키 ", info.height),
+    createData("포지션 ", info.position),
+    createData("소속 팀 정보 ", info.team_name),
+  ];
+
+  useEffect(() => {
+    myinfomation();
+  }, []);
 
   return (
-    <div>
-      <MainLogo />
-      <Container maxWidth="md" style={{ backgroundColor : '#FFFAFA'}}>
-        
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Typography className={classes.title}>내 정보</Typography>
-        </Grid>
+    <React.Fragment>
+      <Container
+        maxWidth="md"
+        style={{ backgroundColor: "white", height: "100%" }}
+      >
+        <Typography component="div" style={{ height: "100vh", paddingTop: 20 }}>
+          <Grid container spacing={3}>
+            <Grid
+              item
+              xs={6}
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Avatar src={info.profile_image} className={classes.photo} />
+            </Grid>
+            <Grid item xs={6}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.content}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Grid>
 
-        <Grid item xs={3}>
-          <Avatar src={info.profile_image} className={classes.photo} />
-        </Grid>
-
-        <Grid item xs={5}>
-          <Typography className={classes.data} color="textSecondary">
-            이름 : {info.user_name} <br />
-            포지션 : {info.position} <br />
-            출생년도 : {info.birthyear} <br />
-            키 : {info.height} <br />
-            전화번호 : {info.mobile} <br />
-            소속 팀 이름 : {info.team_name}
-          </Typography>
-        </Grid>
-
-        <Grid item xs={4}>
-          <Typography className={classes.title_introduce}>자기소개</Typography>
-          
-          <TextField
-          multiline
-          fullWidth
-          rows={4}
-          defaultValue={info.introduce}
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="outlined"
-        />
-        </Grid>
-
-        <Grid item xs={9}></Grid>
-
-        <Grid item xs={3}>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            onClick={clickevent}
-          >
-            수정하기
-          </Button>
-        </Grid>
-        </Grid><br/>
-        </Container>
-        <Container maxWidth="md">
-        <Grid item xs={12}>
-          <Typography className={classes.introduce}>최근전적</Typography>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Mytotal />
-        </Grid>
-        </Container>
-      
-    </div>
+            <Grid item xs={12}>
+              <Typography component="div" variant="h5">
+                자기 소개
+              </Typography>
+              <TextField
+                multiline
+                fullWidth
+                rows={4}
+                defaultValue={info.introduce}
+                InputProps={{
+                  readOnly: true,
+                }}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              item
+              xs={12}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                onClick={link_Modify}
+              >
+                수정하기
+              </Button>
+            </Grid>
+            <Mytotal />
+          </Grid>
+        </Typography>
+      </Container>
+    </React.Fragment>
   );
-  }
+}
 
-  export default withRouter(MyModify);
+export default withRouter(MyLoad);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter,Link } from 'react-router-dom';
-import { Card, CardContent, Grid, Container, Typography, Button } from '@material-ui/core';
+import { Card, CardContent, Grid, Container, Typography, Button, Tab } from '@material-ui/core';
 import MainLogo from '../MainScreen/MainHeader/MainLogo';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +32,7 @@ function TeamMain({history}) {
 
   return (
     <Container maxWidth="md">
-      <MainLogo/>
+      <MainLogo />
       <Typography className={classes.title}>내 팀 정보</Typography>
 
       <Container
@@ -47,16 +47,16 @@ function TeamMain({history}) {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item xs={3}>              
-                <Button
-                  id="teammake"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  onClick={click_teammake}
-                >
-                  팀 만들기
-                </Button>
+            <Grid item xs={3}>
+              <Button
+                id="teammake"
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={click_teammake}
+              >
+                팀 만들기
+              </Button>
             </Grid>
             <Grid item xs={3} />
             <Grid item xs={3}>
