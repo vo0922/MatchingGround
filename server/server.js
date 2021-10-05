@@ -486,7 +486,7 @@ function(err,rows,fields){
 });
 
 
-// 팀 정보 수정하기
+// 팀 정보 만들기
 const teaminfo_storage = multer.diskStorage({
   destination : function(req, file, cb){
     cb(null, "../public/teamlogo/");    
@@ -503,7 +503,7 @@ app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
   connection.query(
     "insert into Team (team_image, team_name, team_date, team_class, team_introduce, team_manage_name, activity_area, team_age) values(?,?,?,?,?,?,?,?)",
     [
-      req.body.team_image,
+      "teamlogo/" + req.file.filename,
       req.body.team_name,
       req.body.team_date,
       req.body.team_class,
@@ -516,11 +516,16 @@ app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
       if (err) {
         console.log(err);
       } else {
+        res.send({msg:"클럽 생성이 완료되었습니다.", success:1});
         //console.log("성공");
       }
     }
   );
 });
+
+//팀 활동지역
+
+
 
 // 팀정보 불러오기
 app.post("/team/info", (req, res) =>{

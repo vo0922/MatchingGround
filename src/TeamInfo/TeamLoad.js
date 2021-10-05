@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 function TeamLoad({history}) {
   
   const classes = useStyles();
-
+/*
 const [teaminfo, setteaminfo] = useState({
   team_name: '',
   team_image: '',
@@ -61,7 +61,7 @@ const getTeamdata = () => {
 useEffect(() => {
     getTeamdata();
 }, [])
-
+*/
 return (
   <Container width="md">
     <Typography component="div" variant="h5">
@@ -71,7 +71,6 @@ return (
       style={{ backgroundColor: "#cfe8fc", padding: "10%" }}
     >
       <Grid item xs={3}>
-      <Avatar src={teaminfo.team_image} className={classes.photo} />
       </Grid>
       <Grid item xs={5}>
       <Typography className={classes.data} color="textSecondary">

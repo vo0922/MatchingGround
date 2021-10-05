@@ -1,171 +1,331 @@
-import React, { Component, useState, useEffect } from 'react';
-import { withRouter,Link } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import MainLogo from '../MainScreen/MainHeader/MainLogo';
-import { Container } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import SendIcon from '@mui/icons-material/Send';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
+import React, { Component, useState, useEffect } from "react";
+import { withRouter, Link } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import MainLogo from "../MainScreen/MainHeader/MainLogo";
+import { Container } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import SendIcon from "@mui/icons-material/Send";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
-function TeamMake({history}) {
+function TeamMake({ history }) {
+  const [inputs, setinputs] = useState({
+    team_class: "",
+    team_age: "",
+    area_1: "",
+    area_2: "",
+  });
 
-  const [age, setAge] = React.useState('');
+  const { team_class, team_age, area_1, area_2 } = inputs;
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setinputs({
+      ...inputs,
+      [name]: value,
+    });
   };
 
-//오늘 날짜
+  //오늘 날짜
   let today_date = new Date();
   let year = today_date.getFullYear();
   let month = today_date.getMonth() + 1;
   let day = today_date.getDate();
-  let team_date = year + (month >= 10 ? "-" : "-0") + month + (day >= 10 ? "-" : "-0") + day;
+  let team_date =
+    year + (month >= 10 ? "-" : "-0") + month + (day >= 10 ? "-" : "-0") + day;
+
+  //활동지역 API
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    if(e.target.team_image.files[0] == null){
-        alert("사진을 등록해주세요");
-        return;
-      }
-  
+
+    if (e.target.team_image.files[0] == null) {
+      alert("사진을 등록해주세요");
+      return;
+    }
+
     const formData = new FormData();
-  
+
+    formData.append("team_name", e.target.team_name.value);
+    formData.append("team_image", e.target.team_image.files[0]);
+    formData.append("team_date", team_date);
+    formData.append("team_class", e.target.team_class.value);
+    formData.append("team_introduce", e.target.team_introduce.value);
+    formData.append(
+      "activity_area",
+      e.target.area_1.value + " / " + e.target.area_2.value
+    );
+    formData.append("team_age", e.target.team_age.value);
+    formData.append("team_manage_name", window.sessionStorage.getItem("id"));
+
     teammodify(formData);
   };
 
-  let boxstyle={
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > :not(style)': {
-    m: 0.2,
-  },
-}
+  let boxstyle = {
+    display: "flex",
+    flexWrap: "wrap",
+    "& > :not(style)": {
+      m: 0.2,
+    },
+  };
 
   //팀 생성 API
-  function teammodify (teaminfo) {
-  
+  function teammodify(teaminfo) {
     fetch("http://localhost:3001/team/team_make", {
-          method : "post",
-          body : teaminfo,
-      })
-      .then((res)=>res.json())
-      .then((data)=>{    
+      method: "post",
+      body: teaminfo,
+    })
+      .then((res) => res.json())
+      .then((data) => {
         console.log(data.msg);
-      });
-      alert("클럽 생성이 완료되었습니다.")
-      
+        window.sessionStorage.setItem('team_manager', data.success);
+        window.sessionStorage.setItem('team_name', teaminfo.team_name);
+        alert("클럽 생성이 완료되었습니다.");        
+        history.push("/team");        
+      });    
   }
 
+  //이미지 미리보기
+  const [image, setimage] = useState({
+    file: "",
+    previewURL: "",
+  });
 
-  useEffect(() => {
+  const handleFileOnChange = (e) => {
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      setimage({
+        file: file,
+        previewURL: reader.result,
+      });
+    };
+    if (file == null) {
+      setimage({
+        file: "",
+      });
+    } else reader.readAsDataURL(file);
+  };
 
-  }, [])
+  let team_logo = null;
+  if (image.file !== "") {
+    team_logo = (
+      <img
+        className="team_logo"
+        src={image.previewURL}
+        style={{ width: 80, height: 80 }}
+      ></img>
+    );
+  }
 
+  useEffect(() => {}, []);
 
   return (
-
     <Container maxWidth="md">
-          <MainLogo />
-    <Typography component="div" style={{ backgroundColor: '#F3F3F3', height: '90vh', paddingTop: 20}} >    
-      <Grid
-          container
-          direction="column"
+      <MainLogo />
+      <Typography
+        component="div"
+        style={{ backgroundColor: "#F3F3F3", height: "90vh", paddingTop: 20 }}
       >
-            <h1>팀 만들기</h1>
-      </Grid>
-      <form
-        onSubmit={handleSubmit}
-        noValidate
-        autoComplete="off"
-        encType="multipart/form-data"
-      >
-      <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ marginTop: 30 }} direction="column">
-        <Grid>
-        <Box
-          sx={boxstyle}>
-          <Paper style={{width: 100,height:100,textAlign: 'center',lineHeight:"50px" }}><h5>클럽로고</h5></Paper>
-          <Paper elevation={0} style={{width: 200,}} />
-          <Paper elevation={0} style={{width: 400,lineHeight:"100px"}} ><input type="file" /></Paper>
-        </Box>
-        <Box
-          sx={boxstyle}>
-          <Paper style={{width: 100,textAlign: 'center'}}><h5>클럽명</h5></Paper>
-          <Paper elevation={0} style={{width: 603, textAlign: 'center'}} ><TextField id="outlined-basic" label="클럽명" variant="outlined" style={{marginTop:4,width:500}}/></Paper>
-        </Box>
-        <Box
-          sx={boxstyle}>
-          <Paper style={{width: 100,textAlign: 'center'}}><h5>활동지역</h5></Paper>
-          <Paper elevation={0} style={{width: 603, textAlign: 'center'}} >
-        <Select
-          value={age}
-          onChange={handleChange}
-          style={{marginTop:4,width:200}}
-        >
-          <MenuItem value={10}>Twenty</MenuItem>
-          <MenuItem value={21}>Twenty one</MenuItem>
-          <MenuItem value={22}>Twenty one and a half</MenuItem>
-        </Select>
-        </Paper>
-        </Box>
-        <Box
-          sx={boxstyle}>
-          <Paper style={{width: 100,textAlign: 'center', height:200,lineHeight:"150px"}}><h5>클럽 소개말</h5></Paper>
-          <Paper elevation={0} style={{width: 603, textAlign: 'center'}} >
-          <TextField
-          id="outlined-multiline-static"
-          multiline
-          rows={7}
-          style={{width: 500, marginTop:4}}
-        />
-          </Paper>
-        </Box>
-        <Box
-          sx={boxstyle}>
-          <Paper style={{width: 100,textAlign: 'center'}}><h5>클럽 수준</h5></Paper>
-          <Paper elevation={0} style={{width: 250, textAlign: 'center'}} >
-          <Select
-          value={age}
-          onChange={handleChange}
-          style={{marginTop:4,width:150}}
-        >
-          <MenuItem value={10}>Twenty</MenuItem>
-          <MenuItem value={21}>Twenty one</MenuItem>
-          <MenuItem value={22}>Twenty one and a half</MenuItem>
-        </Select>
-          </Paper>
-          <Paper style={{width: 100,textAlign: 'center'}}><h5>클럽 연령대</h5></Paper>
-          <Paper elevation={0} style={{width: 247, textAlign: 'center'}} >
-          <Select
-          value={age}
-          onChange={handleChange}
-          style={{marginTop:4,width:150}}
-        >
-          <MenuItem value={10}>Twenty</MenuItem>
-          <MenuItem value={21}>Twenty one</MenuItem>
-          <MenuItem value={22}>Twenty one and a half</MenuItem>
-        </Select>
-          </Paper>
-        </Box>
+        <Grid container direction="column">
+          <h1>팀 만들기</h1>
         </Grid>
-      <Grid>
-        <Button
-        endIcon={<SendIcon />}
-        variant="contained"
-        style={{width: 706,height: 60}}
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          autoComplete="off"
+          encType="multipart/form-data"
         >
-        클럽 생성하기
-        </Button>
-        </Grid>
-      </Grid>
-      </form>
+          <Grid
+            container
+            spacing={3}
+            justifyContent="center"
+            alignItems="center"
+            style={{ marginTop: 30 }}
+            direction="column"
+          >
+            <Grid>
+              <Box sx={boxstyle}>
+                <Paper
+                  style={{
+                    width: 100,
+                    height: 100,
+                    textAlign: "center",
+                    lineHeight: "50px",
+                  }}
+                >
+                  <h5>클럽로고</h5>
+                </Paper>
+                <Paper
+                  elevation={0}
+                  style={{ width: 200, textAlign: "center" }}
+                >
+                  {team_logo}
+                </Paper>
+                <Paper
+                  elevation={0}
+                  style={{ width: 400, lineHeight: "100px" }}
+                >
+                  <input
+                    accept="image/*"
+                    type="file"
+                    id="team_image"
+                    name="team_image"
+                    onChange={handleFileOnChange}
+                  />
+                </Paper>
+              </Box>
+              <Box sx={boxstyle}>
+                <Paper style={{ width: 100, textAlign: "center" }}>
+                  <h5>클럽명</h5>
+                </Paper>
+                <Paper
+                  elevation={0}
+                  style={{ width: 603, textAlign: "center" }}
+                >
+                  <TextField
+                    id="team_name"
+                    label="클럽명"
+                    variant="outlined"
+                    style={{ marginTop: 4, width: 500 }}
+                  />
+                </Paper>
+              </Box>
+              <Box sx={boxstyle}>
+                <Paper style={{ width: 100, textAlign: "center" }}>
+                  <h5>활동지역</h5>
+                </Paper>
+                <Paper
+                  elevation={0}
+                  style={{ width: 603, textAlign: "center" }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Select
+                      id="area_1"
+                      name="area_1"
+                      value={area_1}
+                      onChange={onChange}
+                      style={{ marginTop: 4, width: 200 }}
+                    >
+                      <MenuItem value={"서울"}>서울</MenuItem>
+                      <MenuItem value={"부산"}>부산</MenuItem>
+                      <MenuItem value={"대구"}>대구</MenuItem>
+                      <MenuItem value={"인천"}>인천</MenuItem>
+                      <MenuItem value={"광주"}>광주</MenuItem>
+                      <MenuItem value={"대전"}>대전</MenuItem>
+                      <MenuItem value={"울산"}>울산</MenuItem>
+                      <MenuItem value={"세종"}>세종</MenuItem>
+                      <MenuItem value={"경기"}>경기</MenuItem>
+                      <MenuItem value={"강원"}>강원</MenuItem>
+                      <MenuItem value={"충북"}>충북</MenuItem>
+                      <MenuItem value={"충남"}>충남</MenuItem>
+                      <MenuItem value={"전북"}>전북</MenuItem>
+                      <MenuItem value={"전남"}>전남</MenuItem>
+                      <MenuItem value={"경북"}>경북</MenuItem>
+                      <MenuItem value={"경남"}>경남</MenuItem>
+                      <MenuItem value={"제주"}>제주</MenuItem>
+                    </Select>
+                    <Select
+                      id="area_2"
+                      name="area_2"
+                      value={area_2}
+                      onChange={onChange}
+                      style={{ marginTop: 4, width: 200 }}
+                    >
+                      <MenuItem value={"제주"}>제주</MenuItem>
+                    </Select>
+                  </Grid>
+                </Paper>
+              </Box>
+              <Box sx={boxstyle}>
+                <Paper
+                  style={{
+                    width: 100,
+                    textAlign: "center",
+                    height: 200,
+                    lineHeight: "150px",
+                  }}
+                >
+                  <h5>클럽 소개말</h5>
+                </Paper>
+                <Paper
+                  elevation={0}
+                  style={{ width: 603, textAlign: "center" }}
+                >
+                  <TextField
+                    id="team_introduce"
+                    multiline
+                    rows={7}
+                    style={{ width: 500, marginTop: 4 }}
+                  />
+                </Paper>
+              </Box>
+              <Box sx={boxstyle}>
+                <Paper style={{ width: 100, textAlign: "center" }}>
+                  <h5>클럽 수준</h5>
+                </Paper>
+                <Paper
+                  elevation={0}
+                  style={{ width: 250, textAlign: "center" }}
+                >
+                  <Select
+                    id="team_class"
+                    name="team_class"
+                    value={team_class}
+                    onChange={onChange}
+                    style={{ marginTop: 4, width: 150 }}
+                  >
+                    <MenuItem value={"아마추어"}>아마추어</MenuItem>
+                    <MenuItem value={"세미프로"}>세미프로</MenuItem>
+                    <MenuItem value={"프로"}>프로</MenuItem>
+                    <MenuItem value={"월드클래스"}>월드클래스</MenuItem>
+                  </Select>
+                </Paper>
+                <Paper style={{ width: 100, textAlign: "center" }}>
+                  <h5>클럽 희망 연령대</h5>
+                </Paper>
+                <Paper
+                  elevation={0}
+                  style={{ width: 247, textAlign: "center" }}
+                >
+                  <Select
+                    id="team_age"
+                    name="team_age"
+                    value={team_age}
+                    onChange={onChange}
+                    style={{ marginTop: 4, width: 150 }}
+                  >
+                    <MenuItem value={"10 ~ 20대"}>10 ~ 20대</MenuItem>
+                    <MenuItem value={"20 ~ 30대"}>20 ~ 30대</MenuItem>
+                    <MenuItem value={"30 ~ 40대"}>30 ~ 40대</MenuItem>
+                    <MenuItem value={"40 ~ 50대"}>40 ~ 50대</MenuItem>
+                    <MenuItem value={"50대 ~ ..."}>50대 ~ ...</MenuItem>
+                  </Select>
+                </Paper>
+              </Box>
+            </Grid>
+            <Grid>
+              <Button
+                endIcon={<SendIcon />}
+                variant="contained"
+                style={{ width: 706, height: 60 }}
+                type="submit"
+              >
+                클럽 생성하기
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
       </Typography>
     </Container>
   );
