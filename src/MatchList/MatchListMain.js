@@ -13,13 +13,15 @@ import {
   Tab,
   Box,
 } from "@material-ui/core";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material"
 import { makeStyles } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 
@@ -218,6 +220,7 @@ export default function MatchListMain() {
 
   // 광역시, 도 선택 시 이벤트 함수 -> 세부주소 버튼 출력, 검색 데이터 변경
   const handleLocation = (e, newAlignment) => {
+    
     if (newAlignment === null) return;
     setlocationalignment(newAlignment);
     if (newAlignment === "전체") {
@@ -230,7 +233,7 @@ export default function MatchListMain() {
       })
       return;
     }
-
+    
     searchlocation(newAlignment, e.target.id);
 
     setsearchdata({
@@ -315,6 +318,9 @@ export default function MatchListMain() {
       body: JSON.stringify({
         send_id : window.sessionStorage.getItem('id'),
         receive_id : applyContent.user_email,
+        title : "매치신청",
+        contents : "정확한 매치신청 내역은 내매칭정보를 확인해주세요.",
+        link:"http://localhost:3000/mymatchinfo"
       }),
     })
       .then((res) => res.json())

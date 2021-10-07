@@ -559,10 +559,11 @@ app.post("/matchlist", (req, res) =>{
 app.post("/matchlist/matchapply", (req, res) =>{
   const send_id = req.body.send_id;
   const receive_id = req.body.receive_id;
-  const title = req.body.send_id + "님이 매치를 신청하셨습니다.";
-  const contents = "수락하시겠습니까?";
+  const title = req.body.title
+  const contents = req.body.contents;
+  const link = req.body.link;
   
-  connection.query("insert into mail(send_id, receive_id, send_date, title, contents) values (?, ?, sysdate(), ?, ?)", [send_id, receive_id, title, contents],
+  connection.query("insert into mail(send_id, receive_id, send_date, title, contents, link) values (?, ?, sysdate(), ?, ?, ?)", [send_id, receive_id, title, contents, link],
   function(err, rows, fields){
     if(err){
       console.log("매치신청 실패" + err);
