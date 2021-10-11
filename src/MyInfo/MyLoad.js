@@ -67,8 +67,7 @@ const myinfomation = () => {
           team_name : json[0].team_name,
           introduce : json[0].introduce,
           email : info.email,
-      });
-      console.log(json);            
+      });      
   })
 }
 

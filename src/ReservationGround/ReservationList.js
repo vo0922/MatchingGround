@@ -118,6 +118,7 @@ function ReservationCard({history}) {
   }
 
   const [city, setcity] = useState('');
+  const [cityname, setcityname] = useState('');
   const [country, setcountry] = useState('');
   const [countrymenu, setcountrymenu] = useState('');
   const [searchtext, setsearchtext] = useState('');
@@ -131,7 +132,28 @@ function ReservationCard({history}) {
       list(address, '', '');
       setcountrymenu('');
     }else{
-      address=e.target.value;
+      if(e.target.value==="경상북도"){
+        address="경북";
+      }else if(e.target.value==="경상남도"){
+        address="경남";
+      }else if(e.target.value==="충청북도"){
+        address="충북";  
+      }else if(e.target.value==="충청남도"){
+        address="충남";
+      }else if(e.target.value==="경기도"){
+        address="경기"
+      }else if(e.target.value==="강원도"){
+        address="강원"
+      }else if(e.target.value==="전라남도"){
+        address="전남"
+      }else if(e.target.value==="전라북도"){
+        address="전북"
+      }else if(e.target.value==="제주특별자치도"){
+        address="제주"
+      }else{
+        address=e.target.value;
+      }
+      setcityname(address);
       list(address, '', '');
           //시군구 검색api 요청
       fetch("http://localhost:3001/reservation/search", {
@@ -139,7 +161,7 @@ function ReservationCard({history}) {
         headers : {
           "content-type" : "application/json",
         },
-        body: JSON.stringify({address: address}),
+        body: JSON.stringify({address: e.target.value}),
     })
     .then((res)=>res.json())
     .then((res)=>{
@@ -155,10 +177,10 @@ function ReservationCard({history}) {
     var address = "";
     if(e.target.value === "전체"){
       address = "";
-      list(city, address, '');
+      list(cityname, address, '');
     }else{
       address=e.target.value;
-      list(city, address, '');
+      list(cityname, address, '');
     }
   }
 
@@ -171,9 +193,9 @@ function ReservationCard({history}) {
       list('', '', searchtext);
     }else{
       if(country === "전체"){
-        list(city, '', searchtext);
+        list(cityname, '', searchtext);
       }else{
-        list(city, country, searchtext);
+        list(cityname, country, searchtext);
       }
     }
   }
@@ -208,7 +230,7 @@ function ReservationCard({history}) {
           style={{borderRadius:30}}
           onChange={handleSelectcity}
         >
-          <MenuItem value="전체">
+          <MenuItem name={"전체"} value="전체">
             <em>전체</em>
           </MenuItem>
           <MenuItem value={"서울"}>서울</MenuItem>
@@ -226,7 +248,7 @@ function ReservationCard({history}) {
           <MenuItem value={"전라남도"}>전남</MenuItem>
           <MenuItem value={"경상북도"}>경북</MenuItem>
           <MenuItem value={"경상남도"}>경남</MenuItem>
-          <MenuItem value={"제주특별자치도"}>제주특별자치도</MenuItem>
+          <MenuItem value={"제주특별자치도"}>제주도</MenuItem>
         </Select>
       </FormControl>
 

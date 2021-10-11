@@ -582,7 +582,7 @@ app.post("/mail/count", (req, res) =>{
     if(err){
       console.log("새쪽지 갯수 받아오기 실패" + err);
     } else {
-      res.send(rows, {msg:"쪽지"});
+      res.send(rows);
       console.log("새쪽지 갯수 받아오기 성공");
     }
   });
@@ -612,6 +612,34 @@ app.post("/mail/read", (req, res) =>{
       console.log(user_email + "님의 메일 확인여부 확인 실패" + err);
     } else {
       console.log(user_email + "님이 메일을 모두 확인함");
+    }
+  });
+});
+
+// 진행중인 매칭
+app.post("/matchinfo/matchinglist", (req, res) => {
+  const email = req.body.id;
+
+  connection.query("select *from matchlist where user_email = ?",[email],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      res.send(rows);
+      console.log("진행중인 매칭 불러오기");
+    }
+  });
+});
+
+// 지난 매칭
+app.post("/matchinfo/matchedlist", (req, res) => {
+  const email = req.body.id;
+
+  connection.query("select *from matchlist where user_email = ? and match_success = 1",[email],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      res.send(rows);
+      console.log("지난 매칭 불러오기");
     }
   });
 });
