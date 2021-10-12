@@ -16,11 +16,9 @@ function TeamMake({ history }) {
   const [inputs, setinputs] = useState({
     team_class: "",
     team_age: "",
-    area_1: "",
-    area_2: "",
   });
 
-  const { team_class, team_age, area_1, area_2 } = inputs;
+  const { team_class, team_age } = inputs;
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -30,16 +28,79 @@ function TeamMake({ history }) {
     });
   };
 
+  const team_name = document.getElementById("team_name");
+  const team_introduce = document.getElementById("team_introduce");
+
+
   //오늘 날짜
   let today_date = new Date();
   let year = today_date.getFullYear();
   let month = today_date.getMonth() + 1;
   let day = today_date.getDate();
   let team_date =
-    year + (month >= 10 ? "-" : "-0") + month + (day >= 10 ? "-" : "-0") + day;
+    year + (month >= 10 ? "-" : "-0") + month + (day >= 10 ? "-" : "-0") + day;  
+  
+  const [city, setcity] = useState("");
+  const [area, setarea] = useState("");
+  const [areamenu, setareamenu] = useState("");
 
   //활동지역 API
 
+  const handleSelectcity = (e) => {
+    setcity(e.target.value);
+    setarea("");
+    var address = "";
+    if (e.target.value === "경상북도") {
+      address = "경북";
+    } else if (e.target.value === "경상남도") {
+      address = "경남";
+    } else if (e.target.value === "충청북도") {
+      address = "충북";
+    } else if (e.target.value === "충청남도") {
+      address = "충남";
+    } else if (e.target.value === "경기도") {
+      address = "경기";
+    } else if (e.target.value === "강원도") {
+      address = "강원";
+    } else if (e.target.value === "전라남도") {
+      address = "전남";
+    } else if (e.target.value === "전라북도") {
+      address = "전북";
+    } else if (e.target.value === "제주특별자치도") {
+      address = "제주";
+    } else {
+      address = e.target.value;
+    }
+    //시군구 검색api 요청
+    fetch("http://localhost:3001/reservation/search", {
+      method: "POST", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ address: e.target.value }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setareamenu(
+          res.map((data) => (
+            <MenuItem
+              key={data.properties.sig_kor_nm}
+              value={data.properties.sig_kor_nm}
+            >
+              {data.properties.sig_kor_nm}
+            </MenuItem>
+          ))
+        );
+      });
+  };
+
+  const handleSelectarea = (e) => {
+    setarea(e.target.value);
+    var address = "";
+    address = e.target.value;
+  };
+
+  //form API
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -47,6 +108,27 @@ function TeamMake({ history }) {
       alert("사진을 등록해주세요");
       return;
     }
+
+    switch ("") {
+      case team_name.value:
+        alert("클럽명을 선택해주세요.");
+        return;
+        case city:
+        alert("활동지역을 작성해주세요.");
+        return;  
+        case area:
+        alert("활동도시 작성해주세요.");
+        return;  
+        case team_introduce.value:
+        alert("클럽 소개글을 작성해주세요.");
+        return;   
+      case team_class:
+        alert("클럽 수준을 선택해주세요.");
+        return;
+      case team_age:
+        alert("클럽 희망 연령대를 선택해주세요.");
+        return;
+    } 
 
     const formData = new FormData();
 
@@ -57,7 +139,7 @@ function TeamMake({ history }) {
     formData.append("team_introduce", e.target.team_introduce.value);
     formData.append(
       "activity_area",
-      e.target.area_1.value + " / " + e.target.area_2.value
+      e.target.area.value + " " + e.target.areamenu.value
     );
     formData.append("team_age", e.target.team_age.value);
     formData.append("team_manage_name", window.sessionStorage.getItem("id"));
@@ -82,11 +164,12 @@ function TeamMake({ history }) {
       .then((res) => res.json())
       .then((data) => {
         console.log(data.msg);
-        window.sessionStorage.setItem('team_manager', data.success);
-        window.sessionStorage.setItem('team_name', teaminfo.team_name);
-        alert("클럽 생성이 완료되었습니다.");        
-        history.push("/team");        
-      });    
+        console.log(data.team_name);
+        window.sessionStorage.setItem("team_manager", data.success);
+        window.sessionStorage.setItem("team_name", data.team_name);
+        alert("클럽 생성이 완료되었습니다.");
+        history.push("/team");
+      });
   }
 
   //이미지 미리보기
@@ -190,8 +273,10 @@ function TeamMake({ history }) {
                 >
                   <TextField
                     id="team_name"
+                    name="team_name"
                     label="클럽명"
                     variant="outlined"
+                    multiline
                     style={{ marginTop: 4, width: 500 }}
                   />
                 </Paper>
@@ -211,10 +296,10 @@ function TeamMake({ history }) {
                     alignItems="center"
                   >
                     <Select
-                      id="area_1"
-                      name="area_1"
-                      value={area_1}
-                      onChange={onChange}
+                      id="area"
+                      name="area"
+                      value={city}
+                      onChange={handleSelectcity}
                       style={{ marginTop: 4, width: 200 }}
                     >
                       <MenuItem value={"서울"}>서울</MenuItem>
@@ -236,13 +321,13 @@ function TeamMake({ history }) {
                       <MenuItem value={"제주"}>제주</MenuItem>
                     </Select>
                     <Select
-                      id="area_2"
-                      name="area_2"
-                      value={area_2}
-                      onChange={onChange}
+                      id="areamenu"
+                      name="areamenu"
+                      value={area}
+                      onChange={handleSelectarea}
                       style={{ marginTop: 4, width: 200 }}
                     >
-                      <MenuItem value={"제주"}>제주</MenuItem>
+                      {areamenu}
                     </Select>
                   </Grid>
                 </Paper>
@@ -264,6 +349,7 @@ function TeamMake({ history }) {
                 >
                   <TextField
                     id="team_introduce"
+                    name="team_introdcue"
                     multiline
                     rows={7}
                     style={{ width: 500, marginTop: 4 }}

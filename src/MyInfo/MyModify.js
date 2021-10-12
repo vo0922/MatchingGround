@@ -121,7 +121,8 @@ function Modify({ history, location }) {
     };
     if (file == null) {
       setimage({
-        file: "",
+        ...image,
+        file: '',
       });
     } else reader.readAsDataURL(file);
   };
