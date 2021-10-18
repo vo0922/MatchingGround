@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
 import { withRouter, Link } from "react-router-dom";
 import {
   Container,
@@ -12,6 +13,7 @@ import {
   TableCell,
   TextField,
   Button,
+  Modal,
 } from "@material-ui/core";
 import TeamMember from "./TeamMember";
 
@@ -40,6 +42,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+
 function TeamLoad({ history }) {
   const classes = useStyles();
 
@@ -59,7 +74,7 @@ function TeamLoad({ history }) {
     user_email: window.sessionStorage.getItem("id"),
   });
 
-  const getTeamdata = () => {    
+  const getTeamdata = () => {
     fetch("http://localhost:3001/team/teaminfo", {
       method: "post",
       headers: {
@@ -89,9 +104,8 @@ function TeamLoad({ history }) {
       });
   };
 
-
-  //클럽원관리 버튼
-  function link_Modify() {
+  //클럽정보 관리 버튼
+  function Club_Modify() {
     history.push({
       pathname: "/team/modify",
       state: {
@@ -100,9 +114,16 @@ function TeamLoad({ history }) {
     });
   }
 
+  //클럽원 관리 버튼
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  function Member_Modify() {}
+
   //탈퇴하기 버튼
-  const [info, setinfo] = useState({    
-    team_name: '',
+  const [info, setinfo] = useState({
+    team_name: "",
     user_email: window.sessionStorage.getItem("id"),
   });
 
@@ -110,29 +131,26 @@ function TeamLoad({ history }) {
     if (window.sessionStorage.getItem("team_manager") === "1") {
       alert("클럽장권한을 가지고 있습니다. 탈퇴가 불가능합니다.");
     } else {
-    fetch("http://localhost:3001/team/delete", {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(info),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setinfo({
-          team_name: 'none',
-          user_email: info.user_email,
+      fetch("http://localhost:3001/team/delete", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(info),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          setinfo({
+            team_name: "none",
+            user_email: info.user_email,
+          });
+          window.sessionStorage.setItem("team_manager", "0");
+          window.sessionStorage.setItem("team_name", "none");
+          alert("클럽 탈퇴가 완료되었습니다.");
+          history.push("/team");
         });
-        window.sessionStorage.setItem("team_manager", "0");
-        window.sessionStorage.setItem("team_name", "none");
-        alert("클럽 탈퇴가 완료되었습니다.");
-        history.push("/team");
-      });
     }
   };
-
-  
-
 
   function createData(name, content) {
     return { name, content };
@@ -204,25 +222,75 @@ function TeamLoad({ history }) {
               />
             </Grid>
             <Grid item xs={12}>
-            <Typography component="div" variant="h5">
+              <Typography component="div" variant="h5">
                 클럽원 명단
               </Typography>
-            <TeamMember />
+              <TeamMember />
             </Grid>
             <Grid
               container
               direction="row"
               justifyContent="flex-end"
-              alignItems="center" 
+              alignItems="center"
             >
               <Grid item xs={2}>
-                {window.sessionStorage.getItem('id') === teaminfo.team_manage_name ? <Button variant="outlined" color="primary" size="large" onClick={link_Modify}>클럽 관리</Button> : null}
-                </Grid>
+                {window.sessionStorage.getItem("id") ===
+                teaminfo.team_manage_name ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    onClick={handleOpen}
+                  >
+                    클럽원 관리
+                  </Button>
+                ) : null}
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                    >
+                      Text in a modal
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      Duis mollis, est non commodo luctus, nisi erat porttitor
+                      ligula.
+                    </Typography>
+                  </Box>
+                </Modal>
+              </Grid>
+              <Grid item xs={2}>
+                {window.sessionStorage.getItem("id") ===
+                teaminfo.team_manage_name ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    onClick={Club_Modify}
+                  >
+                    클럽정보 수정
+                  </Button>
+                ) : null}
+              </Grid>
               <Grid>
-                <Button variant="outlined" color="primary" size="large" onClick={quit}>탈퇴하기</Button>
-                </Grid>              
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  onClick={quit}
+                >
+                  탈퇴하기
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12}/>
+            <Grid item xs={12} />
           </Grid>
         </Typography>
       </Container>

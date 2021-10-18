@@ -53,7 +53,7 @@ function TeamMain({history}) {
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={click_teammake}
+                href="teammake/"
               >
                 팀 만들기
               </Button>

@@ -276,7 +276,6 @@ function TeamMake({ history }) {
                     name="team_name"
                     label="클럽명"
                     variant="outlined"
-                    multiline
                     style={{ marginTop: 4, width: 500 }}
                   />
                 </Paper>
