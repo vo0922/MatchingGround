@@ -105,6 +105,8 @@ function MainLogo({history}) {
       history.push('/notice')
     }else if(text==='내 팀정보') {
       history.push('/team')
+    }else if(text==='내 매칭정보'){
+      history.push('/matchinfo');
     }else if(text==='로그아웃'){
       window.sessionStorage.clear();
       history.push('/Login');

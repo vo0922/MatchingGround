@@ -704,6 +704,34 @@ app.post("/mail/read", (req, res) =>{
   });
 });
 
+// 진행중인 매칭
+app.post("/matchinfo/matchinglist", (req, res) => {
+  const email = req.body.id;
+
+  connection.query("select *from matchlist where user_email = ?",[email],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      res.send(rows);
+      console.log("진행중인 매칭 불러오기");
+    }
+  });
+});
+
+// 지난 매칭
+app.post("/matchinfo/matchedlist", (req, res) => {
+  const email = req.body.id;
+
+  connection.query("select *from matchlist where user_email = ? and match_success = 1",[email],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      res.send(rows);
+      console.log("지난 매칭 불러오기");
+    }
+  });
+});
+
 // 공지사항 리스트
 app.post("/notice/list", (req, res) =>{
 
