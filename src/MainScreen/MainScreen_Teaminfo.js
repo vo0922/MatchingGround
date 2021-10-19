@@ -26,13 +26,16 @@ const useStyles = makeStyles((theme) => ({
 export default function MainScreen_Teaminfo() {
   const classes = useStyles();
   const [teaminfo, setteaminfo] = useState({
+    user_email: window.sessionStorage.getItem("id"),
     team_name: "",
     team_count: "",
+    team_image: "",
     win: "",
     lose: "",
     team_date: "",
     team_class: "",
-    user_email: window.sessionStorage.getItem("id"),
+    activity_area : "",
+    
   });
   const [teamcard, setteamcard] = useState({
     card: "",
@@ -49,13 +52,16 @@ export default function MainScreen_Teaminfo() {
       .then((res) => res.json())
       .then((res) => {
         setteaminfo({
+          user_email: window.sessionStorage.getItem("id"),
           team_name: res[0].team_name,
           team_count: res[0].team_count,
+          team_image: res[0].team_image,
           win: res[0].win,
           lose: res[0].lose,
           team_date: res[0].team_date,
           team_class: res[0].team_class,
-          user_email: window.sessionStorage.getItem("id"),
+          activity_area: res[0].activity_area,
+          
         });
       });
   }
@@ -69,9 +75,7 @@ export default function MainScreen_Teaminfo() {
             <CardContent>
               <Grid container spacing={3}>
                 <Grid item xs={3}>
-                  <Avatar alt="Temp" className={classes.large}>
-                    Girin
-                  </Avatar>
+                  <Avatar alt="Temp" className={classes.large} src={teaminfo.team_image}/>
                 </Grid>
                 <Grid item xs={9}>
                   <Typography
@@ -87,9 +91,11 @@ export default function MainScreen_Teaminfo() {
                     {teaminfo.team_date}
                   </Typography>
                   <Typography className={classes.pos} color="textSecondary">
-                    대구광역시 달서구
+                    {teaminfo.activity_area}
                   </Typography>
-                  <br />
+                  <Typography className={classes.pos} color="textSecondary">
+                   전적 : {teaminfo.win}승 {teaminfo.lose}패 
+                  </Typography>
                 </Grid>
               </Grid>
             </CardContent>
@@ -116,7 +122,7 @@ export default function MainScreen_Teaminfo() {
       </Card>
       });
     }
-  }, []);
+  }, [teaminfo]);
 
   return (
     <div>

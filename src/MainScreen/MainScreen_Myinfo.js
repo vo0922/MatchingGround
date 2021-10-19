@@ -66,7 +66,7 @@ export default function MainScreen_Myinfo() {
         <CardContent>
             <Grid container spacing={3}>
             <Grid item xs={3}>
-            <Avatar alt="naver profile image" className={classes.large} src={myinfo.profile_image}  />        
+            <Avatar src={myinfo.profile_image} alt="naver profile image" className={classes.large}/>        
           </Grid>
           <Grid item xs={9}>
             <Typography
