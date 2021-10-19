@@ -65,10 +65,14 @@ export default function MainScreen_Teaminfo() {
         });
       });
   }
-
   useEffect(() => {
     if (window.sessionStorage.getItem("team_name") !== "none") {
       getTeamdata();
+    }
+  }, []);
+  useEffect(() => {
+    if (window.sessionStorage.getItem("team_name") !== "none") {
+      //getTeamdata();
       setteamcard({
         card: (
           <Card className={classes.root}>
