@@ -220,10 +220,9 @@ app.post('/reservation/detail/matchlist', form_data.array(),function(req, res, n
   const r_date = req.body.r_date;
   const r_time = req.body.r_time;
   const team_name = req.body.team_name;
-  const reservation_success = req.body.reservation_success;
   const address = req.body.address;
   connection.query(
-    "insert into matchlist(user_email, team_name, ground_name, r_date, r_time, ground_num, match_success, reservation_success, address) values (?,?,?,?,?,?,?,?,?)", [user_email, team_name, ground_name, r_date, r_time, ground_num, 0, reservation_success, address],
+    "insert into matchlist(user_email, team_name, ground_name, r_date, r_time, ground_num, match_success, address) values (?,?,?,?,?,?,?,?)", [user_email, team_name, ground_name, r_date, r_time, ground_num, 0, address],
   function(err, rows,fields){
     if(err){
       console.log(err);
@@ -708,7 +707,7 @@ app.post("/mail/read", (req, res) =>{
 app.post("/matchinfo/matchinglist", (req, res) => {
   const email = req.body.id;
 
-  connection.query("select *from matchlist where user_email = ?",[email],
+  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1",[email, email],
   function(err, rows, fields){
     if(err){
     } else {

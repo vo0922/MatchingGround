@@ -193,16 +193,16 @@ export default function MatchListMain() {
                     alignItems="center"
                     style={{ marginTop: 10 }}
                   >
-                    <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
+                    {/* <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
                       매치신청
-                    </Button>
-                    {/* {json.user_email !== window.sessionStorage.getItem('id') ? 
+                    </Button> */}
+                    {json.user_email !== window.sessionStorage.getItem('id') ? 
                     <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
                       매치신청
                     </Button>
                     : <Button disabled variant="outlined" >
                       매치신청
-                    </Button>} */}
+                    </Button>}
                     
                   </Grid>
                 </Container>

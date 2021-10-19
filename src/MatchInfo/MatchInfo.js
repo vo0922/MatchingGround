@@ -32,6 +32,14 @@ export default class MatchInfo extends Component {
             </Grid>
             <Grid style={{marginTop:10}}>
             <Typography component="div" style={{fontSize:20, fontWeight:"bolder", marginTop:50}}>
+                대기중인 매칭
+              </Typography>
+            </Grid>
+            <Grid style={{width:'100%'}}>
+                {/*대기중인 매칭*/}
+            </Grid>
+            <Grid style={{marginTop:10}}>
+            <Typography component="div" style={{fontSize:20, fontWeight:"bolder", marginTop:50}}>
                 지난 매칭
               </Typography>
             </Grid>

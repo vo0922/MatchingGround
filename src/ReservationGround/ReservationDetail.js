@@ -191,8 +191,6 @@ function ReservationDetail({location, history}) {
     const onreservation = (e) => {
       e.preventDefault();
       var check1 = e.target.checked1.checked;
-      var check2 = e.target.checked2.checked;
-      if(!check1){check2=false}
 
       const formData = new FormData();
       if(!e.target.r_time.value){
@@ -205,7 +203,6 @@ function ReservationDetail({location, history}) {
       formData.append("r_date", e.target.r_date.value);
       formData.append("r_time", e.target.r_time.value);
       formData.append("address", ground.address);
-      formData.append("reservation_success", Number(check2));
 
       fetch("http://localhost:3001/reservation/detail/overlap", {
         method: "post",
@@ -215,7 +212,7 @@ function ReservationDetail({location, history}) {
         .then((res) => {
           loop = res.length;
           if(!loop){
-            if(!check1 && !check2){
+            if(!check1){
               fetch("http://localhost:3001/reservation/detail/reservation", {
                 method: "post",
                 body: formData,
@@ -225,17 +222,7 @@ function ReservationDetail({location, history}) {
                   alert(res.alert_text);
                   history.push('/reservation');
                 });
-            } else if(check1 && !check2){
-              fetch("http://localhost:3001/reservation/detail/matchlist", {
-                method: "post",
-                body: formData,
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                  alert(res.alert_text);
-                  history.push('/reservation');
-                });
-            } else if(check1 && check2){
+            } else if(check1){
               fetch("http://localhost:3001/reservation/detail/reservation", {
                 method: "post",
                 body: formData,
@@ -406,26 +393,7 @@ function ReservationDetail({location, history}) {
                     labelPlacement="end"
                     onChange={handleChecked}
                   />
-                  {checkbox.checkbox === "0" ? (
-                    <FormControlLabel
-                      value="0"
-                      control={<Checkbox color="primary" />}
-                      label="매치가 성사되지 않아도 경기장 예약"
-                      name = "checked2"
-                      labelPlacement="end"
-                      style={{ marginLeft: 100 }}
-                      disabled
-                    />
-                  ) : (
-                    <FormControlLabel
-                      value="0"
-                      control={<Checkbox color="primary" />}
-                      label="매치가 성사되지 않아도 경기장 예약"
-                      name = "checked2"
-                      labelPlacement="end"
-                      style={{ marginLeft: 100 }}
-                    />
-                  )}
+
                 </FormGroup>
               </FormControl>
             </Grid>
