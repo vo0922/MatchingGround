@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-function TeamMake({ history }) {
+function Teammodify({ history, location }) {
   const [inputs, setinputs] = useState({
     team_class: "",
     team_age: "",
@@ -28,9 +28,7 @@ function TeamMake({ history }) {
     });
   };
 
-  const team_name = document.getElementById("team_name");
-  const team_introduce = document.getElementById("team_introduce");
-
+  const [teaminfo, setteaminfo] = useState(location.state.teaminfo);
 
   //오늘 날짜
   let today_date = new Date();
@@ -108,39 +106,16 @@ function TeamMake({ history }) {
       alert("사진을 등록해주세요");
       return;
     }
-
-    switch ("") {
-      case team_name.value:
-        alert("클럽명을 선택해주세요.");
-        return;
-        case city:
-        alert("활동지역을 작성해주세요.");
-        return;  
-        case area:
-        alert("활동도시 작성해주세요.");
-        return;  
-        case team_introduce.value:
-        alert("클럽 소개글을 작성해주세요.");
-        return;   
-      case team_class:
-        alert("클럽 수준을 선택해주세요.");
-        return;
-      case team_age:
-        alert("클럽 희망 연령대를 선택해주세요.");
-        return;
-    } 
-
+    
     const formData = new FormData();
 
-    formData.append("team_name", e.target.team_name.value);
+    formData.append("team_name", teaminfo.team_name);
     formData.append("team_image", e.target.team_image.files[0]);
-    formData.append("team_date", team_date);
     formData.append("team_class", e.target.team_class.value);
     formData.append("team_introduce", e.target.team_introduce.value);
     formData.append(
       "activity_area",
-      e.target.area.value + " " + e.target.areamenu.value
-    );
+      teaminfo.activity_area);
     formData.append("team_age", e.target.team_age.value);
     formData.append("team_manage_name", window.sessionStorage.getItem("id"));
 
@@ -157,17 +132,14 @@ function TeamMake({ history }) {
 
   //팀 생성 API
   function teammodify(teaminfo) {
-    fetch("http://localhost:3001/team/team_make", {
+    fetch("http://localhost:3001/team/modify", {
       method: "post",
       body: teaminfo,
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data.msg);
-        console.log(data.team_name);
-        window.sessionStorage.setItem("team_manager", data.success);
-        window.sessionStorage.setItem("team_name", data.team_name);
-        alert("클럽 생성이 완료되었습니다.");
+        alert("클럽 수정이 완료되었습니다.");
         history.push("/team");
       });
   }
@@ -196,11 +168,20 @@ function TeamMake({ history }) {
   };
 
   let team_logo = null;
+  var profileimage_url = teaminfo.team_image.substring(0,4);
   if (image.file !== "") {
     team_logo = (
       <img
         className="team_logo"
         src={image.previewURL}
+        style={{ width: 80, height: 80 }}
+      ></img>
+    );
+  } else {
+    team_logo = (
+      <img
+        className="team_logo"
+        src={teaminfo.team_image.substring(0,4) === "http" ? teaminfo.team_image : '../' + teaminfo.team_image}
         style={{ width: 80, height: 80 }}
       ></img>
     );
@@ -216,7 +197,7 @@ function TeamMake({ history }) {
         style={{ backgroundColor: "#F3F3F3", height: "90vh", paddingTop: 20 }}
       >
         <Grid container direction="column">
-          <h1>팀 만들기</h1>
+          <h1>클럽 수정하기</h1>
         </Grid>
         <form
           onSubmit={handleSubmit}
@@ -276,6 +257,10 @@ function TeamMake({ history }) {
                     name="team_name"
                     label="클럽명"
                     variant="outlined"
+                    value={teaminfo.team_name}
+                    InputProps={{
+                      readOnly: true,
+                    }}
                     style={{ marginTop: 4, width: 500 }}
                   />
                 </Paper>
@@ -294,40 +279,17 @@ function TeamMake({ history }) {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <Select
-                      id="area"
-                      name="area"
-                      value={city}
-                      onChange={handleSelectcity}
-                      style={{ marginTop: 4, width: 200 }}
-                    >
-                      <MenuItem value={"서울"}>서울</MenuItem>
-                      <MenuItem value={"부산"}>부산</MenuItem>
-                      <MenuItem value={"대구"}>대구</MenuItem>
-                      <MenuItem value={"인천"}>인천</MenuItem>
-                      <MenuItem value={"광주"}>광주</MenuItem>
-                      <MenuItem value={"대전"}>대전</MenuItem>
-                      <MenuItem value={"울산"}>울산</MenuItem>
-                      <MenuItem value={"세종"}>세종</MenuItem>
-                      <MenuItem value={"경기"}>경기</MenuItem>
-                      <MenuItem value={"강원"}>강원</MenuItem>
-                      <MenuItem value={"충북"}>충북</MenuItem>
-                      <MenuItem value={"충남"}>충남</MenuItem>
-                      <MenuItem value={"전북"}>전북</MenuItem>
-                      <MenuItem value={"전남"}>전남</MenuItem>
-                      <MenuItem value={"경북"}>경북</MenuItem>
-                      <MenuItem value={"경남"}>경남</MenuItem>
-                      <MenuItem value={"제주"}>제주</MenuItem>
-                    </Select>
-                    <Select
-                      id="areamenu"
-                      name="areamenu"
-                      value={area}
-                      onChange={handleSelectarea}
-                      style={{ marginTop: 4, width: 200 }}
-                    >
-                      {areamenu}
-                    </Select>
+                    <TextField
+                    id="activity_area"
+                    name="activity_area"
+                    label="활동지역"
+                    variant="outlined"
+                    value={teaminfo.activity_area}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    style={{ marginTop: 4, width: 500 }}
+                  />                  
                   </Grid>
                 </Paper>
               </Box>
@@ -350,6 +312,7 @@ function TeamMake({ history }) {
                     id="team_introduce"
                     name="team_introdcue"
                     multiline
+                    defaultValue={teaminfo.team_introduce}
                     rows={7}
                     style={{ width: 500, marginTop: 4 }}
                   />
@@ -366,7 +329,7 @@ function TeamMake({ history }) {
                   <Select
                     id="team_class"
                     name="team_class"
-                    value={team_class}
+                    defaultValue={teaminfo.team_class}
                     onChange={onChange}
                     style={{ marginTop: 4, width: 150 }}
                   >
@@ -386,7 +349,7 @@ function TeamMake({ history }) {
                   <Select
                     id="team_age"
                     name="team_age"
-                    value={team_age}
+                    defaultValue={teaminfo.team_age}
                     onChange={onChange}
                     style={{ marginTop: 4, width: 150 }}
                   >
@@ -406,7 +369,7 @@ function TeamMake({ history }) {
                 style={{ width: 706, height: 60 }}
                 type="submit"
               >
-                클럽 생성하기
+                수정완료
               </Button>
             </Grid>
           </Grid>
@@ -416,4 +379,4 @@ function TeamMake({ history }) {
   );
 }
 
-export default withRouter(TeamMake);
+export default withRouter(Teammodify);

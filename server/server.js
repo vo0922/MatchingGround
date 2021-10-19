@@ -486,7 +486,7 @@ function(err,rows,fields){
 });
 
 
-// 팀 정보 수정하기
+// 팀 정보 만들기
 const teaminfo_storage = multer.diskStorage({
   destination : function(req, file, cb){
     cb(null, "../public/teamlogo/");    
@@ -503,7 +503,7 @@ app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
   connection.query(
     "insert into Team (team_image, team_name, team_date, team_class, team_introduce, team_manage_name, activity_area, team_age) values(?,?,?,?,?,?,?,?)",
     [
-      req.body.team_image,
+      "teamlogo/" + req.file.filename,
       req.body.team_name,
       req.body.team_date,
       req.body.team_class,
@@ -516,23 +516,110 @@ app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
       if (err) {
         console.log(err);
       } else {
+        res.send({msg:"클럽 생성이 완료되었습니다.", success:1, team_name:req.body.team_name});
         //console.log("성공");
       }
     }
   );
 });
 
-// 팀정보 불러오기
+// 팀 정보 수정하기
+app.post("/team/modify", teaminfo_upload.single("team_image"), (req,res)=>{
+  console.log(req.body);
+  connection.query(
+    "update Team set team_image=?, team_class=?, team_introduce=?, team_age=? where team_name = ?",
+    [
+      "teamlogo/" + req.file.filename,
+      req.body.team_class,
+      req.body.team_introduce,
+      req.body.team_age,
+      req.body.team_name,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send({msg:"클럽 수정이 완료되었습니다."});
+        //console.log("성공");
+      }
+    }
+  );
+});
+
+// 메인 팀정보 불러오기
 app.post("/team/info", (req, res) =>{
   const user_email = req.body.user_email;
 
-  connection.query("select team_name, team_image, team_count, win, lose, date_format(team_date, '%Y-%m-%d') AS 'team_date', team_class, team_introduce from Team where team_name = (select team_name from users where email = ?)", [user_email],
+  connection.query("select team_name, team_image, team_count, win, lose, date_format(team_date, '%Y-%m-%d') AS 'team_date', team_class, team_introduce, team_manage_name, team_age, activity_area from Team where team_name = (select team_name from users where email = ?)", [user_email],
   function(err, rows, fields){
     if(err){
       console.log("팀 정보 불러오기 실패" + err);
     } else {
       res.send(rows);
       console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
+
+// 팀정보 불러오기
+app.post("/team/teaminfo", (req, res) =>{
+  const user_email = req.body.user_email;
+  const team_name = req.body.team_name;
+
+  connection.query("select *from Team, users where Team.team_manage_name = (select team_manage_name from Team where team_name=?) and users.email = (select team_manage_name from Team where team_name=?)", [team_name, team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("팀 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log(rows);
+      console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
+
+// 클럽 탈퇴하기
+app.post("/team/delete", (req, res) =>{
+  const user_email = req.body.user_email;
+
+  connection.query("update users set team_name = ? where email = ?", ['none', user_email],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽 탈퇴 실패" + err);
+    } else {
+      res.send({msg:"클럽이 성공적으로 탈퇴되었습니다."});
+      console.log("클럽 정보 탈퇴 성공");
+    }
+  });
+});
+
+// 클럽 삭제하기
+/*
+app.post("/team/modify/delete", (req, res) =>{
+  const team_name = req.body.team_name;
+  console.log(team_name);
+
+  connection.query("delete from Team where team_name = ?", [team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽 정보 삭제하기 실패" + err);
+    } else {
+      res.send({msg:"클럽이 성공적으로 삭제되었습니다."});
+      console.log("클럽 정보 삭제하기 성공");
+    }
+  });
+});
+*/
+
+// 클럽원 불러오기
+app.post("/team/member", (req, res) =>{
+  const team_name = req.body.team_name;
+  connection.query("select *from users where team_name = ? order by FIELD(position, 'FW', 'MF', 'DF', 'GK'), user_name desc ", [team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("1성공");
+    } else {
+      res.send(rows);
     }
   });
 });

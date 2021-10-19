@@ -36,9 +36,6 @@ export default function BasicTable() {
 
 // 전적 API
 
-
-
-
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
