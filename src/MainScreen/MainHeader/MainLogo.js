@@ -100,11 +100,13 @@ function MainLogo({history}) {
     if(text==='내 정보'){
       history.push('/myinfo');
     }else if(text==='경기장 관리'){
-      history.push('/notgroundmanager');
+      window.location.href='/notgroundmanager';
+      //history.push('/notgroundmanager');
     }else if(text==='공지사항'){
       history.push('/notice')
     }else if(text==='내 팀정보') {
-      history.push('/team')
+      window.location.href='/team';
+      //history.push('/team')
     }else if(text==='내 매칭정보'){
       history.push('/matchinfo');
     }else if(text==='로그아웃'){
