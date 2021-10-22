@@ -145,7 +145,7 @@ export default function MatchListMain() {
         if(json.length === 0){
           setmatchlistcards({
             body:
-            <Typography key="no_match" component="h2" variant="h2" style={{textAlign:"center", marginTop:50}}>매치가 없어요 ㅜ_ㅜ</Typography>
+            <Typography key="no_match" component="h5" variant="h5" style={{textAlign:"center", marginTop:50}}>개설된 매치가 없습니다. 직접 매치를 개설해보세요!</Typography>
           })
           return;
         }
@@ -154,7 +154,7 @@ export default function MatchListMain() {
             <Card
               key={json.match_num}
               className={classes.matchlistcard}
-              variant="outlined"
+              elevation={1}
             >
               <CardContent>
                 <Container>
@@ -193,17 +193,14 @@ export default function MatchListMain() {
                     alignItems="center"
                     style={{ marginTop: 10 }}
                   >
-                    <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
+                    {/* <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
                       매치신청
-                    </Button>
-                    {/* {json.user_email !== window.sessionStorage.getItem('id') ? 
-                    <Button onClick={() => handleApplyOpen(json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">
-                      매치신청
-                    </Button>
-                    : <Button disabled variant="outlined" >
-                      매치신청
-                    </Button>} */}
-                    
+                    </Button> */}
+                    {json.user_email !== window.sessionStorage.getItem('id') ?
+                    (json.match_success ? 
+                    <Button disabled variant="outlined">신청마감</Button> : 
+                    <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">매치신청</Button>)
+                    : <Button disabled variant="outlined" >매치신청</Button>}
                   </Grid>
                 </Container>
               </CardContent>
@@ -283,6 +280,7 @@ export default function MatchListMain() {
   // 매치신청 다이얼로그 세팅
   const [applyOpen, setapplyOpen] = useState(false);
   const [applyContent, setapplyContent] = useState({
+    match_num : 0,
     user_email : "",
     team_name : "",
     ground_name : "",
@@ -292,8 +290,9 @@ export default function MatchListMain() {
     address : "", 
   });
 
-  const handleApplyOpen = (user_email, team_name, ground_name, r_date, r_time, ground_num, address) => {
+  const handleApplyOpen = (match_num, user_email, team_name, ground_name, r_date, r_time, ground_num, address) => {
     setapplyContent({
+      match_num : match_num,
       user_email : user_email,
       team_name : team_name,
       ground_name : ground_name,
@@ -310,7 +309,7 @@ export default function MatchListMain() {
   }
 
   function applysend(){
-    fetch("http://localhost:3001/matchlist/matchapply", {
+    fetch("http://localhost:3001/matchlist/matchapplyalert", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -319,16 +318,36 @@ export default function MatchListMain() {
         send_id : window.sessionStorage.getItem('id'),
         receive_id : applyContent.user_email,
         title : "매치신청",
-        contents : "정확한 매치신청 내역은 내매칭정보를 확인해주세요.",
-        link:"http://localhost:3000/mymatchinfo"
+        contents : "지금바로 내매칭정보에서 확인해보세요!",
+        link:"http://localhost:3000/matchinfo"
       }),
     })
       .then((res) => res.json())
       .then((res) => {
-        if(res.success)
+    });
+
+    fetch("http://localhost:3001/matchlist/matchapply", {
+      method: "POST", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        match_num : applyContent.match_num,
+        send_id : window.sessionStorage.getItem('id'),
+        send_team : window.sessionStorage.getItem('team_name'),
+
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if(res.success){
           alert("신청이 완료되었습니다.");
-      });
-      setapplyOpen(false);
+          getmatchlist();
+        }
+          
+    });
+    
+    setapplyOpen(false);
   }
 
   // 현재날짜 기반 날짜버튼 렌더링

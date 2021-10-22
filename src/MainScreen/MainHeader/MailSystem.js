@@ -7,6 +7,7 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import Button from "@mui/material/Button";
 import { fontSize } from "@mui/system";
 
 export default function MailSystem() {
@@ -93,6 +94,7 @@ export default function MailSystem() {
                       >
                         {res.contents}
                       </Typography>
+                      <Button href={res.link} size="small">바로가기→</Button>
                     </Fragment>
                   }
                 />

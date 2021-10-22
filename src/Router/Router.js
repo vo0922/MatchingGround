@@ -28,6 +28,7 @@ import Notice from '../Notice/Notice'
 import PrivateRouteTeamGM from './PrivateRouteTeamGM';
 import TeamModify from '../TeamInfo/TeamModify';
 import Matchinfo from '../MatchInfo/MatchInfo'
+import PastReservation from '../PastReservation/PastReservation';
 
 const Routes = () => {
     return (
@@ -43,6 +44,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/myinfo" component={MyInfo}/>
                 <PrivateRoute exact path="/myinfo/modify" component={MyModify}/>
                 <PrivateRoute exact path="/matchinfo" component={Matchinfo}/>
+                <PrivateRoute exact path="/pastreservation" component={PastReservation}/>
 
                 <PrivateRouteGM exact path="/groundmanager" component={ManageGround}/>
                 <PrivateRouteGM exact path="/groundmanager/modify" component={GroundModify}/>
