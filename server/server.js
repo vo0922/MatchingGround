@@ -181,6 +181,8 @@ app.post('/reservation/detail/reservation', form_data.array(),function(req, res,
   const r_date = req.body.r_date;
   const r_time = req.body.r_time;
   const team_name = req.body.team_name;
+  //console.log(req.body)
+
   connection.query(
     "insert into reservation(ground_name, ground_num, user_email, team_name, r_date, r_time) select ?,?,?,?,?,? from dual where not exists(select *from reservation where ground_name=? and ground_num=? and r_time=? and r_date=?)", [ground_name, ground_num, user_email, team_name, r_date, r_time, ground_name, ground_num, r_time, r_date],
   function(err, rows,fields){
@@ -221,8 +223,10 @@ app.post('/reservation/detail/matchlist', form_data.array(),function(req, res, n
   const r_time = req.body.r_time;
   const team_name = req.body.team_name;
   const address = req.body.address;
+  const vs_count = req.body.vs_count;
+  
   connection.query(
-    "insert into matchlist(user_email, team_name, ground_name, r_date, r_time, ground_num, match_success, address) values (?,?,?,?,?,?,?,?)", [user_email, team_name, ground_name, r_date, r_time, ground_num, 0, address],
+    "insert into matchlist(user_email, team_name, ground_name, r_date, r_time, ground_num, match_success, address, vs_count) values (?,?,?,?,?,?,?,?,?)", [user_email, team_name, ground_name, r_date, r_time, ground_num, 0, address, vs_count],
   function(err, rows,fields){
     if(err){
       console.log(err);
@@ -706,8 +710,8 @@ app.post("/mail/read", (req, res) =>{
 // 진행중인 매칭
 app.post("/matchinfo/matchinglist", (req, res) => {
   const email = req.body.id;
-
-  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1",[email, email],
+  const r_time = req.body.r_time;
+  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1 and date(r_date) >= date_format(now(), '%Y-%m-%d') and r_time >= ?;",[email, email,r_time],
   function(err, rows, fields){
     if(err){
     } else {
@@ -717,11 +721,51 @@ app.post("/matchinfo/matchinglist", (req, res) => {
   });
 });
 
+// 매칭 취소
+app.post("/matchinfo/matchcancel", (req, res) => {
+  const match_num = req.body.match_num;
+  connection.query("update matchlist set match_success = 0 where match_num = ?",[match_num],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      console.log("매치 취소하기");
+      res.send({msg:"취소 되었습니다."});
+    }
+  });
+});
+
+// 대기중인 매칭
+app.post("/matchinfo/matchwatelist", (req, res) => {
+  const email = req.body.id;
+  const r_time = req.body.r_time;
+  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 0 and date(r_date) >= date_format(now(), '%Y-%m-%d') and r_time > ?;",[email, email,r_time],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      res.send(rows);
+      console.log("대기중인 매칭 불러오기");
+    }
+  });
+});
+
+// 예약 취소
+app.post("/matchinfo/matchdelete", (req, res) => {
+  const match_num = req.body.match_num;
+  connection.query("update matchlist set match_success = 0 where match_num = ?",[match_num],
+  function(err, rows, fields){
+    if(err){
+    } else {
+      console.log("매치 취소하기");
+      res.send({msg:"취소 되었습니다."});
+    }
+  });
+});
+
 // 지난 매칭
 app.post("/matchinfo/matchedlist", (req, res) => {
   const email = req.body.id;
-
-  connection.query("select *from matchlist where user_email = ? and match_success = 1",[email],
+  const r_time = req.body.r_time;
+  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1 and date(r_date) <= date_format(now(), '%Y-%m-%d') and r_time < ?",[email, email,r_time],
   function(err, rows, fields){
     if(err){
     } else {
