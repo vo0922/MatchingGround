@@ -626,11 +626,10 @@ app.post("/team/member", (req, res) =>{
 // 매치리스트 불러오기
 app.post("/matchlist", (req, res) =>{
   const r_date = req.body.r_date;
+  const r_time = req.body.r_time;
   const address = req.body.address;
-  const ground_name = req.body.ground_name;
-  const team_name = req.body.team_name
 
-  connection.query("select * from matchlist where r_date like ? and address like ? and ground_name like ? and team_name like ? order by match_success asc", [r_date, address, ground_name, team_name],
+  connection.query("select a.*, b.team_class from matchlist as a, Team as b where r_date like ? and address like ? and r_time > ? and a.team_name = b.team_name order by match_success asc", [r_date, address, r_time],
   function(err, rows, fields){
     if(err){
       console.log("매치리스트 정보 불러오기 실패" + err);
@@ -824,7 +823,9 @@ app.post("/pastreservation/past", (req, res)=>{
 });
 
 app.post("/mainscreen/matchlist", (req, res)=>{
-  connection.query("select * from matchlist order by r_date Limit 3", [],
+  const r_time = req.body.r_time
+
+  connection.query("select * from matchlist where date(r_date) > sysdate() and r_time > ? order by r_date Limit 3", [r_time],
   function(err, rows, fields){
     if(err){
       console.log("메인화면 매치리스트 불러오기 실패" + err)

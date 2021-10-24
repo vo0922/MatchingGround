@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   makeStyles,
   Typography,
@@ -8,6 +9,7 @@ import {
   Grid,
   Button,
 } from "@material-ui/core";
+
 
 const useStyles = makeStyles({
   matchlistcard: {
@@ -27,6 +29,10 @@ const useStyles = makeStyles({
 
 export default function MainScreen_Matchlist() {
   const classes = useStyles();
+  var today = new Date();
+  var current_time = today.getHours();
+  var current_r_time = parseInt(current_time / 2) - 3;
+
   var timelabel = [
     "",
     "08:00 ~ 10:00",
@@ -50,7 +56,7 @@ export default function MainScreen_Matchlist() {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(),
+      body: JSON.stringify({r_time : current_r_time}),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -103,7 +109,7 @@ export default function MainScreen_Matchlist() {
                     style={{ fontSize: 13, textAlign: "center" }}
                     color="primary"
                   >
-                    매치신청은 매치리스트 탭을 이용해주세요
+                    매치신청은 <Link to="/matchlist">매치리스트</Link> 탭을 이용해주세요
                   </Typography>
                 </Container>
               </CardContent>
