@@ -25,9 +25,9 @@ export default class Notice extends Component {
                 <Noticewrite />
             </Grid>
           </Grid>
-                  <NoticeList />
-                </Typography>
-              </Container>
+                <NoticeList />
+              </Typography>
+          </Container>
           </div>
         )
     }

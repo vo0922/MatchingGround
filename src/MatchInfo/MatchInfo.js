@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Matchinglist from './Matchinglist';
 import Matchedlist from './Matchedlist';
+import Matchwatelist from './Matchwatelist';
 export default class MatchInfo extends Component {
     render() {
         return (
@@ -13,7 +14,7 @@ export default class MatchInfo extends Component {
         <Container maxWidth="md" style={{backgroundColor : "white"}}>
           <Typography
               component="div"
-              style={{ height: "100vh" }}
+              style={{ minHeight:'100vh',height: "100%" }}
             >
           <Grid 
           container spacing={3}
@@ -29,6 +30,14 @@ export default class MatchInfo extends Component {
             </Grid>
             <Grid style={{width:'100%'}}>
                 <Matchinglist />
+            </Grid>
+            <Grid style={{marginTop:10}}>
+            <Typography component="div" style={{fontSize:20, fontWeight:"bolder", marginTop:50}}>
+                대기중인 매칭
+              </Typography>
+            </Grid>
+            <Grid style={{width:'100%'}}>
+                <Matchwatelist />
             </Grid>
             <Grid style={{marginTop:10}}>
             <Typography component="div" style={{fontSize:20, fontWeight:"bolder", marginTop:50}}>

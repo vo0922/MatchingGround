@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 
 export default function LabelTabs() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(4);
+  const [value, setValue] = React.useState(3);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -31,7 +31,6 @@ export default function LabelTabs() {
       >
         <Tab label="홈" component={Link} to='/' />
         <Tab label="매칭 리스트" component={Link} to='/matchlist' />
-        <Tab label="용병 구하기" component={Link} to='/agent' />
         <Tab label="팀 찾기" component={Link} to='/findteam' />
         <Tab label="경기장 예약" component={Link} to='/reservation'/>
       </Tabs>
