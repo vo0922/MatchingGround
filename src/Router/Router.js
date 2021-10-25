@@ -27,6 +27,7 @@ import MatchList from '../MatchList/MatchList';
 import Notice from '../Notice/Notice'
 import PrivateRouteTeamGM from './PrivateRouteTeamGM';
 import TeamModify from '../TeamInfo/TeamModify';
+import FindTeam from '../FindTeam/FindTeam';
 
 const Routes = () => {
     return (
@@ -53,8 +54,9 @@ const Routes = () => {
 
                 <PrivateRouteTeam exact path="/team" component={TeamInfo}/>
                 <PrivateRouteNotTeam exact path="/teamnot" component={TeamNot}/>
-                <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>
-                
+                <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>                
+                <PrivateRouteTeam exact path="/findteam" component={FindTeam}/>
+
                 <PrivateRouteTeamGM exact path="/team/modify" component={TeamModify}/>
 
                 <PrivateRoute exact path="/matchlist" component={MatchList}/>                

@@ -26,7 +26,7 @@ function TeamMain({history}) {
   }
 
   const click_teamfind = () => {
-      history.push("/teamfind")
+      history.push("/findteam")
   };
 
 

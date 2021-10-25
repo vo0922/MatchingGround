@@ -578,11 +578,43 @@ app.post("/team/teaminfo", (req, res) =>{
   });
 });
 
+// 팀리스트 불러오기
+app.post("/team/teamlist", (req, res) =>{
+
+  connection.query("select *from Team ", [],
+  function(err, rows, fields){
+    if(err){
+      console.log("팀 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log(rows);
+      console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
+
+
+// 클럽 가입신청
+app.post("/team/teamapply", (req, res) =>{
+  const team_name = req.body.team_name;
+
+  connection.query("select *from teamapply where team_name=?",[team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽 가입신청정보 조회 실패" + err);
+    } else {
+      res.send(rows);
+      console.log(rows);
+      console.log("클럽 가입신청정보 조회 성공");
+    }
+  })
+})
+
 // 클럽 탈퇴하기
 app.post("/team/delete", (req, res) =>{
   const user_email = req.body.user_email;
 
-  connection.query("update users set team_name = ? where email = ?", ['none', user_email],
+  connection.query("update users set team_name = 'none' where email = ?", [user_email],
   function(err, rows, fields){
     if(err){
       console.log("클럽 탈퇴 실패" + err);
