@@ -187,7 +187,7 @@ export default function MatchListMain() {
                     </Typography>
                   ) : (
                     <Typography className={classes.cardcontent}>
-                      매치개설팀 : {json.team_name} / 팀 수준 : {json.team_class}
+                      매치개설팀 : {json.team_name} / 팀 수준 : {json.team_class} / {json.vs_count}
                     </Typography>
                   )}
                   <Grid
