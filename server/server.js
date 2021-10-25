@@ -632,16 +632,32 @@ app.post("/matchlist", (req, res) =>{
   const r_date = req.body.r_date;
   const r_time = req.body.r_time;
   const address = req.body.address;
-
-  connection.query("select a.*, b.team_class from matchlist as a, Team as b where r_date like ? and address like ? and r_time > ? and a.team_name = b.team_name order by match_success asc", [r_date, address, r_time],
-  function(err, rows, fields){
+  const today = new Date();
+  const today_date = today.getFullYear() + "-" +((today.getMonth()+1) < 10 ? "0" + (today.getMonth()+1) : today.getMonth()+1) + "-" + (today.getDate() < 10 ? "0" + today.getDate() : today.getDate());
+  
+  if(r_date === today_date){
+    connection.query("select a.*, b.team_class from matchlist as a, Team as b where r_date like ? and address like ? and r_time > ? and a.team_name = b.team_name order by match_success asc", [r_date, address, r_time],
+    function(err, rows, fields){
     if(err){
       console.log("매치리스트 정보 불러오기 실패" + err);
     } else {
       res.send(rows);
       console.log("매치리스트 정보 불러오기 성공");
     }
-  });
+    });
+  }
+  else{
+    connection.query("select a.*, b.team_class from matchlist as a, Team as b where r_date like ? and address like ? and a.team_name = b.team_name order by match_success asc", [r_date, address],
+    function(err, rows, fields){
+    if(err){
+      console.log("매치리스트 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log("매치리스트 정보 불러오기 성공");
+    }
+    });
+  }
+  
 });
 
 // 매치 신청 알림 전송
@@ -727,7 +743,7 @@ app.post("/mail/read", (req, res) =>{
 app.post("/matchinfo/matchinglist", (req, res) => {
   const email = req.body.id;
   const r_time = req.body.r_time;
-  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1 and date(r_date) >= date_format(now(), '%Y-%m-%d') and r_time >= ?;",[email, email,r_time],
+  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1 and (date(r_date) > date_format(now(), '%Y-%m-%d') or (date(r_date) = date_format(now(), '%Y-%m-%d') and r_time > ?));",[email, email,r_time],
   function(err, rows, fields){
     if(err){
     } else {
@@ -754,7 +770,7 @@ app.post("/matchinfo/matchcancel", (req, res) => {
 app.post("/matchinfo/matchwatelist", (req, res) => {
   const email = req.body.id;
   const r_time = req.body.r_time;
-  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 0 and date(r_date) >= date_format(now(), '%Y-%m-%d') and r_time > ?;",[email, email,r_time],
+  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 0 and (date(r_date) > date_format(now(), '%Y-%m-%d') or (date(r_date) = date_format(now(), '%Y-%m-%d') and r_time > ?));",[email, email,r_time],
   function(err, rows, fields){
     if(err){
     } else {
@@ -781,7 +797,7 @@ app.post("/matchinfo/matchdelete", (req, res) => {
 app.post("/matchinfo/matchedlist", (req, res) => {
   const email = req.body.id;
   const r_time = req.body.r_time;
-  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1 and date(r_date) <= date_format(now(), '%Y-%m-%d') and r_time < ?",[email, email,r_time],
+  connection.query("select *from matchlist where (user_email = ? or vs_user_email = ?) and match_success = 1 and (date(r_date) < date_format(now(), '%Y-%m-%d') or (date(r_date) = date_format(now(), '%Y-%m-%d') and r_time < ?))",[email, email,r_time],
   function(err, rows, fields){
     if(err){
     } else {
@@ -837,7 +853,7 @@ app.post("/pastreservation/current", (req, res)=>{
   var user_email = req.body.user_email;
   var r_time = req.body.r_time;
   
-  connection.query("select a.r_no, a.ground_name, a.ground_num, a.user_email, a.r_date, a.r_time, b.photo, b.address from reservation a, groundinfo b where a.user_email = ? and date(a.r_date) >= date_format(now(), '%Y-%m-%d') and a.r_time >= ? and a.ground_name = b.ground_name", [user_email, r_time],
+  connection.query("select a.*, b.photo, b.address from reservation a, groundinfo b where a.user_email = ? and (date(a.r_date) > date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time > ?)) and a.ground_name = b.ground_name", [user_email, r_time],
   function(err, rows, fields){
     if(err){
       console.log("현재 경기장 예약 내역 불러오기 실패 " + err)
@@ -854,7 +870,7 @@ app.post("/pastreservation/past", (req, res)=>{
   var user_email = req.body.user_email;
   var r_time = req.body.r_time;
   
-  connection.query("select a.r_no, a.ground_name, a.ground_num, a.user_email, a.r_date, a.r_time, b.photo, b.address from reservation a, groundinfo b where a.user_email = ? and (date(a.r_date) < date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time < ?)) and a.ground_name = b.ground_name order by r_date desc", [user_email, r_time],
+  connection.query("select a.r_no, a.ground_name, a.ground_num, a.user_email, a.r_date, a.r_time, b.photo, b.address from reservation a, groundinfo b where a.user_email = ? and (date(a.r_date) < date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time <= ?)) and a.ground_name = b.ground_name order by r_date desc", [user_email, r_time],
   function(err, rows, fields){
     if(err){
       console.log("현재 경기장 예약 내역 불러오기 실패 " + err)
@@ -869,7 +885,7 @@ app.post("/pastreservation/past", (req, res)=>{
 app.post("/mainscreen/matchlist", (req, res)=>{
   const r_time = req.body.r_time
 
-  connection.query("select * from matchlist where date(r_date) > sysdate() and r_time > ? order by r_date Limit 3", [r_time],
+  connection.query("select * from matchlist where date(r_date) > date_format(now(), '%Y-%m-%d') or (date(r_date) = date_format(now(), '%Y-%m-%d') and r_time > ?) order by r_date Limit 3", [r_time],
   function(err, rows, fields){
     if(err){
       console.log("메인화면 매치리스트 불러오기 실패" + err)
