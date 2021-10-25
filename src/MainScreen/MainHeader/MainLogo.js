@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -29,6 +30,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import MailSystem from './MailSystem'
+import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
 
 const drawerWidth = 240;
 const color = grey[50];
@@ -112,6 +114,8 @@ function MainLogo({history}) {
     }else if(text==='로그아웃'){
       window.sessionStorage.clear();
       history.push('/Login');
+    }else if(text==='지난 예약'){
+      history.push('/pastreservation');
     }
   };
   //홈 아이콘
@@ -210,12 +214,13 @@ function MainLogo({history}) {
         </div>
         <Divider />
         <List>
-        {['내 정보', '내 팀정보', '내 매칭정보'].map((text, index) => (
+        {['내 정보', '내 팀정보', '내 매칭정보', '지난 예약'].map((text, index) => (
           <ListItem button key={text} onClick={()=>{clickaction(text)}}>
             <ListItemIcon>
             {index===0 && <Accessibility/>}
             {index===1 && <PeopleAlt/>}
             {index===2 && <FormatListBulletedIcon/>}
+            {index===3 && <AssignmentIcon/>}
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>

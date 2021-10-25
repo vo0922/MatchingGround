@@ -61,7 +61,6 @@ export default function MainScreen_Teaminfo() {
           team_date: res[0].team_date,
           team_class: res[0].team_class,
           activity_area: res[0].activity_area,
-          
         });
       });
   }
@@ -69,9 +68,14 @@ export default function MainScreen_Teaminfo() {
   useEffect(() => {
     if (window.sessionStorage.getItem("team_name") !== "none") {
       getTeamdata();
+    }
+  }, [])
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem("team_name") !== "none") {
       setteamcard({
         card: (
-          <Card className={classes.root}>
+          <Card className={classes.root} elevation={3}>
             <CardContent>
               <Grid container spacing={3}>
                 <Grid item xs={3}>
@@ -105,7 +109,7 @@ export default function MainScreen_Teaminfo() {
     } else {
       setteamcard({
         card: 
-        <Card className={classes.root}>
+        <Card className={classes.root} elevation={3}>
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={2}/>

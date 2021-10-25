@@ -62,7 +62,7 @@ export default function MainScreen_Myinfo() {
   return (
     <div>
       <p>내 정보</p>
-      <Card className={classes.root}>
+      <Card className={classes.root} elevation={3}>
         <CardContent>
             <Grid container spacing={3}>
             <Grid item xs={3}>

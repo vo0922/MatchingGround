@@ -220,10 +220,9 @@ app.post('/reservation/detail/matchlist', form_data.array(),function(req, res, n
   const r_date = req.body.r_date;
   const r_time = req.body.r_time;
   const team_name = req.body.team_name;
-  const reservation_success = req.body.reservation_success;
   const address = req.body.address;
   connection.query(
-    "insert into matchlist(user_email, team_name, ground_name, r_date, r_time, ground_num, match_success, reservation_success, address) values (?,?,?,?,?,?,?,?,?)", [user_email, team_name, ground_name, r_date, r_time, ground_num, 0, reservation_success, address],
+    "insert into matchlist(user_email, team_name, ground_name, r_date, r_time, ground_num, match_success, address) values (?,?,?,?,?,?,?,?)", [user_email, team_name, ground_name, r_date, r_time, ground_num, 0, address],
   function(err, rows,fields){
     if(err){
       console.log(err);
@@ -254,7 +253,7 @@ app.post("/manage/ground/reservation", (req,res)=>{
   });
 });
 
-// 괸리자 권한 예약 삭제
+// 경기장 예약 삭제
 app.post("/manage/ground/reservationcancel", (req,res)=>{
   const r_no = req.body.r_no;
 
@@ -627,11 +626,10 @@ app.post("/team/member", (req, res) =>{
 // 매치리스트 불러오기
 app.post("/matchlist", (req, res) =>{
   const r_date = req.body.r_date;
+  const r_time = req.body.r_time;
   const address = req.body.address;
-  const ground_name = req.body.ground_name;
-  const team_name = req.body.team_name
 
-  connection.query("select * from matchlist where r_date like ? and address like ? and ground_name like ? and team_name like ?", [r_date, address, ground_name, team_name],
+  connection.query("select a.*, b.team_class from matchlist as a, Team as b where r_date like ? and address like ? and r_time > ? and a.team_name = b.team_name order by match_success asc", [r_date, address, r_time],
   function(err, rows, fields){
     if(err){
       console.log("매치리스트 정보 불러오기 실패" + err);
@@ -642,8 +640,8 @@ app.post("/matchlist", (req, res) =>{
   });
 });
 
-// 매치 신청하기
-app.post("/matchlist/matchapply", (req, res) =>{
+// 매치 신청 알림 전송
+app.post("/matchlist/matchapplyalert", (req, res) =>{
   const send_id = req.body.send_id;
   const receive_id = req.body.receive_id;
   const title = req.body.title
@@ -651,6 +649,23 @@ app.post("/matchlist/matchapply", (req, res) =>{
   const link = req.body.link;
   
   connection.query("insert into mail(send_id, receive_id, send_date, title, contents, link) values (?, ?, sysdate(), ?, ?, ?)", [send_id, receive_id, title, contents, link],
+  function(err, rows, fields){
+    if(err){
+      console.log("매치신청 실패" + err);
+    } else {
+      res.send({success:1});
+      console.log("매치알림이 성공적으로 전송되었습니다.");
+    }
+  });
+});
+
+// 매치 신청
+app.post("/matchlist/matchapply", (req, res) =>{
+  const match_num = req.body.match_num;
+  const send_id = req.body.send_id;
+  const send_team = req.body.send_team;
+
+  connection.query("update matchlist set vs_user_email = ?, vs_team_name = ?, match_success = 1 where match_num = ?", [send_id, send_team, match_num],
   function(err, rows, fields){
     if(err){
       console.log("매치신청 실패" + err);
@@ -771,6 +786,57 @@ app.post("/notice/delete", (req, res)=>{
     }
   });
 });
+
+
+// 진행중인 경기장예약 내역 불러오기
+app.post("/pastreservation/current", (req, res)=>{
+  var user_email = req.body.user_email;
+  var r_time = req.body.r_time;
+  
+  connection.query("select a.r_no, a.ground_name, a.ground_num, a.user_email, a.r_date, a.r_time, b.photo, b.address from reservation a, groundinfo b where a.user_email = ? and date(a.r_date) >= date_format(now(), '%Y-%m-%d') and a.r_time >= ? and a.ground_name = b.ground_name", [user_email, r_time],
+  function(err, rows, fields){
+    if(err){
+      console.log("현재 경기장 예약 내역 불러오기 실패 " + err)
+    } 
+    else {
+      console.log("현재 경기장 예약 내역 불러오기 성공")
+      res.send(rows);
+    }
+  });
+});
+
+// 지난 경기장예약 내역 불러오기
+app.post("/pastreservation/past", (req, res)=>{
+  var user_email = req.body.user_email;
+  var r_time = req.body.r_time;
+  
+  connection.query("select a.r_no, a.ground_name, a.ground_num, a.user_email, a.r_date, a.r_time, b.photo, b.address from reservation a, groundinfo b where a.user_email = ? and (date(a.r_date) < date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time < ?)) and a.ground_name = b.ground_name order by r_date desc", [user_email, r_time],
+  function(err, rows, fields){
+    if(err){
+      console.log("현재 경기장 예약 내역 불러오기 실패 " + err)
+    } 
+    else {
+      console.log("현재 경기장 예약 내역 불러오기 성공")
+      res.send(rows);
+    }
+  });
+});
+
+app.post("/mainscreen/matchlist", (req, res)=>{
+  const r_time = req.body.r_time
+
+  connection.query("select * from matchlist where date(r_date) > sysdate() and r_time > ? order by r_date Limit 3", [r_time],
+  function(err, rows, fields){
+    if(err){
+      console.log("메인화면 매치리스트 불러오기 실패" + err)
+    } 
+    else {
+      console.log("메인화면 매치리스트 불러오기 성공")
+      res.send(rows);
+    }
+  });
+});
+
 
 
 app.listen(port, ()=>{
