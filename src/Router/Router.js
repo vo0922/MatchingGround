@@ -59,7 +59,7 @@ const Routes = () => {
                 <PrivateRouteTeam exact path="/team" component={TeamInfo}/>
                 <PrivateRouteNotTeam exact path="/teamnot" component={TeamNot}/>
                 <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>                
-                <PrivateRouteTeam exact path="/findteam" component={FindTeam}/>
+                <PrivateRoute exact path="/findteam" component={FindTeam}/>
 
                 <PrivateRouteTeamGM exact path="/team/modify" component={TeamModify}/>
 
