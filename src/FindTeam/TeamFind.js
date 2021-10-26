@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import {
   Container,
@@ -14,11 +15,26 @@ import {
   InputBase,
   TextField,
   Button,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import Teamlist from "./Teamlist";
+
+const useStyles = makeStyles((theme) => ({
+   
+  photo: {
+    height: 150,
+    alignItems: "center",
+  },
+}));
 
 function TeamFind({ history }) {
+
+  const classes = useStyles();
+
+
   const [inputs, setinputs] = useState({
     city: "",
     team_class: "",
@@ -33,45 +49,70 @@ function TeamFind({ history }) {
       [name]: value,
     });
   };
-  /*
-const [teaminfo, setteaminfo] = useState({
-        team_class: '',
-    })
 
-    const findstart = () => {
-    //시군구 검색api 요청
-    fetch("http://localhost:3001/reservation/search", {
-        method: "POST", // 통신방법
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ address: e.target.value }),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-        });      
-    
-    // 팀 수준
-      fetch("http://localhost:3001/team/findteam", {
-        method: "POST", // 통신방법
-        headers: {
-            "content-type": "application/json",
-        },
-        body: JSON.stringify({teaminfo})
-      })
-      
-    }
-      useEffect({
-        findstart();
-        state: {
-        teaminfo: teaminfo,
+  // 팀 상세정보 페이지
+  const getTeamDetail = (teamkey) => {
+    history.push({
+      pathname: '/findteam/teamdetail',
+      state: {
+        teamkey: teamkey,
+      }
+  });
+  }
+
+  const [teamlist, setteamlist] = useState({
+    list: '',
+  });
+
+  const getteamlist = () => {
+    fetch("http://localhost:3001/team/teamlist", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
       },
-      }, [])
-*/
+      body: JSON.stringify(),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        setteamlist({
+          list: json.map((data) => (
+            <Grid item xs={4} key={data.team_no}>
+              <Card>
+                <CardMedia>
+                <img className={classes.photo} src={data.team_image} alt="팀 로고" />
+                </CardMedia>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {data.team_name}
+                  </Typography>
+                  <Typography variant="body2" color="inherit">
+                    활동 지역 : {data.activity_area} <br />
+                    희망 연령대 : {data.team_age} <br />
+                    팀 수준 : {data.team_class} <br />
+                    팀 인원 : {data.team_count} <br />
+                    팀 소개 : {data.team_introduce}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button variant="outlined" color="primary" size="small" onClick={() => getTeamDetail(data.team_name)}>팀 상세페이지 버튼</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          )),
+        });
+      });
+  };
+
+
+  useEffect(() => {
+    getteamlist();
+  }, []);
+
 
   return (
     <React.Fragment>
-      <Container maxWidth="md" style={{ backgroundColor: "#F5F5F5", marginTop:10 }}>
+      <Container maxWidth="md" style={{ backgroundColor: "#F5F5F5", marginTop: 10 }}>
         <Typography component="div" style={{ height: "100vh" }}>
           <Grid
             container
@@ -155,7 +196,9 @@ const [teaminfo, setteaminfo] = useState({
               <h1>팀 리스트</h1>
             </Grid>
             <Grid item xs={12}>
-              <Teamlist />
+              <Grid container spacing={3}>
+                {teamlist.list}
+              </Grid>
             </Grid>
           </Grid>
         </Typography>

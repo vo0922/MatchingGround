@@ -30,6 +30,7 @@ import TeamModify from '../TeamInfo/TeamModify';
 import Matchinfo from '../MatchInfo/MatchInfo'
 import PastReservation from '../PastReservation/PastReservation';
 import FindTeam from '../FindTeam/FindTeam';
+import TeamDetail from '../FindTeam/TeamDetail';
 
 const Routes = () => {
     return (
@@ -60,6 +61,7 @@ const Routes = () => {
                 <PrivateRouteNotTeam exact path="/teamnot" component={TeamNot}/>
                 <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>                
                 <PrivateRoute exact path="/findteam" component={FindTeam}/>
+                <PrivateRoute exact path="/findteam/teamdetail" component={TeamDetail}/>
 
                 <PrivateRouteTeamGM exact path="/team/modify" component={TeamModify}/>
 

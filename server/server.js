@@ -596,6 +596,21 @@ app.post("/team/teamlist", (req, res) =>{
   });
 });
 
+//팀 상세정보 페이지
+app.post("/team/teamdetail", (req, res) =>{
+  const team_name = req.body.team_name;
+
+  connection.query("select *from Team where team_name = ? ", [team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("팀 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log(rows);
+      console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
 
 // 클럽 가입신청
 app.post("/team/teamapply", (req, res) =>{
