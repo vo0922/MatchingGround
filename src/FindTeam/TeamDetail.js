@@ -16,6 +16,7 @@ import {
     Modal,
 } from "@material-ui/core";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
+import TeamApplyModal from "./TeamApplyModal";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -47,8 +48,8 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 1500,
-    height: 550,
+    width: 1000,
+    height: 450,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -103,10 +104,16 @@ function TeamDetail({ location }) {
         createData("클럽 수준 ", teaminfo.team_class),
         createData("클럽 연령대 ", teaminfo.team_age),
     ];
+    
     //가입 신청 버튼
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    //검색 기능
+    const handleSubmit = () => {
+
+    }
 
     useEffect(() => {
         teamdetail();
@@ -116,6 +123,12 @@ function TeamDetail({ location }) {
     return (
         <React.Fragment>
             <MainLogo />
+            <form
+            onSubmit={handleSubmit}
+            noValidate
+            autoComplete="off"
+            encType="multipart/form-data"
+          >
             <Container
                 maxWidth="md"
                 style={{ backgroundColor: "white", height: "100%" }}
@@ -189,7 +202,7 @@ function TeamDetail({ location }) {
                                     aria-describedby="modal-modal-description"
                                 >
                                     <Box sx={style}>
-                                        모달 들어가는자리
+                                        <TeamApplyModal/>
                                     </Box>
                                 </Modal>
                             </Grid>
@@ -197,6 +210,7 @@ function TeamDetail({ location }) {
                     </Grid>
                 </Typography>
             </Container>
+            </form>
         </React.Fragment>
     );
 }
