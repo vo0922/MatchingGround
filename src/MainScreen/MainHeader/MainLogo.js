@@ -151,6 +151,10 @@ function MainLogo({history}) {
   });
   }
 
+  function chipClick(){
+    window.location.href='/myinfo'
+  }
+
 
 
   useEffect(() => {
@@ -172,14 +176,13 @@ function MainLogo({history}) {
           <Typography variant="h6" noWrap className={classes.title}>
             &nbsp;&nbsp; 매칭그라운드
           </Typography>
-          <Link to='/myinfo' style={{textDecoration:'none'}}>
           <Chip
             avatar={<Avatar alt="toolbar_profile" src={myinfo.profile_image} />}
             label={myinfo.user_name}
             variant="outlined"
             style={{marginRight:20}}
+            onClick={chipClick}
           />
-          </Link>
           <MailSystem/>
           
           <IconButton
