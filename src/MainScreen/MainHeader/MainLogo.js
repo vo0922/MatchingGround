@@ -31,6 +31,7 @@ import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import MailSystem from './MailSystem'
 import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
+import '../../font/font.css';
 
 const drawerWidth = 240;
 const color = grey[50];
@@ -170,7 +171,7 @@ function MainLogo({history}) {
         <Toolbar>
           <Link to = "/"><HomeIcon color="action"/></Link>
           <Typography variant="h6" noWrap className={classes.title}>
-            &nbsp;&nbsp; 매칭그라운드
+            <div className='Logo'>매칭그라운드</div>
           </Typography>
           <Link to='/myinfo' style={{textDecoration:'none'}}>
           <Chip

@@ -178,6 +178,7 @@ function ReservationDetail({ location, history }) {
           ball_rent: res[0].ball_rent,
           uniform_rent: res[0].uniform_rent,
           price: res[0].price,
+          phonenum: res[0].phonenum,
         });
       });
   };
@@ -215,6 +216,11 @@ function ReservationDetail({ location, history }) {
     "22:00 ~ 24:00",
   ];
   const [r_time, setr_time] = useState(0);
+
+  var today = new Date();
+  var current_time = today.getHours();
+  var current_r_time = parseInt(current_time / 2) - 3;
+
   //경기장 예약 정보 가져오기
   const reqreservation = () => {
     fetch("http://localhost:3001/reservation/detail/book", {
@@ -230,14 +236,27 @@ function ReservationDetail({ location, history }) {
     })
       .then((res) => res.json())
       .then((res) => {
+        if(r_date === current_date){
+          for(var i = 0; i < res.length; i++) {
+            time[res[i].r_time] = true;
+          }
+          for(var i = 0; i <= current_r_time; i++){
+            time[i] = true;
+          }
+          setreservation({
+            time: time,
+          })
+        }else{
         for (var i = 0; i < res.length; i++) {
           time[res[i].r_time] = true;
         }
         setreservation({
           time: time,
         });
+      }
       });
   };
+
   //예약 바 UI
   const timebar = (i) => {
     return reservation.time[i] ? (
@@ -582,7 +601,22 @@ function ReservationDetail({ location, history }) {
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                    {ground.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원 입니다."}
+                    경기장 이름 : {ground.title}
+                    <br/>
+                    주소 : {ground.address}
+                    <br/>
+                    경기장 연락처 : {ground.phonenum}
+                    <br/>
+                    구장 : {submititem.ground_num} 구장
+                    <br/>
+                    날짜 : {r_date} / 시간 : {timelabel[r_time-1]}
+                    <br/>
+                    경기인원 : {vscount}
+                    <br/>
+                    매치여부 : {checkbox.checkbox ? "매치개설" : "매치미개설" }
+                    <br/>
+                    <br/>
+                    <b>가격 : {ground.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}</b>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>

@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Logofont';
+    src: url('./SF레몬빙수-TTF.ttf');
+}
+
+.Logo {
+    font-family: 'Logofont';
+    font-size:25px;
+    margin-left: 20px;
+}

@@ -52,22 +52,68 @@ export default function Matchinglist() {
 
   const [open, setOpen] = useState(false);
   const [match_num, setmatch_num] = useState(0);
-  const [vs_user, setvs_user] = useState('');
-  const dialogClickOpen = (key, vs_user_email, vs_team_name) => {
+  const [vs_user, setvs_user] = useState({
+    user : '',
+    vs_user : '',
+  });
+
+  const [MatchCancel, setMatchCancel] = useState({
+    user_email : window.sessionStorage.getItem('id'),
+    vs_user_email : '',
+    user_team : window.sessionStorage.getItem('team_name'),
+    vs_user_team : '',
+  });
+  const dialogClickOpen = (key, vs_user_email, vs_team_name, user_email, user_team) => {
     setOpen(true);
     setmatch_num(key);
-    if(vs_team_name !== 'none'){
-      setvs_user(vs_team_name);
+    if(MatchCancel.user_email === user_email){
+      setMatchCancel({
+        ...MatchCancel,
+        vs_user_email : vs_user_email,
+        vs_user_team : vs_team_name,
+      })
     }else{
-      setvs_user(vs_user_email);
+      setMatchCancel({
+        ...MatchCancel,
+        vs_user_email : user_email,
+        vs_user_team : user_team,
+      })
     }
   };
+
 
   const dialogClose = () => {
     setOpen(false);
   };
 
   const matchcancel = () => {
+    var user_team = '';
+    var vs_team = '';
+    if(MatchCancel.user_team){
+      user_team = MatchCancel.user_team;
+    }else{
+      user_team = MatchCancel.user_email;
+    }
+    if(MatchCancel.vs_user_team){
+      vs_team = MatchCancel.vs_user_team;
+    }else{
+      vs_team = MatchCancel.vs_user_email;
+    }
+    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+      method: "POST", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        send_id : MatchCancel.user_email,
+        receive_id : MatchCancel.vs_user_email,
+        title : "매치취소",
+        contents : user_team + " : " + vs_team + "의 매치가 취소되었습니다."
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+    });
     fetch("http://localhost:3001/matchinfo/matchcancel", {
       method: "post", // 통신방법
       headers: {
@@ -152,7 +198,7 @@ export default function Matchinglist() {
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() => dialogClickOpen(data.match_num, data.vs_user_email, data.vs_team_name)}
+                      onClick={() => dialogClickOpen(data.match_num, data.vs_user_email, data.vs_team_name, data.user_email, data.team_name)}
                     >
                       매치 취소
                     </Button>
@@ -180,7 +226,7 @@ export default function Matchinglist() {
         <DialogTitle id="alert-dialog-title">{"매치취소"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description"></DialogContentText>
-          {vs_user}와의 매칭을 정말 취소 하시겠습니까?
+          {MatchCancel.user_team ? MatchCancel.user_team : MatchCancel.user_email} : {MatchCancel.vs_user_team ? MatchCancel.vs_user_team : MatchCancel.vs_user_email} 와의 매칭을 정말 취소 하시겠습니까?
         </DialogContent>
         <DialogActions>
           <Button onClick={dialogClose}>취소</Button>
