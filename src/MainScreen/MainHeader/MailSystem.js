@@ -128,10 +128,9 @@ export default function MailSystem() {
 
   return (
     <div>
-      <IconButton>
+      <IconButton onClick={handleClick}>
       <Badge
         badgeContent={mailcount}
-        onClick={handleClick}
         color="secondary"
         style={{ marginRight: 20 }}
       >
