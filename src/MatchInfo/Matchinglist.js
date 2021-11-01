@@ -89,12 +89,12 @@ export default function Matchinglist() {
   const matchcancel = () => {
     var user_team = '';
     var vs_team = '';
-    if(MatchCancel.user_team){
+    if(MatchCancel.user_team !== 'none'){
       user_team = MatchCancel.user_team;
     }else{
       user_team = MatchCancel.user_email;
     }
-    if(MatchCancel.vs_user_team){
+    if(MatchCancel.vs_user_team !== 'none'){
       vs_team = MatchCancel.vs_user_team;
     }else{
       vs_team = MatchCancel.vs_user_email;
