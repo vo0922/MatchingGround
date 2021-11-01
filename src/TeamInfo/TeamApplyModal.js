@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Grid } from "@material-ui/core";
 
-export default function DataTable() {
+export default function TeamApplyModal() {
   const columns = [
     { field: "email", headerName: "email", width: 200 },
     { field: "user_name", headerName: "user_name", width: 150 },
@@ -133,7 +133,7 @@ export default function DataTable() {
             variant="outlined"
             color="primary"
             size="large"
-            //onClick={nobutton}
+            onClick={leavebutton}
           >
             가입거절
           </Button>

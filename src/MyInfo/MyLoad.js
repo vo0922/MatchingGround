@@ -13,7 +13,6 @@ import {
   TableHead,
   TableBody,
 } from "@material-ui/core";
-import Mytotal from "./Mytotal";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import { withRouter } from "react-router";
 
@@ -177,7 +176,6 @@ function MyLoad({ history }) {
                 수정하기
               </Button>
             </Grid>
-            <Mytotal />
           </Grid>
         </Typography>
       </Container>
