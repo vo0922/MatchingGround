@@ -5,8 +5,6 @@ import Container from "@material-ui/core/Container";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import { withRouter } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
-import LocalParkingIcon from "@material-ui/icons/LocalParking";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -42,6 +40,7 @@ function ReservationDetail({ location, history }) {
     ball_rent: "",
     uniform_rent: "",
     price: "",
+    manage_email: "",
   });
   //구장 수
   const [groundlist, setgroundlist] = useState({
@@ -141,6 +140,22 @@ function ReservationDetail({ location, history }) {
                   history.push("/reservation");
                 });
             }
+            fetch("http://localhost:3001/matchlist/matchapplyalert", {
+              method: "POST", // 통신방법
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify({
+                send_id: window.sessionStorage.getItem('id'),
+                receive_id: ground.manage_email,
+                title: "예약신청",
+                link:"http://localhost:3000/notgroundmananger",
+                contents:
+                  window.sessionStorage.getItem('id') + " 님이 " + submititem.ground_name + "경기장에 예약을 신청하였습니다.",
+              }),
+            })
+              .then((res) => res.json())
+              .then((res) => {});
           } else {
             alert("다른 시간을 예약하세요.");
           }
@@ -179,6 +194,7 @@ function ReservationDetail({ location, history }) {
           uniform_rent: res[0].uniform_rent,
           price: res[0].price,
           phonenum: res[0].phonenum,
+          manage_email: res[0].manager_id
         });
       });
   };
@@ -240,7 +256,7 @@ function ReservationDetail({ location, history }) {
           for(var i = 0; i < res.length; i++) {
             time[res[i].r_time] = true;
           }
-          for(var i = 0; i < current_r_time; i++){
+          for(var i = 0; i <= current_r_time; i++){
             time[i] = true;
           }
           setreservation({
@@ -426,7 +442,12 @@ function ReservationDetail({ location, history }) {
             <h1>{ground.title}</h1>
             <img src={ground.img} height="450" />
           </Grid>
-
+          <form
+            onSubmit={onreservation}
+            noValidate
+            autoComplete="off"
+            encType="multipart/form-data"
+          >
           <Grid container spacing={3} style={{ marginTop: 30 }}>
             <Grid item xs={5} style={{ marginLeft: 20 }}>
               <h3>상세정보</h3>
@@ -437,25 +458,7 @@ function ReservationDetail({ location, history }) {
                 {ground.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
                 원
               </p>
-            </Grid>
-            <Grid item xs={6}>
-              <h3>이용안내</h3>
-              {ground.parking_lot === "true" ? (
-                <LocalParkingIcon fontSize="large" />
-              ) : null}
-              {ground.ball_rent === "true" ? (
-                <SportsSoccerIcon fontSize="large" />
-              ) : null}
-            </Grid>
-          </Grid>
-          <form
-            onSubmit={onreservation}
-            noValidate
-            autoComplete="off"
-            encType="multipart/form-data"
-          >
-            <Grid container spacing={3}>
-              <Grid item xs={11} style={{ marginLeft: 10 }}>
+              <Grid item xs={11} style={{ marginTop:40 ,marginLeft: 10 }}>
                 <h5> - 경기인원 - </h5>
                 <ToggleButtonGroup
                   color="primary"
@@ -470,6 +473,18 @@ function ReservationDetail({ location, history }) {
                   <ToggleButton value="6vs6">6 vs 6</ToggleButton>
                 </ToggleButtonGroup>
               </Grid>
+            </Grid>
+            <Grid item xs={6}>
+              <h3>이용안내</h3>
+              {ground.parking_lot === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_parking.png"} style={{ width: 80, height: 80, margin:30}}/> : null}
+              {ground.shower_room === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shower.png"} style={{ width:80, height:80, margin:30}}/> : null}
+              {ground.foot_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shoe.png"} style={{ width:80, height:80,  margin:30}}/> : null}
+              {ground.wifi === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_wifi.png"} style={{ width:80, height:80, margin:30}}/> : null}
+              {ground.ball_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_ball.png"} style={{ width:80, height:80, margin:30}}/> : null}
+              {ground.uniform_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_uniform.png"} style={{ width:80, height:80, margin:30}}/> : null}
+            </Grid>
+          </Grid>
+            <Grid container spacing={3}>
               <Grid item xs={3} style={{ marginLeft: 10 }}>
                 <TextField
                   id="r_date"
