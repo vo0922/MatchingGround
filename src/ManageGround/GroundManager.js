@@ -155,12 +155,12 @@ function GroundManager({history}) {
             </Grid>
             <Grid item xs={6}>
               <Typography component="h6" variant="h6" >편의 시설</Typography>
-              {groundinfo.parking_lot === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
-              {groundinfo.shower_room === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
-              {groundinfo.foot_rent === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
-              {groundinfo.wifi === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
-              {groundinfo.ball_rent === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
-              {groundinfo.uniform_rent === "true" ? <LocalParking style={{ fontSize: 80, margin:25}}/> : null}
+              {groundinfo.parking_lot === "true" ? <img src="icons/icon_parking.png" style={{ width: 80, height: 80, margin:30}}/> : null}
+              {groundinfo.shower_room === "true" ? <img src="icons/icon_shower.png" style={{ width:80, height:80, margin:30}}/> : null}
+              {groundinfo.foot_rent === "true" ? <img src="icons/icon_shoe.png" style={{ width:80, height:80,  margin:30}}/> : null}
+              {groundinfo.wifi === "true" ? <img src="icons/icon_wifi.png" style={{ width:80, height:80, margin:30}}/> : null}
+              {groundinfo.ball_rent === "true" ? <img src="icons/icon_ball.png" style={{ width:80, height:80, margin:30}}/> : null}
+              {groundinfo.uniform_rent === "true" ? <img src="icons/icon_uniform.png" style={{ width:80, height:80, margin:30}}/> : null}
             </Grid>
 
             <Grid item xs={3}/>
