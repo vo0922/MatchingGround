@@ -32,6 +32,7 @@ import Chip from '@mui/material/Chip';
 import MailSystem from './MailSystem'
 import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
 import '../../font/font.css';
+import MainLogoImage from "./MainLogoImage.png";
 
 const drawerWidth = 240;
 const color = grey[50];
@@ -169,7 +170,7 @@ function MainLogo({history}) {
         })}
       >
         <Toolbar>
-          <Link to = "/"><img width="100%" height="30px" src="mainlogoimage/free-icon-parking-905484.png"/></Link>
+          <Link to = "/"><img width="100%" height="30px" src={MainLogoImage}/></Link>
           <Typography variant="h6" noWrap className={classes.title}>
             <div className='Logo'>매칭그라운드</div>
           </Typography>
