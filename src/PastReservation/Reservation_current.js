@@ -90,7 +90,7 @@ export default function Reservation_current() {
         receive_id : ReservationCancelData.manager_id,
         title : "예약취소알림",
         contents : ReservationCancelData.ground_name + "경기장 / " + ReservationCancelData.ground_num + "구장 / " + ReservationCancelData.r_date + " / " + ReservationCancelData.r_time + "예약을 사용자가 취소하였습니다.",
-        link:"/notgroundmananger",
+        link:"http://localhost:3000/groundmananger",
       }),
     })
       .then((res) => res.json())

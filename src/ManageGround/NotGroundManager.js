@@ -34,7 +34,7 @@ export default function NotGroundManager() {
             <Typography
               component="h6"
               variant="h6"
-              style={{ textAlign: "center", marginTop: 10 }}
+              style={{ textAlign: "center", marginTop: 10, paddingTop : 30}}
             >
               경기장 관리자가 아닙니다. 경기장을 등록하시려면 경기장 등록 버튼을
               눌러주세요.
