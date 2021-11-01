@@ -885,7 +885,7 @@ app.post("/pastreservation/current", (req, res)=>{
   var user_email = req.body.user_email;
   var r_time = req.body.r_time;
   
-  connection.query("select a.*, b.photo, b.address from reservation a, groundinfo b where a.user_email = ? and (date(a.r_date) > date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time > ?)) and a.ground_name = b.ground_name", [user_email, r_time],
+  connection.query("select a.*, b.photo, b.address, b.manager_id from reservation a, groundinfo b where a.user_email = ? and (date(a.r_date) > date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time > ?)) and a.ground_name = b.ground_name", [user_email, r_time],
   function(err, rows, fields){
     if(err){
       console.log("현재 경기장 예약 내역 불러오기 실패 " + err)

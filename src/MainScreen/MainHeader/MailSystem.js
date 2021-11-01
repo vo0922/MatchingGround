@@ -7,7 +7,8 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import ListItemButton from "@mui/material/ListItemButton"
 import { fontSize } from "@mui/system";
 
 export default function MailSystem() {
@@ -65,7 +66,8 @@ export default function MailSystem() {
           return;
         }
         setmailList({
-          body: res.map((res) => (            
+          body: res.map((res) => ( 
+            <ListItemButton component="a" href={res.link}>
             <div key={res.mail_no}>
               <ListItem alignItems="flex-start">
                 <ListItemText
@@ -84,7 +86,7 @@ export default function MailSystem() {
                         variant="body2"
                         color="text.primary"
                       >
-                        신청자 : {res.send_id}<br/>
+                        보낸이 : {res.send_id}<br/>
                       </Typography>
                       <Typography
                         sx={{ display: "inline", fontSize:12 }}
@@ -94,13 +96,13 @@ export default function MailSystem() {
                       >
                         {res.contents}
                       </Typography>
-                      <Button href={res.link} size="small">바로가기→</Button>
                     </Fragment>
                   }
                 />
               </ListItem>
-              <Divider component="li" />
+              <Divider/>
             </div>
+            </ListItemButton>
           )),
         });
       });
@@ -126,6 +128,7 @@ export default function MailSystem() {
 
   return (
     <div>
+      <IconButton>
       <Badge
         badgeContent={mailcount}
         onClick={handleClick}
@@ -134,6 +137,7 @@ export default function MailSystem() {
       >
         <NotificationsIcon color="action" />
       </Badge>
+      </IconButton>
 
       <Popover
         id={id}
@@ -144,10 +148,10 @@ export default function MailSystem() {
           vertical: "bottom",
           horizontal: "left",
         }}
-        style={{maxHeight:"50%"}}
+        style={{maxHeight:"50%",}}
       >
         <List
-          sx={{ width: "100%", minWidth: 300, bgcolor: "background.paper" }}
+          sx={{ width: "100%", minWidth:360,  maxWidth: 360, bgcolor: "background.paper" }}
         >
           {mailList.body}
         </List>

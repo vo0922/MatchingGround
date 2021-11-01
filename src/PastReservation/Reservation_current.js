@@ -40,10 +40,26 @@ export default function Reservation_current() {
   });
 
   const [ReservationCancelOpen, setReservationCancelOpen] = useState(false);
-  const [ReservationCancelData, setReservationCancelData] = useState("");
-  const handleReservationCancelOpen = (id) => {
+  const [ReservationCancelData, setReservationCancelData] = useState({
+    r_no : 0,
+    ground_name : "",
+    ground_num : 0,
+    user_email : "",
+    r_date : "",
+    r_time : "",
+    manager_id : "",
+  });
+  const handleReservationCancelOpen = (data) => {
     setReservationCancelOpen(true);
-    setReservationCancelData(id);
+    setReservationCancelData({
+      r_no : data.r_no,
+      ground_name : data.ground_name,
+      ground_num : data.ground_num,
+      user_email : data.user_email,
+      r_date : data.r_date,
+      r_time : data.r_time + "타임(" + timelabel[data.r_time] + ")",
+      manager_id : data.manager_id
+    });
   };
   const handleReservationCancelClose = () => {
     setReservationCancelOpen(false);
@@ -55,7 +71,7 @@ export default function Reservation_current() {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ r_no: ReservationCancelData }),
+      body: JSON.stringify(ReservationCancelData),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -63,6 +79,24 @@ export default function Reservation_current() {
         getreservation();
       });
     setReservationCancelOpen(false);
+
+    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+      method: "POST", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        send_id : ReservationCancelData.user_email,
+        receive_id : ReservationCancelData.manager_id,
+        title : "예약취소알림",
+        contents : ReservationCancelData.ground_name + "경기장 / " + ReservationCancelData.ground_num + "구장 / " + ReservationCancelData.r_date + " / " + ReservationCancelData.r_time + "예약을 사용자가 취소하였습니다.",
+        link:"/notgroundmananger",
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+    });
+    
   };
 
   function getreservation() {
@@ -118,7 +152,7 @@ export default function Reservation_current() {
                     variant="outlined"
                     color="secondary"
                     style={{ marginTop: 5 }}
-                    onClick={() => handleReservationCancelOpen(json.r_no)}
+                    onClick={() => handleReservationCancelOpen(json)}
                   >
                     예약취소
                   </Button>
@@ -156,8 +190,12 @@ export default function Reservation_current() {
           <DialogContentText id="cancel_confirm_text">
             취소시 취소수수료가 부과된 나머지 금액이 환불됩니다. 
           </DialogContentText>
-          <DialogContentText id="cancel_confirm_text">
+          <DialogContentText id="cancel_confirm_text2">
             그래도 예약을 취소하시겠습니까?
+          </DialogContentText>
+          <br/>
+          <DialogContentText id="cancel_confirm_text3">
+            예약시 개설된 매치는 자동으로 삭제됩니다.
           </DialogContentText>
             
           

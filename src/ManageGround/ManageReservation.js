@@ -82,10 +82,24 @@ function ManageReservation({ location }) {
 
   // 삭제확인 다이얼로그 
   const [ReservationCancelOpen, setReservationCancelOpen] = useState(false);
-  const [ReservationCancelData, setReservationCancelData] = useState("");
-  const handleReservationCancelOpen = (id) =>{
+  const [ReservationCancelData, setReservationCancelData] = useState({
+    r_no : 0,
+    ground_name : "",
+    ground_num : 0,
+    user_email : "",
+    r_date : "",
+    r_time : "",
+  });
+  const handleReservationCancelOpen = (ground) =>{
     setReservationCancelOpen(true);
-    setReservationCancelData(id);
+    setReservationCancelData({
+      r_no : ground.r_no,
+      ground_name : ground.ground_name,
+      ground_num : ground.ground_num,
+      user_email : ground.user_email,
+      r_date : ground.r_date,
+      r_time : tabletime[ground.r_time],
+    });
   }
   const handleReservationCancelClose = () => {
     setReservationCancelOpen(false);
@@ -107,9 +121,7 @@ function ManageReservation({ location }) {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({
-        r_no : ReservationCancelData,
-      }),
+      body: JSON.stringify(ReservationCancelData),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -118,7 +130,25 @@ function ManageReservation({ location }) {
           getReservation(i)
         }
         setReservationCancelOpen(false);
-      });
+    });
+
+    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+      method: "POST", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        send_id : ReservationCancelData.ground_name + "경기장 관리자",
+        receive_id : ReservationCancelData.user_email,
+        title : "예약취소알림",
+        contents : ReservationCancelData.ground_name + "경기장 / " + ReservationCancelData.ground_num + "구장 / " + ReservationCancelData.r_date + " / " + ReservationCancelData.r_time + "예약이 경기장 관리자에 의해 취소되었습니다.",
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+    });
+
+
   }
 
   // 관리자예약하기 함수(onClick)
@@ -165,7 +195,7 @@ function ManageReservation({ location }) {
         for(var i=0; i < json.length; i++){
           for(var j=1; j<=groundinfo.ground_count; j++){
             if(json[i].ground_num === j){     
-              ground[j] = {id : json[i].r_no, body : json[i].user_email};
+              ground[j] = json[i];
             }
           }
         }
@@ -187,7 +217,7 @@ function ManageReservation({ location }) {
         </TableCell>
         {ground.map((ground) => (
           ground.body !== "예약없음" ? 
-          <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="secondary" size="small" onClick={() => {handleReservationCancelOpen(ground.id)}}>예약취소</Button></TableCell> : 
+          <TableCell align="center" key={ground.r_no}>{ground.user_email}<br/><Button value={ground.id} variant="outlined" color="secondary" size="small" onClick={() => {handleReservationCancelOpen(ground)}}>예약취소</Button></TableCell> : 
           <TableCell align="center" key={ground.id}>{ground.body}<br/><Button value={ground.id} variant="outlined" color="primary" size="small" onClick={() => {handleManagerReservationOpen(ground.id)}}>관리자직접예약</Button></TableCell>
         ))} 
       </TableRow>
