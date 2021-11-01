@@ -244,7 +244,7 @@ function TeamLoad({ history }) {
                     size="large"
                     onClick={handleOpen}
                   >
-                    클럽원 관리
+                    클럽 가입신청 관리
                   </Button>
                 ) : null}
                 <Modal

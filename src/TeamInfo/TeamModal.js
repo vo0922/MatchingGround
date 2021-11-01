@@ -33,6 +33,8 @@ export default function DataTable() {
     introduce: "",
   });
 
+  const [selectionModel, setselectionModel] = useState();
+
   const applymanager = () => {
     fetch("http://localhost:3001/team/teamapply", {
       method: "post",
@@ -60,21 +62,47 @@ export default function DataTable() {
         pageSize={5}
         rowsPerPageOptions={[5]}
         checkboxSelection
-      />,
+        onSelectionModelChange={(newSelectionModel) => {
+          setselectionModel(newSelectionModel);
+        }}          
+      />    
         })
+        
         console.log(json);
       });
   };
 
+
   // 승인 버튼
-  const applybutton = () => {
-    
+  const applybutton = () => {    
+    fetch("http://localhost:3001/team/apply", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(selectionModel),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+      });
   }
 
   // 거절 버튼
-  const nobutton = () => {
-
+  const leavebutton = () => {
+    fetch("http://localhost:3001/team/leave", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(selectionModel),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+      });
   }
+
+  useEffect(()=>{
+  }, [selectionModel])
 
   useEffect(() => {
     applymanager();
@@ -95,7 +123,7 @@ export default function DataTable() {
             variant="outlined"
             color="primary"
             size="large"
-            //onClick={applybutton}
+            onClick={applybutton}
           >
             가입승인
           </Button>

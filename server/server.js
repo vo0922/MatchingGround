@@ -596,12 +596,27 @@ app.post("/team/teamlist", (req, res) =>{
   });
 });
 
+//팀 상세정보 페이지
+app.post("/team/teamdetail", (req, res) =>{
+  const team_name = req.body.team_name;
 
-// 클럽 가입신청
+  connection.query("select *from Team where team_name = ? ", [team_name],
+  function(err, rows, fields){
+    if(err){
+      console.log("팀 정보 불러오기 실패" + err);
+    } else {
+      res.send(rows);
+      console.log(rows);
+      console.log("팀 정보 불러오기 성공");
+    }
+  });
+});
+
+// 클럽 가입신청 정보 관리 (클럽장)
 app.post("/team/teamapply", (req, res) =>{
   const team_name = req.body.team_name;
 
-  connection.query("select *from teamapply where team_name=?",[team_name],
+  connection.query("select *from teamapply where team_name=? and state='대기'",[team_name],
   function(err, rows, fields){
     if(err){
       console.log("클럽 가입신청정보 조회 실패" + err);
@@ -612,6 +627,35 @@ app.post("/team/teamapply", (req, res) =>{
     }
   })
 })
+
+// 클럽 가입신청 승인 보내기
+app.post("/team/apply", (req, res) =>{
+  const selectionModel = req.body;
+
+  connection.query("update teamapply set state='승인' where apply_no in(?)",[selectionModel],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽 가입신청승인 실패" + err);      
+    } else {  
+      console.log("클럽 가입신청승인 성공");
+    }
+  })
+})
+
+// 클럽 가입신청 승인 보내기
+app.post("/team/leave", (req, res) =>{
+  const selectionModel = req.body;
+
+  connection.query("update teamapply set state='거절' where apply_no in(?)",[selectionModel],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽 가입신청거절 실패" + err);      
+    } else {  
+      console.log("클럽 가입신청거절 성공");
+    }
+  })
+})
+
 
 // 클럽 탈퇴하기
 app.post("/team/delete", (req, res) =>{
@@ -658,6 +702,32 @@ app.post("/team/member", (req, res) =>{
     }
   });
 });
+
+// 클럽 가입신청 버튼
+app.post("/findteam/applybutton", (req,res)=>{
+
+  connection.query(
+    "insert into teamapply (team_name, user_name, email, position, introduce, age) values(?,?,?,?,?,?)",
+    [      
+      req.body.team_name,
+      req.body.user_name,
+      req.body.email,
+      req.body.position,
+      req.body.introduce,
+      req.body.age
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send({msg:"클럽 가입신청이 완료되었습니다."});
+        //console.log("성공");
+      }
+    }
+  );
+});
+
+
 
 // 매치리스트 불러오기
 app.post("/matchlist", (req, res) =>{
