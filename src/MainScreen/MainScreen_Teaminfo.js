@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -115,8 +116,12 @@ export default function MainScreen_Teaminfo() {
             
             <Grid item xs={8}>
               <Typography color="textSecondary" style={{textAlign:"center", fontSize:15, marginTop:5}}>가입된 팀이 없습니다.</Typography>
-              <Button variant="outlined" color="primary" style={{marginTop:10, marginBottom:6,}} fullWidth>팀 생성하기</Button>
-              <Button variant="outlined" color="primary" style={{marginTop:6, marginBottom:6,}} fullWidth>팀 가입하기</Button>
+              <Link to ="/teammake">
+                <Button variant="outlined" color="primary" style={{marginTop:10, marginBottom:6, textDecoration:'none'}} fullWidth>팀 생성하기</Button>
+              </Link>
+              <Link to="/findteam">
+                <Button variant="outlined" color="primary" style={{marginTop:6, marginBottom:6, textDecoration:'none'}} fullWidth>팀 가입하기</Button>
+              </Link>
             </Grid>
             <Grid item xs={2}/>
           </Grid>
