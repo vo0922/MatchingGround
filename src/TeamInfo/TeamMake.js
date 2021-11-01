@@ -311,12 +311,12 @@ function TeamMake({ history }) {
                       <MenuItem value={"세종"}>세종</MenuItem>
                       <MenuItem value={"경기"}>경기</MenuItem>
                       <MenuItem value={"강원"}>강원</MenuItem>
-                      <MenuItem value={"충북"}>충북</MenuItem>
-                      <MenuItem value={"충남"}>충남</MenuItem>
-                      <MenuItem value={"전북"}>전북</MenuItem>
-                      <MenuItem value={"전남"}>전남</MenuItem>
-                      <MenuItem value={"경북"}>경북</MenuItem>
-                      <MenuItem value={"경남"}>경남</MenuItem>
+                      <MenuItem value={"충청북도"}>충북</MenuItem>
+                      <MenuItem value={"충청남도"}>충남</MenuItem>
+                      <MenuItem value={"전라북도"}>전북</MenuItem>
+                      <MenuItem value={"전라남도"}>전남</MenuItem>
+                      <MenuItem value={"경상북도"}>경북</MenuItem>
+                      <MenuItem value={"경상남도"}>경남</MenuItem>
                       <MenuItem value={"제주"}>제주</MenuItem>
                     </Select>
                     <Select

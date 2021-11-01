@@ -16,7 +16,7 @@ import {
   Modal,
 } from "@material-ui/core";
 import TeamMember from "./TeamMember";
-import TeamModal from "./TeamModal";
+import TeamApplyModal from "./TeamApplyModal";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -179,7 +179,7 @@ function TeamLoad({ history }) {
         style={{ backgroundColor: "white", height: "100%" }}
       >
         <Typography component="div" style={{ height: "100vh", paddingTop: 20 }}>
-          <Grid container spacing={3}>
+          <Grid container spacing={4}>
             <Grid
               item
               xs={6}
@@ -235,7 +235,7 @@ function TeamLoad({ history }) {
               justifyContent="flex-end"
               alignItems="center"
             >
-              <Grid item xs={2}>
+              <Grid>
                 {window.sessionStorage.getItem("id") ===
                 teaminfo.team_manage_name ? (
                   <Button
@@ -243,6 +243,7 @@ function TeamLoad({ history }) {
                     color="primary"
                     size="large"
                     onClick={handleOpen}
+                    style={{ margin: 10}}
                   >
                     클럽 가입신청 관리
                   </Button>
@@ -254,11 +255,35 @@ function TeamLoad({ history }) {
                   aria-describedby="modal-modal-description"
                 >
                   <Box sx={style}>
-                    <TeamModal/>
+                    <TeamApplyModal/>
                   </Box>
                 </Modal>
               </Grid>
-              <Grid item xs={2}>
+              <Grid>
+                {window.sessionStorage.getItem("id") ===
+                teaminfo.team_manage_name ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    onClick={handleOpen}
+                    style={{ margin: 10}}
+                  >
+                    클럽원 관리
+                  </Button>
+                ) : null}
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <TeamApplyModal/>
+                  </Box>
+                </Modal>
+              </Grid>
+              <Grid>
                 {window.sessionStorage.getItem("id") ===
                 teaminfo.team_manage_name ? (
                   <Button
@@ -266,6 +291,7 @@ function TeamLoad({ history }) {
                     color="primary"
                     size="large"
                     onClick={Club_Modify}
+                    style={{ margin: 10}}
                   >
                     클럽정보 수정
                   </Button>
@@ -277,12 +303,12 @@ function TeamLoad({ history }) {
                   color="primary"
                   size="large"
                   onClick={quit}
+                  style={{ margin: 10}}
                 >
                   탈퇴하기
                 </Button>
               </Grid>
             </Grid>
-            <Grid item xs={12} />
           </Grid>
         </Typography>
       </Container>
