@@ -87,7 +87,7 @@ function ReservationCard({history}) {
                 <Card className={classes.card} key={data.ground_name} onClick={() => cardclick(data.ground_name)}>
                 <CardActionArea>
                 <CardContent>
-                  <img src={data.photo} style={{float: "left", marginRight: 20}} height="130" width="200"/>
+                  <img src={data.photo} style={{float: "left", marginRight: 20, marginBottom: 15}} height="120" width="200"/>
                   <Typography className={classes.content} variant="h6" component="h2" gutterBottom>
                     {data.ground_name}
                   </Typography>
@@ -210,7 +210,7 @@ function ReservationCard({history}) {
   return (
     <React.Fragment>
     <CssBaseline />
-    <Container maxWidth="md" style={{marginTop:10}}>
+    <Container maxWidth="md" style={{marginTop:10,}}>
       <Typography component="div" style={{ backgroundColor: '#F3F3F3', height: '90vh', paddingTop: 20}} >    
         <Grid
          container

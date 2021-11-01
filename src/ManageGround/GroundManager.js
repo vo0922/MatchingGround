@@ -121,7 +121,7 @@ function GroundManager({history}) {
       <Container maxWidth="md" style={{backgroundColor : "white"}}>
         <Typography
           component="div"
-          style={{ height: "100vh" }}
+          style={{ minHeight: "100vh"}}
         >
           
           <Grid container spacing={3}>
