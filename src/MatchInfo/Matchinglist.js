@@ -229,8 +229,8 @@ export default function Matchinglist() {
           {MatchCancel.user_team ? MatchCancel.user_team : MatchCancel.user_email} : {MatchCancel.vs_user_team ? MatchCancel.vs_user_team : MatchCancel.vs_user_email} 와의 매칭을 정말 취소 하시겠습니까?
         </DialogContent>
         <DialogActions>
-          <Button onClick={dialogClose}>취소</Button>
-          <Button onClick={matchcancel}>확인</Button>
+          <Button onClick={dialogClose} color="secondary">취소</Button>
+          <Button onClick={matchcancel} color="primary" autoFocus>확인</Button>
         </DialogActions>
       </Dialog>
     </div>

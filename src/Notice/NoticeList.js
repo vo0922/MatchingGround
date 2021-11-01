@@ -48,6 +48,21 @@ export default function ControlledAccordions() {
       })
           .then((res) => res.json())
           .then((res) => {
+            if (res.length === 0) {
+              setgetnotice({
+                list: (
+                  <Typography
+                    key="no_match"
+                    component="h2"
+                    variant="h5"
+                    style={{ textAlign: "center", marginTop: 20 }}
+                  >
+                    아직 공지사항이 없어요 ㅠㅠ
+                  </Typography>
+                ),
+              });
+              return;
+            }
             setgetnotice({
               list : res.map((data) => 
               <Accordion key={data._id} expanded={expanded === data._id} onChange={handleChange(data._id)} style={{margin:5, width:"100%"}}>

@@ -99,7 +99,7 @@ export default function Signin() {
       <Grid item xs={12} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <img width="100%" height="50px" src="mainlogoimage/free-icon-parking-905484.png" />
           </Avatar>
           <Typography component="h1" variant="h5">
             MatchingGround

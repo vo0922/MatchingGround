@@ -240,7 +240,7 @@ function ReservationDetail({ location, history }) {
           for(var i = 0; i < res.length; i++) {
             time[res[i].r_time] = true;
           }
-          for(var i = 0; i <= current_r_time; i++){
+          for(var i = 0; i < current_r_time; i++){
             time[i] = true;
           }
           setreservation({
@@ -620,8 +620,8 @@ function ReservationDetail({ location, history }) {
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={dialogClose}>결제 취소</Button>
-                  <Button onClick={dialogsubmit}>
+                  <Button onClick={dialogClose} color="secondary">결제 취소</Button>
+                  <Button onClick={dialogsubmit} color="primary" autoFocus>
                     결제 하기
                   </Button>
                 </DialogActions>

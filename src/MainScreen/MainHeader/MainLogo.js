@@ -169,7 +169,7 @@ function MainLogo({history}) {
         })}
       >
         <Toolbar>
-          <Link to = "/"><HomeIcon color="action"/></Link>
+          <Link to = "/"><img width="100%" height="30px" src="mainlogoimage/free-icon-parking-905484.png"/></Link>
           <Typography variant="h6" noWrap className={classes.title}>
             <div className='Logo'>매칭그라운드</div>
           </Typography>

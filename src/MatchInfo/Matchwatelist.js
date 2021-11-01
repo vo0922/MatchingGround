@@ -214,8 +214,8 @@ export default function Matchinglist() {
           주소 : {ReservationCancelData.address}
         </DialogContent>
         <DialogActions>
-          <Button onClick={dialogClose}>취소</Button>
-          <Button onClick={matchdelete}>확인</Button>
+          <Button onClick={dialogClose} color="secondary">취소</Button>
+          <Button onClick={matchdelete} color="primary" autoFocus>확인</Button>
         </DialogActions>
       </Dialog>
       </div>
