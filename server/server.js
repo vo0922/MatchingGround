@@ -703,6 +703,39 @@ app.post("/team/member", (req, res) =>{
   });
 });
 
+// 클럽원 제명하기
+app.post("/team/member/delete", (req, res) =>{
+  const data = req.body.data;
+
+  connection.query("update users set team_name = 'none' where user_no = ?", [data],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽 제명 실패" + err);
+    } else {
+      res.send({msg:"클럽원이 성공적으로 제명되었습니다."});
+      console.log("클럽원 제명 성공");
+    }
+  });
+});
+
+// 클럽장 위임하기
+app.post("/team/member/assign", (req, res) =>{
+  const user_no = req.body.user_no;
+  const email = req.body.email;
+
+  connection.query("update users SET team_manager = CASE when user_no = ? then 1 when user_no = (select user_no from users where email=?) then 0 ELSE team_manager END", [user_no, email],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽장 위임 실패" + err);
+    } else {
+      res.send({msg:"클럽장 성공적으로 위임되었습니다.", success:0});
+      console.log(user_no);
+      console.log(email);
+      console.log("클럽장 위임 성공");
+    }
+  });
+});
+
 // 클럽 가입신청 버튼
 app.post("/findteam/applybutton", (req,res)=>{
 
