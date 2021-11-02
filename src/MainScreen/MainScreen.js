@@ -11,6 +11,7 @@ import MainScreen_Myinfo from "./MainScreen_Myinfo";
 import MainScreen_Teaminfo from "./MainScreen_Teaminfo";
 import MainScreen_Matchlist from "./MainScreen_Matchlist";
 
+
 export default class MainScreen extends Component {
   render() {
     return (
@@ -18,7 +19,7 @@ export default class MainScreen extends Component {
         <MainHeader />
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth="md" style={{ marginTop: 25 }}>
+          <Container maxWidth="md" style={{ marginTop: 25,}} >
             <Typography
               component="div"
               style={{
@@ -28,7 +29,7 @@ export default class MainScreen extends Component {
             >
               <Grid container spacing={6}>
                 <Grid item xs={6}>
-                  <MainScreen_Myinfo />
+                  <MainScreen_Myinfo/>
                 </Grid>
                 <Grid item xs={6}>
                   <MainScreen_Teaminfo />
