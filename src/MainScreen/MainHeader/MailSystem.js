@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton"
+import { Paper } from "@mui/material";
 import { fontSize } from "@mui/system";
 
 export default function MailSystem() {
@@ -66,7 +67,7 @@ export default function MailSystem() {
           return;
         }
         setmailList({
-          body: res.map((res) => ( 
+          body: res.map((res) => (
             <ListItemButton component="a" href={res.link} key={res.mail_no}>
             <div>
               <ListItem alignItems="flex-start">
@@ -79,9 +80,10 @@ export default function MailSystem() {
                     </div>
                    : <Typography color="text.secondary" style={{fontStyle:"italic", fontSize:12, marginBottom:5}}>{res.title}</Typography>}
                   secondary={
-                    <div>
+                    <Fragment>
                       <Typography
                         sx={{ display: "inline", fontSize:12 }}
+                        component="span"
                         variant="body2"
                         color="text.primary"
                       >
@@ -89,12 +91,13 @@ export default function MailSystem() {
                       </Typography>
                       <Typography
                         sx={{ display: "inline", fontSize:12 }}
+                        component="span"
                         variant="body2"
                         color="text.primary"
                       >
                         {res.contents}
                       </Typography>
-                    </div>
+                    </Fragment>
                   }
                 />
               </ListItem>
