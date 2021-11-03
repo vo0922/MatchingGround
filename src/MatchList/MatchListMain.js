@@ -59,6 +59,7 @@ export default function MatchListMain() {
     margin : 2, 
     backgroundColor : "white", 
     borderRadius : 15,
+    fontFamily:"Gamja_Flower"
   } // 광역시, 도 버튼 스타일 적용
 
   const classes = useStyles();
@@ -126,7 +127,7 @@ export default function MatchListMain() {
       var label2 = dayOfweek
       
       tabs.push(
-      <Tab key={tomorrow} label={label + label2} wrapped className={classes.datetab} />
+      <Tab key={tomorrow} label={label + " (" +label2 + ")"} wrapped className={classes.datetab} />
       );
     }
     return tabs;
@@ -170,7 +171,6 @@ export default function MatchListMain() {
                   </Typography>
                   <Typography
                     variant="h5"
-                    component="h2"
                     className={classes.cardtitle}
                   >
                     {json.ground_name}
@@ -178,16 +178,17 @@ export default function MatchListMain() {
                   <Typography
                     color="textSecondary"
                     className={classes.cardcontent}
+                    style={{fontSize:16}}
                   >
                     {json.address}
                   </Typography>
                   {json.team_name === "none" ? (
-                    <Typography className={classes.cardcontent}>
+                    <Typography className={classes.cardcontent} style={{fontSize:16}}>
                       매치개설자 : {json.user_email}
                     </Typography>
                   ) : (
-                    <Typography className={classes.cardcontent}>
-                      매치개설팀 : {json.team_name} || 팀 수준 : {json.team_class} || {json.vs_count}
+                    <Typography className={classes.cardcontent} style={{fontSize:16}}>
+                      매치개설팀 : {json.team_name} / 팀 수준 : {json.team_class} / {json.vs_count}
                     </Typography>
                   )}
                   <Grid
@@ -198,11 +199,11 @@ export default function MatchListMain() {
                   >
                     {json.user_email !== window.sessionStorage.getItem('id') ?
                     (json.match_success ? 
-                    <Button disabled variant="contained">신청마감</Button> : 
+                    <Button disabled variant="contained"><Typography>신청마감</Typography></Button> : 
                     ((json.r_time - 1) === current_r_time ? 
-                    <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="error">마감임박</Button> :
-                    <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary">매치신청</Button>))
-                    : <Button disabled variant="contained" >매치신청</Button>}
+                    <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="error"><Typography>마감임박</Typography></Button> :
+                    <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary"><Typography>매치신청</Typography></Button>))
+                    : <Button disabled variant="contained"><Typography>매치신청</Typography></Button>}
                   </Grid>
                 </Container>
               </CardContent>
@@ -272,7 +273,7 @@ export default function MatchListMain() {
         setlocationdetail({
           body: res.map((res) => (
             <Button key={res.properties.sig_kor_nm} onClick={() => handleLocationDetail(location_short, res.properties.sig_kor_nm)} value={res.properties.sig_kor_nm} color="inherit" style={{ fontSize: 12 }}>
-              {res.properties.sig_kor_nm}
+              <Typography>{res.properties.sig_kor_nm}</Typography>
             </Button>
           )),
         });
@@ -362,6 +363,7 @@ export default function MatchListMain() {
   // 검색 데이터 변경시 매치리스트 재렌더링
   useEffect(() => {
     getmatchlist();
+    console.log(searchdata)
   }, [searchdata])
 
   return (
@@ -389,11 +391,11 @@ export default function MatchListMain() {
         </Box>
         <hr/>
         <Grid container justifyContent="center" alignItems="center">
-          <ToggleButtonGroup
+        <ToggleButtonGroup
             variant="text"
             color="primary"
             value={locationalignment}
-            style={{ align: "center", marginTop: 10, marginBottom: 10, }}
+            style={{ align: "center", marginTop: 10, marginBottom: 10,}}
             exclusive
             onChange={handleLocation}
           >
@@ -454,7 +456,7 @@ export default function MatchListMain() {
           </ToggleButtonGroup>
         </Grid>
         {locationalignment !== "전체" ? (
-          <Button onClick={() => handleLocationDetail("", "전체")} color="inherit" style={{ fontSize: 12 }}>전체</Button>
+          <Button onClick={() => handleLocationDetail("", "전체")} color="inherit"><Typography>전체</Typography></Button>
         ) : null}
         {locationdetail.body}
         <hr />

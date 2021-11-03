@@ -10,6 +10,8 @@ import Grid from "@material-ui/core/Grid";
 import MainScreen_Myinfo from "./MainScreen_Myinfo";
 import MainScreen_Teaminfo from "./MainScreen_Teaminfo";
 import MainScreen_Matchlist from "./MainScreen_Matchlist";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
 
 export default class MainScreen extends Component {
   render() {
@@ -18,7 +20,8 @@ export default class MainScreen extends Component {
         <MainHeader />
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth="md" style={{ marginTop: 25 }}>
+          
+          <Container maxWidth="md" style={{ marginTop: 25,}} >
             <Typography
               component="div"
               style={{
@@ -27,11 +30,11 @@ export default class MainScreen extends Component {
               }}
             >
               <Grid container spacing={6}>
-                <Grid item xs={6}>
-                  <MainScreen_Myinfo />
+                <Grid item xs={6}>                
+                  <MainScreen_Myinfo/>          
                 </Grid>
                 <Grid item xs={6}>
-                  <MainScreen_Teaminfo />
+                  <MainScreen_Teaminfo/>
                 </Grid>
                 <Grid item xs={12} style={{marginTop:10, marginBottom:10}}>
                   <img width="100%" height="300px" src="backgroundimage/background2.jpg"/>

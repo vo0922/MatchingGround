@@ -1,10 +1,80 @@
 @font-face {
-    font-family: 'Logofont';
-    src: url('./SF레몬빙수-TTF.ttf');
+    font-family: 'lemon_bingsu';
+    src: url('./lemon_bingsu.ttf');
+}
+
+@font-face{
+    font-family:'바른히피';
+    src:url('./바른히피.ttf');
+}
+
+@font-face {
+    font-family: '달의궤도';
+    src: url("./달의궤도.ttf");
+}
+
+@font-face {
+    font-family: '옥비체';
+    src: url("./옥비체.ttf");
+}
+
+@font-face {
+    font-family: 'ChangwonBold';
+    src: url("./ChangwonBold.ttf");
+}
+
+@font-face {
+    font-family: 'Dongle-Bold';
+    src: url("./Dongle-Bold.ttf");
+}
+
+@font-face {
+    font-family: 'Dongle-Light';
+    src: url("./Dongle-Light.ttf");
+}
+
+@font-face {
+    font-family: 'Dongle-Regular';
+    src: url("./Dongle-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'ELAND_B';
+    src: url("./ELAND_B.ttf");
+}
+
+@font-face {
+    font-family: 'ELAND_L';
+    src: url("./ELAND_L.ttf");
+}
+
+@font-face {
+    font-family: 'ELAND_M';
+    src: url("./ELAND_M.ttf");
+}
+
+@font-face {
+    font-family: 'Gamja_Flower';
+    src: url("./Gamja_Flower.ttf");
+}
+
+@font-face {
+    font-family: 'Himelody';
+    src: url("./Himelody.ttf");
+}
+
+@font-face {
+    font-family: 'Jua';
+    src: url("./Jua.ttf");
+}
+
+@font-face {
+    font-family: "YeonSung";
+    src: url("./YeonSung.ttf");
 }
 
 .Logo {
-    font-family: 'Logofont';
-    font-size:25px;
+    font-family: 'Dongle-Bold';
+    font-size:40px;
     margin-left: 20px;
 }

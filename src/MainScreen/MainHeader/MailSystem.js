@@ -67,8 +67,8 @@ export default function MailSystem() {
         }
         setmailList({
           body: res.map((res) => ( 
-            <ListItemButton component="a" href={res.link}>
-            <div key={res.mail_no}>
+            <ListItemButton component="a" href={res.link} key={res.mail_no}>
+            <div>
               <ListItem alignItems="flex-start">
                 <ListItemText
                   primary={
@@ -79,10 +79,9 @@ export default function MailSystem() {
                     </div>
                    : <Typography color="text.secondary" style={{fontStyle:"italic", fontSize:12, marginBottom:5}}>{res.title}</Typography>}
                   secondary={
-                    <Fragment>
+                    <div>
                       <Typography
                         sx={{ display: "inline", fontSize:12 }}
-                        component="span"
                         variant="body2"
                         color="text.primary"
                       >
@@ -90,13 +89,12 @@ export default function MailSystem() {
                       </Typography>
                       <Typography
                         sx={{ display: "inline", fontSize:12 }}
-                        component="span"
                         variant="body2"
                         color="text.primary"
                       >
                         {res.contents}
                       </Typography>
-                    </Fragment>
+                    </div>
                   }
                 />
               </ListItem>

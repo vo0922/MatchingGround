@@ -38,7 +38,6 @@ function Reservation_past({history}) {
   }
 
   function getreservation() {
-    console.log(current_r_time);
     fetch("http://localhost:3001/pastreservation/past", {
       method: "post",
       headers: {
@@ -100,7 +99,7 @@ function Reservation_past({history}) {
 
   useEffect(() => {
     getreservation();
-    console.log(searchdata.r_time);
+    
   }, []);
 
   return (

@@ -100,7 +100,6 @@ export default function Reservation_current() {
   };
 
   function getreservation() {
-    console.log(current_r_time);
     fetch("http://localhost:3001/pastreservation/current", {
       method: "post",
       headers: {
@@ -166,7 +165,6 @@ export default function Reservation_current() {
 
   useEffect(() => {
     getreservation();
-    console.log(searchdata.r_time);
   }, []);
 
   return (

@@ -32,7 +32,6 @@ import Chip from '@mui/material/Chip';
 import MailSystem from './MailSystem'
 import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
 import '../../font/font.css';
-import MainLogoImage from "./MainLogoImage.png";
 
 const drawerWidth = 240;
 const color = grey[50];
@@ -44,7 +43,7 @@ const themelogo = createTheme({
       secondary: {
         main: '#fafafa',
       },
-    },
+    },   
   });
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -174,15 +173,15 @@ function MainLogo({history}) {
         })}
       >
         <Toolbar>
-          <Link to = "/"><img width="100%" height="30px" src={MainLogoImage}/></Link>
-          <Typography variant="h6" noWrap className={classes.title}>
-            <div className='Logo'>매칭그라운드</div>
+          <Link to = "/"><img width="100%" height="50px" src={process.env.PUBLIC_URL + "/backgroundimage/logo3.jpg"}/></Link>
+          <Typography variant="h6" noWrap className={classes.title} style={{ fontFamily:"Dongle-Bold", fontSize:40, marginLeft:10}}> 
+            매칭그라운드
           </Typography>
           <Chip
             avatar={<Avatar alt="toolbar_profile" src={myinfo.profile_image} />}
             label={myinfo.user_name}
             variant="outlined"
-            style={{marginRight:20}}
+            style={{marginRight:20, fontFamily:"Dongle-Bold", fontSize:24}}
             onClick={chipClick}
           />
           <MailSystem/>
