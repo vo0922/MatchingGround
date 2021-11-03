@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     
 });
 
-export default function TeamMember() {
+export default function TeamMember({location}) {
     const classes = useStyles();
 
     const [info, setinfo] = useState({
@@ -23,7 +23,7 @@ export default function TeamMember() {
         email: window.sessionStorage.getItem("id"),
     });
 
-      const [teaminfo, setteaminfo] = useState(location.state.teaminfo);
+    const [teaminfo, setteaminfo] = useState(location.state.teaminfo);
 
     const [tablelist, settablelist] = useState({
         list: <TableRow>
@@ -56,6 +56,21 @@ export default function TeamMember() {
             console.log(data)
     }
 
+    const deleteclick = (data) => {
+        fetch("http://localhost:3001/team/member/delete", {
+            method: "post",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({ user_no : data.user_no }),
+        })
+            .then((res)=> res.json())
+            .then((json) =>{
+                
+            })            
+            console.log(data)
+    }
+
 
     // 클럽원 불러오기
     const Member = () => {
@@ -75,7 +90,7 @@ export default function TeamMember() {
                             <TableCell align="right">{year - data.birthyear + 1}</TableCell>
                             <TableCell align="right">{data.height}</TableCell>
                             <TableCell align="right">{data.position}</TableCell>
-                            <TableCell align="right"><Button onClick={()=>assignclick(data)} variant="contained" color="primary">위임</Button><Button>제명</Button></TableCell>
+                            <TableCell align="right"><Button onClick={()=>assignclick(data)} variant="contained" color="primary">위임</Button><Button onClick={()=>deleteclick(data)} variant="contained" color="primary">제명</Button></TableCell>
                         </TableRow>
                     )),
                 });

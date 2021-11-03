@@ -23,7 +23,6 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
-   
   photo: {
     height: 150,
     alignItems: "center",
@@ -31,16 +30,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TeamFind({ history }) {
-
   const classes = useStyles();
 
-
   const [inputs, setinputs] = useState({
-    city: "",
-    team_class: "",
+    city: "전체",
+    team_class: "전체",
   });
 
   const { city, team_class } = inputs;
+
+  const team_name = document.getElementById("team_name");
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -50,18 +49,82 @@ function TeamFind({ history }) {
     });
   };
 
+  const searchbutton = () => {
+    fetch("http://localhost:3001/findteam/search", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        activity_area: inputs.city === "전체" ? "%" : inputs.city + "%",
+        team_class: team_class === "전체" ? "%" : inputs.team_class,
+        team_name: team_name.value === null ? "%" : "%" + team_name.value + "%",
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(inputs);
+        console.log(team_name.value);
+        setteamlist({
+          list: json.map((data) => (
+            <Grid item xs={4} key={data.team_no}>
+              <Card>
+                <CardMedia
+                  style={{ justifyContent: "center", display: "flex" }}
+                >
+                  <img
+                    className={classes.photo}
+                    src={data.team_image}
+                    alt="팀 로고"
+                  />
+                </CardMedia>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ justifyContent: "center", display: "flex" }}
+                  >
+                    {data.team_name}
+                  </Typography>
+                  <Typography variant="body2" color="inherit">
+                    활동 지역 : {data.activity_area} <br />
+                    희망 연령대 : {data.team_age} <br />팀 수준 :{" "}
+                    {data.team_class} <br />팀 인원 : {data.team_count} <br />팀
+                    소개 : {data.team_introduce}
+                  </Typography>
+                </CardContent>
+                <CardActions
+                  style={{ justifyContent: "center", display: "flex" }}
+                >
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    onClick={() => getTeamDetail(data.team_name)}
+                  >
+                    팀 상세페이지 버튼
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          )),
+        });
+      });
+  };
+
   // 팀 상세정보 페이지
   const getTeamDetail = (teamkey) => {
     history.push({
-      pathname: '/findteam/teamdetail',
+      pathname: "/findteam/teamdetail",
       state: {
         teamkey: teamkey,
-      }
-  });
-  }
+      },
+    });
+  };
 
   const [teamlist, setteamlist] = useState({
-    list: '',
+    list: "",
   });
 
   const getteamlist = () => {
@@ -79,23 +142,42 @@ function TeamFind({ history }) {
           list: json.map((data) => (
             <Grid item xs={4} key={data.team_no}>
               <Card>
-                <CardMedia>
-                <img className={classes.photo} src={data.team_image} alt="팀 로고" />
+                <CardMedia
+                  style={{ justifyContent: "center", display: "flex" }}
+                >
+                  <img
+                    className={classes.photo}
+                    src={data.team_image}
+                    alt="팀 로고"
+                  />
                 </CardMedia>
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ justifyContent: "center", display: "flex" }}
+                  >
                     {data.team_name}
                   </Typography>
                   <Typography variant="body2" color="inherit">
                     활동 지역 : {data.activity_area} <br />
-                    희망 연령대 : {data.team_age} <br />
-                    팀 수준 : {data.team_class} <br />
-                    팀 인원 : {data.team_count} <br />
-                    팀 소개 : {data.team_introduce}
+                    희망 연령대 : {data.team_age} <br />팀 수준 :{" "}
+                    {data.team_class} <br />팀 인원 : {data.team_count} <br />팀
+                    소개 : {data.team_introduce}
                   </Typography>
                 </CardContent>
-                <CardActions>
-                  <Button variant="outlined" color="primary" size="small" onClick={() => getTeamDetail(data.team_name)}>팀 상세페이지 버튼</Button>
+                <CardActions
+                  style={{ justifyContent: "center", display: "flex" }}
+                >
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    onClick={() => getTeamDetail(data.team_name)}
+                  >
+                    팀 상세페이지 버튼
+                  </Button>                  
                 </CardActions>
               </Card>
             </Grid>
@@ -104,15 +186,16 @@ function TeamFind({ history }) {
       });
   };
 
-
   useEffect(() => {
     getteamlist();
   }, []);
 
-
   return (
     <React.Fragment>
-      <Container maxWidth="md" style={{ backgroundColor: "#F5F5F5", marginTop: 10 }}>
+      <Container
+        maxWidth="md"
+        style={{ backgroundColor: "#F5F5F5", marginTop: 10 }}
+      >
         <Typography component="div" style={{ height: "100vh" }}>
           <Grid
             container
@@ -175,6 +258,9 @@ function TeamFind({ history }) {
                   onChange={onChange}
                   style={{ width: 150, textAlign: "center" }}
                 >
+                  <MenuItem value="전체">
+                    <em>전체</em>
+                  </MenuItem>
                   <MenuItem value={"아마추어"}>아마추어</MenuItem>
                   <MenuItem value={"세미프로"}>세미프로</MenuItem>
                   <MenuItem value={"프로"}>프로</MenuItem>
@@ -184,13 +270,15 @@ function TeamFind({ history }) {
             </Grid>
             <Grid item xs={5}>
               <TextField
+                id="team_name"
+                name="team_name"
                 style={{
                   width: 380,
                 }}
               />
             </Grid>
             <Button>
-              <SearchIcon />
+              <SearchIcon onClick={searchbutton} />
             </Button>
             <Grid item xs={12}>
               <h1>팀 리스트</h1>

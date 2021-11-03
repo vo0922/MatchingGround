@@ -642,7 +642,7 @@ app.post("/team/apply", (req, res) =>{
   })
 })
 
-// 클럽 가입신청 승인 보내기
+// 클럽 가입신청 거절 보내기
 app.post("/team/leave", (req, res) =>{
   const selectionModel = req.body;
 
@@ -760,7 +760,23 @@ app.post("/findteam/applybutton", (req,res)=>{
   );
 });
 
+// 클럽 찾기 조회 버튼
+app.post("/findteam/search", (req,res)=>{
+  const activity_area = req.body.activity_area;
+  const team_class = req.body.team_class;
+  const team_name = req.body.team_name;
 
+  connection.query(
+    "select *from Team where activity_area like ? and team_class like ? and team_name like ?",[activity_area, team_class, team_name],
+    function (err, rows, fields) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(rows);
+      }
+    }
+  );
+});
 
 // 매치리스트 불러오기
 app.post("/matchlist", (req, res) =>{
