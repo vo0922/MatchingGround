@@ -19,6 +19,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
 import { CardActionArea } from '@mui/material';
 
+
 const useStyles = makeStyles((theme) => ({
   card: {
     minWidth: 275,
@@ -85,9 +86,8 @@ function ReservationCard({history}) {
                setgroundinfo({
                 list: res.map((data) =>
                 <Card className={classes.card} key={data.ground_name} onClick={() => cardclick(data.ground_name)}>
-                <CardActionArea>
                 <CardContent>
-                  <img src={data.photo} style={{float: "left", marginRight: 20}} height="130" width="200"/>
+                  <img src={data.photo} style={{float: "left", marginRight: 20, marginBottom: 15}} height="120" width="200"/>
                   <Typography className={classes.content} variant="h6" component="h2" gutterBottom>
                     {data.ground_name}
                   </Typography>
@@ -104,7 +104,6 @@ function ReservationCard({history}) {
                     {data.uniform_rent === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>유니폼</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>유니폼</Button>}
                   </Typography>
                 </CardContent>
-                </CardActionArea>
               </Card>
                 ),
                })
