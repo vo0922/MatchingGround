@@ -14,12 +14,17 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
   },
-  pos: {},
+  pos: {
+    fontSize : 18,
+  },
   large: {
     width: theme.spacing(9),
     height: theme.spacing(9),
   },
 }));
+
+const today = new Date();
+const today_year = today.getFullYear();
 
 export default function MainScreen_Myinfo() {
   const classes = useStyles();
@@ -27,7 +32,8 @@ export default function MainScreen_Myinfo() {
     profile_image : "",
     user_name : "",
     position : "",
-    birthyear : "",
+    birthyear : 0,
+    gender : "",
     height : "",
     introduce : "",
     email : window.sessionStorage.getItem('id'),
@@ -48,6 +54,7 @@ export default function MainScreen_Myinfo() {
       user_name : res[0].user_name,
       position : res[0].position,
       birthyear : res[0].birthyear,
+      gender : res[0].gender,
       height : res[0].height,
       introduce : res[0].introduce,
       email : window.sessionStorage.getItem('id')
@@ -61,7 +68,7 @@ export default function MainScreen_Myinfo() {
 
   return (
     <div>
-      <p>내 정보</p>
+      <Typography variant="h5" style={{marginLeft:10}}>내 정보</Typography>
       <Card className={classes.root} elevation={3}>
         <CardContent>
             <Grid container spacing={3}>
@@ -72,16 +79,18 @@ export default function MainScreen_Myinfo() {
             <Typography
               variant="h5"
               component="h2"
-              style={{ marginTop: 10, marginBottom: 10 }}
+              style={{ marginTop: 10, marginBottom: 10,}}
+              
             >
               {myinfo.user_name}
             </Typography>
 
-            <Typography className={classes.pos} color="textSecondary">
-              {myinfo.position === 'none' ? "포지션 : 없음." : myinfo.position}
+            <Typography variant="body1" className={classes.pos} color="textSecondary">
+              {myinfo.position === 'none' ? "포지션 : 없음." : "포지션 : " + myinfo.position + " / "}
+              {myinfo.gender === 'M' ? "남성" : myinfo.gender === 'W' ? "여성" : null}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
-              {myinfo.birthyear}년 생 / {myinfo.height === 'none' ? "키 : 없음." : myinfo.height + "cm"}
+              {today_year - myinfo.birthyear + 1}세 / {myinfo.height === 'none' ? "키 : 없음." : myinfo.height + "cm"}
             </Typography>
             <Typography className={classes.pos} color="textSecondary">
               {myinfo.introduce}

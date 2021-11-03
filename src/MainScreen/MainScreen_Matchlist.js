@@ -8,7 +8,9 @@ import {
   Container,
   Grid,
   Button,
+  CssBaseline,
 } from "@material-ui/core";
+
 
 
 const useStyles = makeStyles({
@@ -77,6 +79,7 @@ export default function MainScreen_Matchlist() {
         }
         setmatchlistcards({
           body: json.map((json) => (
+            
             <Card
               key={json.match_num}
               className={classes.matchlistcard}
@@ -85,15 +88,15 @@ export default function MainScreen_Matchlist() {
               <CardContent>
                 <Container>
                   <Typography
-                    component="h6"
-                    variant="h6"
+                    component="h5"
+                    variant="h5"
                     className={classes.cardtitle}
                   >
                     {json.r_date + " / " + timelabel[json.r_time]}
                   </Typography>
                   <Typography
                     variant="h5"
-                    component="h2"
+                    component="h5"
                     className={classes.cardtitle}
                   >
                     {json.ground_name}
@@ -101,12 +104,14 @@ export default function MainScreen_Matchlist() {
                   <Typography
                     color="textSecondary"
                     className={classes.cardcontent}
+                    variant="body1"
+                    style={{fontSize:16}}
                   >
                     {json.address}
                   </Typography>
 
                   <Typography
-                    style={{ fontSize: 13, textAlign: "center" }}
+                    style={{ fontSize: 16, textAlign: "center" }}
                     color="primary"
                   >
                     매치신청은 <Link to="/matchlist">매치리스트</Link> 탭을 이용해주세요
@@ -125,6 +130,7 @@ export default function MainScreen_Matchlist() {
 
   return (
     <div>
+      <CssBaseline/>
       <Typography variant="h5" component="h5" style={{ textAlign: "center" }}>
         매치리스트
       </Typography>

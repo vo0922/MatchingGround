@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
   },
-  pos: {},
+  pos: {
+    fontSize: 18,
+  },
   large: {
     width: theme.spacing(9),
     height: theme.spacing(9),
@@ -95,7 +97,7 @@ export default function MainScreen_Teaminfo() {
                     {teaminfo.team_date}
                   </Typography>
                   <Typography className={classes.pos} color="textSecondary">
-                    {teaminfo.activity_area}
+                    활동 지역 : {teaminfo.activity_area}
                   </Typography>
                   <Typography className={classes.pos} color="textSecondary">
                    전적 : {teaminfo.win}승 {teaminfo.lose}패 
@@ -134,7 +136,7 @@ export default function MainScreen_Teaminfo() {
 
   return (
     <div>
-      <p>내 팀 정보</p>
+      <Typography variant="h5">내 팀 정보</Typography>
       {teamcard.card}
     </div>
   );
