@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import TeamMember from "./TeamMember";
 import TeamApplyModal from "./TeamApplyModal";
+import TeamMemberModal from "./TeamMemberModal";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -41,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  font: {         
+      
+  }
 }));
 
 const style = {
@@ -116,9 +120,14 @@ function TeamLoad({ history }) {
   }
 
   //클럽원 관리 버튼
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [memberopen, setmemberopen] = React.useState(false);
+  const handlememberOpen = () => setmemberopen(true);
+  const handlememberClose = () => setmemberopen(false);
+
+  //클럽 가입신청관리 버튼
+  const [applyopen, setapplyopen] = React.useState(false);
+  const handleapplyOpen = () => setapplyopen(true);
+  const handleapplyClose = () => setapplyopen(false);
 
   function Member_Modify() {}
 
@@ -209,7 +218,7 @@ function TeamLoad({ history }) {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography component="div" variant="h5">
+              <Typography component="div" variant="h5" className={classes.font}>
                 클럽소개
               </Typography>
               <TextField
@@ -242,15 +251,15 @@ function TeamLoad({ history }) {
                     variant="outlined"
                     color="primary"
                     size="large"
-                    onClick={handleOpen}
+                    onClick={handleapplyOpen}
                     style={{ margin: 10}}
                   >
                     클럽 가입신청 관리
                   </Button>
                 ) : null}
                 <Modal
-                  open={open}
-                  onClose={handleClose}
+                  open={applyopen}
+                  onClose={handleapplyClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
@@ -266,20 +275,20 @@ function TeamLoad({ history }) {
                     variant="outlined"
                     color="primary"
                     size="large"
-                    onClick={handleOpen}
+                    onClick={handlememberOpen}
                     style={{ margin: 10}}
                   >
                     클럽원 관리
                   </Button>
                 ) : null}
                 <Modal
-                  open={open}
-                  onClose={handleClose}
+                  open={memberopen}
+                  onClose={handlememberClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
                   <Box sx={style}>
-                    <TeamApplyModal/>
+                    <TeamMemberModal/>
                   </Box>
                 </Modal>
               </Grid>

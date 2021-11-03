@@ -58,7 +58,7 @@ function MyLoad({ history }) {
     user_name: "",
     birthyear: "",
     height: "",
-    mobile: "",
+    gender: "",
     position: "",
     team_name: "",
     introduce: "",
@@ -81,7 +81,7 @@ function MyLoad({ history }) {
           user_name: json[0].user_name,
           birthyear: json[0].birthyear,
           height: json[0].height,
-          mobile: json[0].mobile,
+          gender: json[0].gender,
           position: json[0].position,
           team_name: json[0].team_name,
           introduce: json[0].introduce,
@@ -97,7 +97,7 @@ function MyLoad({ history }) {
 
   const rows = [
     createData("이름 ", info.user_name),
-    createData("전화번호 ", info.mobile),
+    createData("성별 ", info.gender === 'M' ? '남자' : info.gender === 'F' ? '여자' : null),
     createData("출생년도 ", info.birthyear),
     createData("키 ", info.height),
     createData("포지션 ", info.position),
