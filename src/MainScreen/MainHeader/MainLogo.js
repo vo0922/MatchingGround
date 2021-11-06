@@ -29,6 +29,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Box from '@mui/material/Box'
 import MailSystem from './MailSystem'
 import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
 import '../../font/font.css';
@@ -84,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
   },
+
 }));
 
 function MainLogo({history}) {

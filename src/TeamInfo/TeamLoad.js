@@ -191,7 +191,7 @@ function TeamLoad({ history }) {
           <Grid container spacing={4}>
             <Grid
               item
-              xs={6}
+              xs
               container
               direction="row"
               justifyContent="center"
@@ -199,7 +199,7 @@ function TeamLoad({ history }) {
             >
               <Avatar src={teaminfo.team_image} className={classes.photo} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableBody>
                   {rows.map((row) => (

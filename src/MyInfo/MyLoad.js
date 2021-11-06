@@ -118,7 +118,7 @@ function MyLoad({ history }) {
           <Grid container spacing={3}>
             <Grid
               item
-              xs={6}
+              xs
               container
               direction="row"
               justifyContent="center"
@@ -126,7 +126,7 @@ function MyLoad({ history }) {
             >
               <Avatar src={info.profile_image} className={classes.photo} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableBody>
                   {rows.map((row) => (

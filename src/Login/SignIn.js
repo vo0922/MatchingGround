@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage: 'url(/backgroundimage/background4.jpg)',
     backgroundSize: 'cover',
   },
   paper: {
@@ -27,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+    width: 150,
+    height:150,
   },
   form: {
     width: '100%',
@@ -98,9 +100,7 @@ export default function Signin() {
       <Grid item xs={false} md={7} className={classes.image} />
       <Grid item xs={12} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <img width="100%" height="50px" src="mainlogoimage/free-icon-parking-905484.png" />
-          </Avatar>
+          <Avatar className={classes.avatar} src="/backgroundimage/logo2.png"/>
           <Typography component="h1" variant="h5">
             MatchingGround
           </Typography>

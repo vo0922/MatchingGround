@@ -10,10 +10,13 @@ import {
   Tabs,
   Tab,
   Box,
+  MenuItem,
+  InputLabel,
+  Select,
+  FormControl,
 } from "@material-ui/core";
 import {
-  ToggleButton,
-  ToggleButtonGroup,
+
   Dialog,
   DialogActions,
   DialogContent,
@@ -24,9 +27,8 @@ import {
 } from "@mui/material"
 import { makeStyles } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
-import { borderColor } from "@mui/system";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root:{
     backgroundImage:"public\groundimage\groundimage1632817067969IMG_0504.JPG"
   },
@@ -47,23 +49,16 @@ const useStyles = makeStyles({
     borderRadius:50,
     backgroundColor:"#e8eaf6", 
     margin:5, 
-    minWidth:110,
-    maxWidth:110,
-    fontSize:17,
+    fontSize:14,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
   },
   
-});
+}));
 
-export default function MatchListMain() {
-  let locationbutton={
-    fontSize: 14, 
-    margin : 2, 
-    backgroundColor : "white", 
-    borderRadius : 15,
-    fontFamily:"Gamja_Flower",
-    borderColor:"#bdbdbd"
-  } // 광역시, 도 버튼 스타일 적용
-
+export default function MatchListMoblie() {
   const classes = useStyles();
 
   var today = new Date(); // 오늘 날짜 받아오기
@@ -80,7 +75,6 @@ export default function MatchListMain() {
     body: "",
   }); // 매치리스트 렌더링 변수
 
-  const [locationalignment, setlocationalignment] = useState("전체"); // 광역시, 도 선택변수
   var timelabel = [
     "",
     "08:00 ~ 10:00",
@@ -135,8 +129,7 @@ export default function MatchListMain() {
     return tabs;
   }
   
-
-
+  
   // 매치리스트 받아오기, 렌더링
   function getmatchlist() {
     fetch("http://localhost:3001/matchlist", {
@@ -219,50 +212,87 @@ export default function MatchListMain() {
   const [locationdetail, setlocationdetail] = useState({
     body: "",
   });
+  const [city, setcity] = useState({
+    location : "전체",
+    locationdetail : "전체",
+  })
 
   // 광역시, 도 선택 시 이벤트 함수 -> 세부주소 버튼 출력, 검색 데이터 변경
-  const handleLocation = (e, newAlignment) => {
+  const handleLocation = (e) => {
+    console.log(e.target.value)
     
-    if (newAlignment === null) return;
-    setlocationalignment(newAlignment);
-    if (newAlignment === "전체") {
-      setlocationdetail({
-        body: "",
-      });
+    setcity({
+      location : e.target.value,
+      locationdetail : "전체",
+    })
+
+    var address = ""
+
+    if(e.target.value === "전체"){
+      address="%";
       setsearchdata({
         ...searchdata,
         address : "%"
       })
+      setlocationdetail({
+        body:""
+      })
       return;
+    }else{
+      if(e.target.value==="경상북도"){
+        address="경북";
+      }else if(e.target.value==="경상남도"){
+        address="경남";
+      }else if(e.target.value==="충청북도"){
+        address="충북";  
+      }else if(e.target.value==="충청남도"){
+        address="충남";
+      }else if(e.target.value==="경기도"){
+        address="경기"
+      }else if(e.target.value==="강원도"){
+        address="강원"
+      }else if(e.target.value==="전라남도"){
+        address="전남"
+      }else if(e.target.value==="전라북도"){
+        address="전북"
+      }else if(e.target.value==="제주특별자치도"){
+        address="제주"
+      }else{
+        address=e.target.value;
+      }
     }
-    
-    searchlocation(newAlignment, e.target.id);
+  
+    searchlocation(e.target.value);
 
     setsearchdata({
       ...searchdata,
-      address : "%" + e.target.id + "%"
+      address : "%" + address + "%"
     })
   };
 
   // 세부주소 선택 이벤트 함수 -> 검색데이터 변경
-  const handleLocationDetail = (location, locationdetail) => {
-    if(locationdetail === "전체"){
-      location = searchdata.address.substring(1,3)
+  const handleLocationDetail = (e) => {
+    setcity({
+      ...city,
+      locationdetail : e.target.value,
+    })
+    
+    if(e.target.value !== "전체"){
       setsearchdata({
         ...searchdata,
-        address : "%" + location + "%"
+        address : "%" + city.location + " " + e.target.value + "%"
       });
     }
-    else{
+    else if(e.target.value === "전체"){
       setsearchdata({
         ...searchdata,
-        address : "%" + location + " " + locationdetail + "%"
+        address : "%" + city.location + "%"
       });
     }
   }
 
   // 광역시, 도 기반으로 시,군,구 데이터 받아와 버튼렌더링
-  function searchlocation(location, location_short) {
+  function searchlocation(location) {
     fetch("http://localhost:3001/reservation/search", {
       method: "POST", // 통신방법
       headers: {
@@ -274,9 +304,7 @@ export default function MatchListMain() {
       .then((res) => {
         setlocationdetail({
           body: res.map((res) => (
-            <Button key={res.properties.sig_kor_nm} onClick={() => handleLocationDetail(location_short, res.properties.sig_kor_nm)} value={res.properties.sig_kor_nm} color="inherit" style={{ fontSize: 12 }}>
-              <Typography>{res.properties.sig_kor_nm}</Typography>
-            </Button>
+            <MenuItem key={res.properties.sig_kor_nm} value={res.properties.sig_kor_nm}>{res.properties.sig_kor_nm}</MenuItem>
           )),
         });
       });
@@ -364,6 +392,7 @@ export default function MatchListMain() {
 
   // 검색 데이터 변경시 매치리스트 재렌더링
   useEffect(() => {
+    console.log(searchdata)
     getmatchlist();
   }, [searchdata])
 
@@ -382,8 +411,8 @@ export default function MatchListMain() {
             variant="scrollable"
             scrollButtons="auto"
             indicatorColor="primary"
-            //TabIndicatorProps={{style: {background:"white"}}}
             textColor="primary"
+            style={{borderRadius:50,}}
             aria-label="dateTabs"
             
           >
@@ -392,74 +421,48 @@ export default function MatchListMain() {
         </Box>
         <hr/>
         <Grid container justifyContent="center" alignItems="center">
-        <ToggleButtonGroup
-            variant="text"
-            color="primary"
-            value={locationalignment}
-            style={{ align: "center", marginTop: 10, marginBottom: 10,}}
-            exclusive
-            onChange={handleLocation}
-          >
-            <ToggleButton id="" value="전체" label="%" style={locationbutton}>
-              전체
-            </ToggleButton>
-            <ToggleButton id="서울" value="서울" style={locationbutton}>
-              서울
-            </ToggleButton>
-            <ToggleButton id="부산" value="부산" style={locationbutton}>
-              부산
-            </ToggleButton>
-            <ToggleButton id="대구" value="대구" style={locationbutton}>
-              대구
-            </ToggleButton>
-            <ToggleButton id="인천" value="인천" style={locationbutton}>
-              인천
-            </ToggleButton>
-            <ToggleButton id="광주" value="광주" style={locationbutton}>
-              광주
-            </ToggleButton>
-            <ToggleButton id="대전" value="대전" style={locationbutton}>
-              대전
-            </ToggleButton>
-            <ToggleButton id="울산" value="울산" style={locationbutton}>
-              울산
-            </ToggleButton>
-            <ToggleButton id="세종" value="세종" style={locationbutton}>
-              세종
-            </ToggleButton>
-            <ToggleButton id="경기" value="경기" style={locationbutton}>
-              경기
-            </ToggleButton>
-            <ToggleButton id="강원" value="강원" style={locationbutton}>
-              강원
-            </ToggleButton>
-            <ToggleButton id="충북" value="충청북도" style={locationbutton}>
-              충북
-            </ToggleButton>
-            <ToggleButton id="충남" value="충청남도" style={locationbutton}>
-              충남
-            </ToggleButton>
-            <ToggleButton id="전북" value="전라북도" style={locationbutton}>
-              전북
-            </ToggleButton>
-            <ToggleButton id="전남" value="전라남도" style={locationbutton}>
-              전남
-            </ToggleButton>
-            <ToggleButton id="경북" value="경상북도" style={locationbutton}>
-              경북
-            </ToggleButton>
-            <ToggleButton id="경남" value="경상남도" style={locationbutton}>
-              경남
-            </ToggleButton>
-            <ToggleButton id="제주" value="제주" style={locationbutton}>
-              제주
-            </ToggleButton>
-          </ToggleButtonGroup>
+        <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="outlined-age-native-simple">시/도 선택</InputLabel>
+        <Select
+          value={city.location}
+          label="시/도"
+          style={{borderRadius:30}}
+          onChange={handleLocation}
+        >
+          <MenuItem name={"전체"} value="전체">
+            <em>전체</em>
+          </MenuItem>
+          <MenuItem value={"서울"}>서울</MenuItem>
+          <MenuItem value={"부산"}>부산</MenuItem>
+          <MenuItem value={"대구"}>대구</MenuItem>
+          <MenuItem value={"인천"}>인천</MenuItem>
+          <MenuItem value={"광주"}>광주</MenuItem>
+          <MenuItem value={"대전"}>대전</MenuItem>
+          <MenuItem value={"울산"}>울산</MenuItem>
+          <MenuItem value={"경기도"}>경기</MenuItem>
+          <MenuItem value={"강원도"}>강원</MenuItem>
+          <MenuItem value={"충청북도"}>충북</MenuItem>
+          <MenuItem value={"충청남도"}>충남</MenuItem>
+          <MenuItem value={"전라북도"}>전북</MenuItem>
+          <MenuItem value={"전라남도"}>전남</MenuItem>
+          <MenuItem value={"경상북도"}>경북</MenuItem>
+          <MenuItem value={"경상남도"}>경남</MenuItem>
+          <MenuItem value={"제주특별자치도"}>제주</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="outlined-age-native-simple">구/군 선택</InputLabel>
+        <Select
+          value={city.locationdetail}
+          label="구/군"
+          onChange={handleLocationDetail}
+          style={{borderRadius:30}}
+        >
+          {city === "전체" ? <MenuItem disabled><em>전체</em></MenuItem> : <MenuItem value="전체"><em>전체</em></MenuItem>}           
+          {locationdetail.body}
+        </Select>
+      </FormControl>
         </Grid>
-        {locationalignment !== "전체" ? (
-          <Button onClick={() => handleLocationDetail("", "전체")} color="inherit"><Typography>전체</Typography></Button>
-        ) : null}
-        {locationdetail.body}
         <hr />
         {matchlistcards.body}
       </Container>

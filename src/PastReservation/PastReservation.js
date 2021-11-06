@@ -9,17 +9,13 @@ export default class PastReservation extends Component {
     return (
       <div>
         <MainLogo />
-        <Container maxWidth="md">
-          <Typography
-            component="div"
+        <Container maxWidth="md" 
             style={{
               minHeight: "100vh",
-              backgroundColor: "#f5f5f5",
-            }}
-          >
+              height:"100%"
+            }}>
             <Reservation_current />
             <Reservation_past />
-          </Typography>
         </Container>
       </div>
     );

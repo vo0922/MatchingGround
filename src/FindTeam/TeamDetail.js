@@ -137,7 +137,7 @@ function TeamDetail({ location }) {
                     <Grid container spacing={3}>
                         <Grid
                             item
-                            xs={6}
+                            xs
                             container
                             direction="row"
                             justifyContent="center"
@@ -145,7 +145,7 @@ function TeamDetail({ location }) {
                         >
                             <Avatar src={teaminfo.team_image} className={classes.photo} />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableBody>
                                     {rows.map((row) => (

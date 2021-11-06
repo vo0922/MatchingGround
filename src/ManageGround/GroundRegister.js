@@ -143,9 +143,8 @@ function GroundRegister({history}) {
         <Container
           maxWidth="md"
           className={classes.container}
-          style={{ backgroundColor: "#F3F3F3", height:"100%"}}
+          style={{ backgroundColor: "#F3F3F3", minHeight:"100vh", height:"100%"}}
         >
-          <Typography component="div" style={{ height: "100vh" }}>
             <Typography
               component="h4"
               variant="h4"
@@ -370,7 +369,6 @@ function GroundRegister({history}) {
             >
               {modalbody}
             </Modal>
-          </Typography>
         </Container>
       </React.Fragment>
     </div>

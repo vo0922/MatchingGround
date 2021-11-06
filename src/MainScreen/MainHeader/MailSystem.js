@@ -9,8 +9,6 @@ import ListItemText from "@mui/material/ListItemText";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton"
-import { Paper } from "@mui/material";
-import { fontSize } from "@mui/system";
 
 export default function MailSystem() {
   const [anchorEl, setAnchorEl] = useState(null);
