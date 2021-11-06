@@ -47,11 +47,13 @@ function Modify({ history, location }) {
   const [info, setinfo] = useState(location.state.info);
 
   const handleonchange = (e) => {
+    const { value, name } = e.target;
     setinfo({
       ...info,
-      position: e.target.value,
+      [name]: value,
     });
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -96,7 +98,7 @@ function Modify({ history, location }) {
   function mymodify_notphoto(myinfo) {
     fetch("http://localhost:3001/myinfo/modify_notphoto", {
       method: "post",
-      body: myinfo,
+      body: myinfo, 
     })
       .then((res) => res.json())
       .then((data) => {});
@@ -223,12 +225,20 @@ function Modify({ history, location }) {
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
-                    id="gender"
-                    label="성별"
-                    variant="standard"
-                    defaultValue={info.gender}
-                  />
+                <FormControl variant="standard" style={{ width: 200 }}>
+                    <InputLabel id="label">포지션</InputLabel>
+                    <Select
+                      labelId="gender"
+                      id="gender"
+                      name="gender"
+                      label="성별"
+                      value={info.gender}
+                      onChange={handleonchange}
+                    >
+                      <MenuItem value={"M"}>남자</MenuItem>
+                      <MenuItem value={"F"}>여자</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField

@@ -129,8 +129,6 @@ function TeamLoad({ history }) {
   const handleapplyOpen = () => setapplyopen(true);
   const handleapplyClose = () => setapplyopen(false);
 
-  function Member_Modify() {}
-
   //탈퇴하기 버튼
   const [info, setinfo] = useState({
     team_name: "",

@@ -136,7 +136,7 @@ function Teammodify({ history, location }) {
     },
   };
 
-  //팀 생성 API
+  //팀 수정 API
   function teammodify_photo(teaminfo) {
     fetch("http://localhost:3001/team/modify_photo", {
       method: "post",
@@ -160,6 +160,25 @@ function Teammodify({ history, location }) {
         console.log(data.msg);
         alert("클럽 수정이 완료되었습니다.");
         history.push("/team");
+      });
+  }
+
+  //팀 삭제 API
+  function teamdelete() {
+    console.log(teaminfo.team_name)
+    fetch("http://localhost:3001/team/modify/delete", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ team_name : teaminfo.team_name }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        
+        alert(data.msg);
+        history.push('/');
+        window.sessionStorage.setItem('team_name', 'none');
       });
   }
 
@@ -382,10 +401,17 @@ function Teammodify({ history, location }) {
               </Box>
             </Grid>
             <Grid>
+            <Button
+                variant="contained"
+                style={{ width: 100, height: 60, margin:5}}
+                onClick={teamdelete}
+              >
+                클럽삭제
+            </Button>
               <Button
                 endIcon={<SendIcon />}
                 variant="contained"
-                style={{ width: 706, height: 60 }}
+                style={{ width: 600, height: 60, margin:5 }}
                 type="submit"
               >
                 수정완료

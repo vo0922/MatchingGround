@@ -521,7 +521,7 @@ var teaminfo_upload = multer({ storage : teaminfo_storage });
 app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
   console.log(req.body);
   connection.query(
-    "insert into Team (team_image, team_name, team_date, team_class, team_introduce, team_manage_name, activity_area, team_age) values(?,?,?,?,?,?,?,?)",
+    "call team_create(?,?,?,?,?,?,?,?)",
     [
       "teamlogo/" + req.file.filename,
       req.body.team_name,
@@ -596,7 +596,6 @@ app.post("/team/info", (req, res) =>{
 
 // 팀정보 불러오기
 app.post("/team/teaminfo", (req, res) =>{
-  const user_email = req.body.user_email;
   const team_name = req.body.team_name;
 
   connection.query("select *from Team, users where Team.team_manage_name = (select team_manage_name from Team where team_name=?) and users.email = (select team_manage_name from Team where team_name=?)", [team_name, team_name],
@@ -703,22 +702,21 @@ app.post("/team/delete", (req, res) =>{
 });
 
 // 클럽 삭제하기
-/*
+
 app.post("/team/modify/delete", (req, res) =>{
   const team_name = req.body.team_name;
-  console.log(team_name);
 
-  connection.query("delete from Team where team_name = ?", [team_name],
+  connection.query("call team_delete(?)", [team_name],
   function(err, rows, fields){
     if(err){
       console.log("클럽 정보 삭제하기 실패" + err);
     } else {
       res.send({msg:"클럽이 성공적으로 삭제되었습니다."});
-      console.log("클럽 정보 삭제하기 성공");
+      console.log("클럽 정보 삭제하기 성공");      
     }
   });
 });
-*/
+
 
 // 클럽원 불러오기
 app.post("/team/member", (req, res) =>{
@@ -735,9 +733,9 @@ app.post("/team/member", (req, res) =>{
 
 // 클럽원 제명하기
 app.post("/team/member/delete", (req, res) =>{
-  const data = req.body.data;
+  const user_no = req.body.user_no;
 
-  connection.query("update users set team_name = 'none' where user_no = ?", [data],
+  connection.query("update users set team_name = 'none' where user_no = ?", [user_no],
   function(err, rows, fields){
     if(err){
       console.log("클럽 제명 실패" + err);
