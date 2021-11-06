@@ -61,30 +61,40 @@ function Modify({ history, location }) {
       return;
     }
 
-    const formData = new FormData();
-
-    if (e.target.profile_image.files[0] == null) {
-      formData.append("profile_image", info.profile_image);
-    } else {
-      formData.append("profile_image", e.target.profile_image.files[0]);
-    }
+    const formData = new FormData();    
+    formData.append("profile_image", e.target.profile_image.files[0]);    
     formData.append("user_name", info.user_name);
     formData.append("birthyear", info.birthyear);
     formData.append("height", e.target.height.value);
-    formData.append("mobile", e.target.mobile.value);
+    formData.append("gender", e.target.gender.value);
     formData.append("position", e.target.position.value);
     formData.append("team_name", info.team_name);
     formData.append("introduce", e.target.introduce.value);
     formData.append("email", window.sessionStorage.getItem("id"));
 
-    mymodify(formData);
+    if(e.target.profile_image.files[0] != null){
+      mymodify_photo(formData);
+    }
+    else{
+      mymodify_notphoto(formData);
+    }   
+
+
   };
 
-  //이미지 핸들러
-
-  //수정API
-  function mymodify(myinfo) {
-    fetch("http://localhost:3001/myinfo/modify", {
+  // 수정하기 함수
+  function mymodify_photo(myinfo) {
+    fetch("http://localhost:3001/myinfo/modify_photo", {
+      method: "post",
+      body: myinfo,
+    })
+      .then((res) => res.json())
+      .then((data) => {});
+    history.push("/myinfo");
+  }
+  
+  function mymodify_notphoto(myinfo) {
+    fetch("http://localhost:3001/myinfo/modify_notphoto", {
       method: "post",
       body: myinfo,
     })
@@ -93,15 +103,10 @@ function Modify({ history, location }) {
     history.push("/myinfo");
   }
 
-  //이미지API
-  function myimage(myinfo) {
-    fetch("http://localhost:3001/myinfo/modify/image", {
-      method: "post",
-      body: myinfo,
-    })
-      .then((res) => res.json())
-      .then((data) => {});
-  }
+
+  //이미지 핸들러
+
+  
 
   //이미지 미리보기
   const [image, setimage] = useState({
@@ -219,10 +224,10 @@ function Modify({ history, location }) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    id="mobile"
-                    label="전화번호"
+                    id="gender"
+                    label="성별"
                     variant="standard"
-                    defaultValue={info.mobile}
+                    defaultValue={info.gender}
                   />
                 </Grid>
                 <Grid item xs={6}>

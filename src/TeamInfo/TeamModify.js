@@ -119,7 +119,13 @@ function Teammodify({ history, location }) {
     formData.append("team_age", e.target.team_age.value);
     formData.append("team_manage_name", window.sessionStorage.getItem("id"));
 
-    teammodify(formData);
+
+    if(e.target.team_image.files[0] != null){
+      teammodify_photo(formData);
+    }
+    else{
+      teammodify_notphoto(formData);
+    }   
   };
 
   let boxstyle = {
@@ -131,8 +137,21 @@ function Teammodify({ history, location }) {
   };
 
   //팀 생성 API
-  function teammodify(teaminfo) {
-    fetch("http://localhost:3001/team/modify", {
+  function teammodify_photo(teaminfo) {
+    fetch("http://localhost:3001/team/modify_photo", {
+      method: "post",
+      body: teaminfo,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.msg);
+        alert("클럽 수정이 완료되었습니다.");
+        history.push("/team");
+      });
+  }
+
+  function teammodify_notphoto(teaminfo) {
+    fetch("http://localhost:3001/team/modify_notphoto", {
       method: "post",
       body: teaminfo,
     })

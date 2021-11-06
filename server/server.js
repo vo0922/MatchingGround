@@ -464,7 +464,7 @@ app.post("/myinfo", (req, res) =>{
   });
 });
 
-// 내 정보 수정하기
+// 내 정보 수정하기 (사진 수정 o)
 const myinfo_storage = multer.diskStorage({
   destination : function(req, file, cb){
     cb(null, "../public/profileimage/");    
@@ -476,9 +476,9 @@ const myinfo_storage = multer.diskStorage({
 
 var myinfo_upload = multer({ storage : myinfo_storage });
 
-app.post("/myinfo/modify", myinfo_upload.single("profile_image"), (req,res)=>{
+app.post("/myinfo/modify_photo", myinfo_upload.single("profile_image"), (req,res)=>{
   connection.query(
-    "UPDATE users set profile_image = ?, mobile = ?, height = ?, position = ?, introduce = ? where email=?",["profileimage/"+req.file.filename, req.body.mobile, req.body.height, req.body.position, req.body.introduce, req.body.email],
+    "UPDATE users set profile_image = ?, gender = ?, height = ?, position = ?, introduce = ? where email=?",["profileimage/"+req.file.filename, req.body.gender, req.body.height, req.body.position, req.body.introduce, req.body.email],
 function(err,rows,fields){
     if(err){
         console.log(err);
@@ -488,6 +488,23 @@ function(err,rows,fields){
 });
 });
 
+// 내 정보 수정하기 (사진 수정 x)
+app.post("/myinfo/modify_notphoto", form_data.array(), function(req, res){
+  const gender = req.body.gender;
+  const height = req.body.height;
+  const position = req.body.position;
+  const introduce = req.body.introduce;
+  const email = req.body.email;
+  
+  connection.query("update users set gender = ?, height = ?, position = ?, introduce = ? where email = ?",[gender, height, position, introduce, email],
+  function(err,rows,fields){
+    if(err){
+        console.log(err);
+    }else{
+        //console.log("성공");
+    };
+});
+});
 
 // 팀 정보 만들기
 const teaminfo_storage = multer.diskStorage({
@@ -527,8 +544,7 @@ app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
 });
 
 // 팀 정보 수정하기
-app.post("/team/modify", teaminfo_upload.single("team_image"), (req,res)=>{
-  console.log(req.body);
+app.post("/team/modify_photo", teaminfo_upload.single("team_image"), (req,res)=>{
   connection.query(
     "update Team set team_image=?, team_class=?, team_introduce=?, team_age=? where team_name = ?",
     [
@@ -547,6 +563,20 @@ app.post("/team/modify", teaminfo_upload.single("team_image"), (req,res)=>{
       }
     }
   );
+});
+
+// 내 정보 수정하기 (사진 수정 x)
+app.post("/team/modify_notphoto", form_data.array(), function(req, res){ 
+  
+  connection.query("update users set team_class = ?, team_introduce = ?, team_age = ?, where team_name = ?",[req.body.team_class, req.body.team_introduce, req.body.team_age, req.body.team_name],
+  function(err,rows,fields){
+    if(err){
+        console.log(err);
+    }else{
+      res.send({msg:"클럽 수정이 완료되었습니다."});
+        //console.log("성공");
+    };
+});
 });
 
 // 메인 팀정보 불러오기
