@@ -53,26 +53,34 @@ export default function Matchinglist() {
   const [open, setOpen] = useState(false);
   const [match_num, setmatch_num] = useState(0);
   const [ReservationCancelData, setReservationCancelData] = useState({
-    user_email : '',
-    manager_id : '',
-    r_time : '',
-    ground_num : '',
-    r_date : '',
-    ground_name : '',
-    address : '',
+    user_email: "",
+    manager_id: "",
+    r_time: "",
+    ground_num: "",
+    r_date: "",
+    ground_name: "",
+    address: "",
   });
-  const dialogClickOpen = (key, ground_name, ground_num, r_date, r_time, manager_id, address) => {
+  const dialogClickOpen = (
+    key,
+    ground_name,
+    ground_num,
+    r_date,
+    r_time,
+    manager_id,
+    address
+  ) => {
     setOpen(true);
     setmatch_num(key);
     setReservationCancelData({
-      user_email : window.sessionStorage.getItem('id'),
-      manager_id : manager_id,
-      r_time : r_time,
-      ground_num : ground_num,
-      r_date : r_date,
-      ground_name : ground_name,
-      address : address,
-    })
+      user_email: window.sessionStorage.getItem("id"),
+      manager_id: manager_id,
+      r_time: r_time,
+      ground_num: ground_num,
+      r_date: r_date,
+      ground_name: ground_name,
+      address: address,
+    });
   };
 
   const dialogClose = () => {
@@ -86,30 +94,39 @@ export default function Matchinglist() {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        send_id : ReservationCancelData.user_email,
-        receive_id : ReservationCancelData.manager_id,
-        title : "예약취소알림",
-        contents : ReservationCancelData.ground_name + "경기장 / " + ReservationCancelData.ground_num + "구장 / " + ReservationCancelData.r_date + " / " + ReservationCancelData.r_time + "타임(" + timelabel[ReservationCancelData.r_time] + ")예약을 사용자가 취소하였습니다.",
-        link:"http://smartit-16.iptime.org/groundmananger",
+        send_id: ReservationCancelData.user_email,
+        receive_id: ReservationCancelData.manager_id,
+        title: "예약취소알림",
+        contents:
+          ReservationCancelData.ground_name +
+          "경기장 / " +
+          ReservationCancelData.ground_num +
+          "구장 / " +
+          ReservationCancelData.r_date +
+          " / " +
+          ReservationCancelData.r_time +
+          "타임(" +
+          timelabel[ReservationCancelData.r_time] +
+          ")예약을 사용자가 취소하였습니다.",
+        link: "http://smartit-16.iptime.org/groundmananger",
       }),
     })
       .then((res) => res.json())
+      .then((res) => {});
+    fetch("http://localhost:3001/matchinfo/reservationcancel", {
+      method: "post", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ match_num: match_num }),
+    })
+      .then((res) => res.json())
       .then((res) => {
-    });
-   fetch("http://localhost:3001/matchinfo/reservationcancel", {
-     method: "post", // 통신방법
-     headers: {
-       "content-type": "application/json",
-     },
-     body: JSON.stringify({match_num : match_num}),
-   })
-     .then((res) => res.json())
-     .then((res) => {
-     alert(res.msg);
-     })
-      setOpen(false);
-      window.location.reload();
-  }
+        alert(res.msg);
+      });
+    setOpen(false);
+    window.location.reload();
+  };
 
   function list() {
     fetch("http://localhost:3001/matchinfo/matchwatelist", {
@@ -180,7 +197,17 @@ export default function Matchinglist() {
                     <Button
                       variant="outlined"
                       color="primary"
-                      onClick={() => dialogClickOpen(data.match_num, data.ground_name, data.ground_num, data.r_date, data.r_time, data.manager_id, data.address)}
+                      onClick={() =>
+                        dialogClickOpen(
+                          data.match_num,
+                          data.ground_name,
+                          data.ground_num,
+                          data.r_date,
+                          data.r_time,
+                          data.manager_id,
+                          data.address
+                        )
+                      }
                     >
                       예약 취소
                     </Button>
@@ -196,27 +223,37 @@ export default function Matchinglist() {
   useEffect(() => {
     list();
   }, []);
-  return <div>
-    {matchinglist.list}
-        <Dialog
+  return (
+    <div>
+      {matchinglist.list}
+      <Dialog
         open={open}
         onClose={dialogClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"예약취소"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h5">{"예약취소"}</Typography>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description"></DialogContentText>
-          경기장 : {ReservationCancelData.ground_name}
-          <br/>
-          시간 : {timelabel[ReservationCancelData.r_time]}
-          <br/>
-          주소 : {ReservationCancelData.address}
+          <Typography>
+            경기장 : {ReservationCancelData.ground_name}
+            <br />
+            시간 : {timelabel[ReservationCancelData.r_time]}
+            <br />
+            주소 : {ReservationCancelData.address}
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={dialogClose} color="secondary">취소</Button>
-          <Button onClick={matchdelete} color="primary" autoFocus>확인</Button>
+          <Button onClick={dialogClose} color="secondary">
+            취소
+          </Button>
+          <Button onClick={matchdelete} color="primary" autoFocus>
+            확인
+          </Button>
         </DialogActions>
       </Dialog>
-      </div>
+    </div>
+  );
 }

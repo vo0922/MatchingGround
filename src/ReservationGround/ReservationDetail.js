@@ -24,6 +24,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { BrowserView, MobileView } from "react-device-detect";
 
 function ReservationDetail({ location, history }) {
   //구장 정보
@@ -61,30 +62,30 @@ function ReservationDetail({ location, history }) {
   const dialogClickOpen = () => {
     setOpen(true);
     setsubmititem({
-      ground_name : ground_name,
-      ground_num : document.getElementById("ground_num").value,
-      user_email : window.sessionStorage.getItem('id'),
-      team_name : window.sessionStorage.getItem('team_name'),
-      r_date : document.getElementById('r_date').value,
-      r_time : r_time,
-      address : ground.address,
-      vs_count : vscount,
-    })
+      ground_name: ground_name,
+      ground_num: document.getElementById("ground_num").value,
+      user_email: window.sessionStorage.getItem("id"),
+      team_name: window.sessionStorage.getItem("team_name"),
+      r_date: document.getElementById("r_date").value,
+      r_time: r_time,
+      address: ground.address,
+      vs_count: vscount,
+    });
   };
 
   const dialogClose = () => {
     setOpen(false);
   };
   const [submititem, setsubmititem] = useState({
-    ground_name : '',
-    ground_num : '',
-    user_email : '',
-    team_name : '',
-    r_date : '',
-    r_time : '',
-    address : '',
-    vs_count : '',
-  })
+    ground_name: "",
+    ground_num: "",
+    user_email: "",
+    team_name: "",
+    r_date: "",
+    r_time: "",
+    address: "",
+    vs_count: "",
+  });
   //결제하기
   const dialogsubmit = () => {
     setOpen(false);
@@ -92,7 +93,6 @@ function ReservationDetail({ location, history }) {
     if (!r_time) {
       alert("예약 시간을 선택해주세요.");
     } else {
-
       fetch("http://localhost:3001/reservation/detail/overlap", {
         method: "post", //통신방법
         headers: {
@@ -146,12 +146,15 @@ function ReservationDetail({ location, history }) {
                 "content-type": "application/json",
               },
               body: JSON.stringify({
-                send_id: window.sessionStorage.getItem('id'),
+                send_id: window.sessionStorage.getItem("id"),
                 receive_id: ground.manage_email,
                 title: "예약신청",
-                link:"http://localhost:3000/notgroundmananger",
+                link: "http://localhost:3000/notgroundmananger",
                 contents:
-                  window.sessionStorage.getItem('id') + " 님이 " + submititem.ground_name + "경기장에 예약을 신청하였습니다.",
+                  window.sessionStorage.getItem("id") +
+                  " 님이 " +
+                  submititem.ground_name +
+                  "경기장에 예약을 신청하였습니다.",
               }),
             })
               .then((res) => res.json())
@@ -194,7 +197,7 @@ function ReservationDetail({ location, history }) {
           uniform_rent: res[0].uniform_rent,
           price: res[0].price,
           phonenum: res[0].phonenum,
-          manage_email: res[0].manager_id
+          manage_email: res[0].manager_id,
         });
       });
   };
@@ -252,24 +255,24 @@ function ReservationDetail({ location, history }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        if(r_date === current_date){
-          for(var i = 0; i < res.length; i++) {
+        if (r_date === current_date) {
+          for (var i = 0; i < res.length; i++) {
             time[res[i].r_time] = true;
           }
-          for(var i = 0; i <= current_r_time; i++){
+          for (var i = 0; i <= current_r_time; i++) {
             time[i] = true;
           }
           setreservation({
             time: time,
-          })
-        }else{
-        for (var i = 0; i < res.length; i++) {
-          time[res[i].r_time] = true;
+          });
+        } else {
+          for (var i = 0; i < res.length; i++) {
+            time[res[i].r_time] = true;
+          }
+          setreservation({
+            time: time,
+          });
         }
-        setreservation({
-          time: time,
-        });
-      }
       });
   };
 
@@ -313,9 +316,7 @@ function ReservationDetail({ location, history }) {
     reqreservation();
   }, [r_date, ground_num]);
 
-  useEffect(() => {
-
-  }, [submititem, r_time])
+  useEffect(() => {}, [submititem, r_time]);
 
   //vs handle
   const vshandle = (event, newcount) => {
@@ -383,7 +384,6 @@ function ReservationDetail({ location, history }) {
     //   formData.append("r_time", e.target.r_time.value);
     //   formData.append("address", ground.address);
     //   formData.append("vs_count", vscount);
-
     //   fetch("http://localhost:3001/reservation/detail/overlap", {
     //     method: "post",
     //     body: formData,
@@ -424,15 +424,17 @@ function ReservationDetail({ location, history }) {
     //       }
     //     });
     // }
-
   };
 
   return (
     <React.Fragment>
       <MainLogo />
       <CssBaseline />
-      <Container maxWidth="md" style={{ backgroundColor: "white" }}>
-        <Typography component="div" style={{ height: "140vh" }}>
+      <Container
+        maxWidth="md"
+        style={{ marginTop: 25, minHeight: "100vh", height: "100%" }}
+      >
+        <Typography component="div">
           <Grid
             container
             direction="column"
@@ -440,7 +442,7 @@ function ReservationDetail({ location, history }) {
             alignItems="center"
           >
             <h1>{ground.title}</h1>
-            <img src={ground.img} height="450" />
+            <img src={ground.img} width="90%" />
           </Grid>
           <form
             onSubmit={onreservation}
@@ -448,44 +450,134 @@ function ReservationDetail({ location, history }) {
             autoComplete="off"
             encType="multipart/form-data"
           >
-          <Grid container spacing={3} style={{ marginTop: 30 }}>
-            <Grid item xs={5} style={{ marginLeft: 20 }}>
-              <h3>상세정보</h3>
-              <p>주소 : {ground.address}</p>
-              <p>전화번호 : {ground.phone}</p>
-              <p>
-                가격 :{" "}
-                {ground.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                원
-              </p>
-              <Grid item xs={11} style={{ marginTop:40 ,marginLeft: 10 }}>
-                <h5> - 경기인원 - </h5>
-                <ToggleButtonGroup
-                  color="primary"
-                  exclusive
-                  value={vscount}
-                  onChange={vshandle}
-                  name="vs_count"
-                  id="vs_count"
-                >
-                  <ToggleButton value="4vs4">4 vs 4</ToggleButton>
-                  <ToggleButton value="5vs5">5 vs 5</ToggleButton>
-                  <ToggleButton value="6vs6">6 vs 6</ToggleButton>
-                </ToggleButtonGroup>
+            <Grid container spacing={2} style={{ marginTop: 30 }}>
+              <Grid item xs={5} style={{ marginLeft: 20 }}>
+                <h3>상세정보</h3>
+                <p>주소 : {ground.address}</p>
+                <p>전화번호 : {ground.phone}</p>
+                <p>
+                  가격 :{" "}
+                  {ground.price
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  원
+                </p>
+                <Grid item style={{ marginTop: 40, marginLeft: 10 }}>
+                  <BrowserView>
+                    <h5> - 경기인원 - </h5>
+                    <ToggleButtonGroup
+                      color="primary"
+                      exclusive
+                      value={vscount}
+                      onChange={vshandle}
+                      name="vs_count"
+                      id="vs_count"
+                    >
+                      <ToggleButton value="4vs4">4 vs 4</ToggleButton>
+                      <ToggleButton value="5vs5">5 vs 5</ToggleButton>
+                      <ToggleButton value="6vs6">6 vs 6</ToggleButton>
+                    </ToggleButtonGroup>
+                  </BrowserView>
+                  <MobileView>
+                    <h5> - 경기인원 - </h5>
+                    <ToggleButtonGroup
+                      color="primary"
+                      exclusive
+                      value={vscount}
+                      onChange={vshandle}
+                      name="vs_count"
+                      id="vs_count"
+                    >
+                      <ToggleButton value="4vs4">4vs4</ToggleButton>
+                      <ToggleButton value="5vs5">5vs5</ToggleButton>
+                      <ToggleButton value="6vs6">6vs6</ToggleButton>
+                    </ToggleButtonGroup>
+                  </MobileView>
+                </Grid>
+              </Grid>
+              <Grid item xs={6}>
+                <h3>이용안내</h3>
+                <BrowserView>
+                  {ground.parking_lot === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_parking.png"}
+                      style={{ width: "20%", margin: 20 }}
+                    />
+                  ) : null}
+                  {ground.shower_room === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_shower.png"}
+                      style={{ width: "20%", margin: 20 }}
+                    />
+                  ) : null}
+                  {ground.foot_rent === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_shoe.png"}
+                      style={{ width: "20%", margin: 20 }}
+                    />
+                  ) : null}
+                  {ground.wifi === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_wifi.png"}
+                      style={{ width: "20%", margin: 20 }}
+                    />
+                  ) : null}
+                  {ground.ball_rent === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_ball.png"}
+                      style={{ width: "20%", margin: 20 }}
+                    />
+                  ) : null}
+                  {ground.uniform_rent === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_uniform.png"}
+                      style={{ width: "20%", margin: 20 }}
+                    />
+                  ) : null}
+                </BrowserView>
+                <MobileView>
+                  {ground.parking_lot === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_parking.png"}
+                      style={{ width: "20%", margin: 10 }}
+                    />
+                  ) : null}
+                  {ground.shower_room === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_shower.png"}
+                      style={{ width: "20%", margin: 10 }}
+                    />
+                  ) : null}
+                  {ground.foot_rent === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_shoe.png"}
+                      style={{ width: "20%", margin: 10 }}
+                    />
+                  ) : null}
+                  {ground.wifi === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_wifi.png"}
+                      style={{ width: "20%", margin: 10 }}
+                    />
+                  ) : null}
+                  {ground.ball_rent === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_ball.png"}
+                      style={{ width: "20%", margin: 10 }}
+                    />
+                  ) : null}
+                  {ground.uniform_rent === "true" ? (
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/icon_uniform.png"}
+                      style={{ width: "20%", margin: 10 }}
+                    />
+                  ) : null}
+                </MobileView>
               </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <h3>이용안내</h3>
-              {ground.parking_lot === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_parking.png"} style={{ width: 80, height: 80, margin:30}}/> : null}
-              {ground.shower_room === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shower.png"} style={{ width:80, height:80, margin:30}}/> : null}
-              {ground.foot_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shoe.png"} style={{ width:80, height:80,  margin:30}}/> : null}
-              {ground.wifi === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_wifi.png"} style={{ width:80, height:80, margin:30}}/> : null}
-              {ground.ball_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_ball.png"} style={{ width:80, height:80, margin:30}}/> : null}
-              {ground.uniform_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_uniform.png"} style={{ width:80, height:80, margin:30}}/> : null}
-            </Grid>
-          </Grid>
-            <Grid container spacing={3}>
-              <Grid item xs={3} style={{ marginLeft: 10 }}>
+            <br />
+            <Grid container spacing={4}>
+              <Grid item style={{ marginLeft: 20 }}>
                 <TextField
                   id="r_date"
                   name="r_date"
@@ -498,7 +590,7 @@ function ReservationDetail({ location, history }) {
                   }}
                 />
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={9} style={{ marginLeft: 20 }}>
                 <Grid style={{ display: "flex" }}>
                   <Paper
                     variant="outlined"
@@ -541,7 +633,7 @@ function ReservationDetail({ location, history }) {
                   00
                 </Grid>
               </Grid>
-              <Grid item xs={3} style={{ paddingLeft: 20 }}>
+              <Grid item xs={3} style={{ paddingLeft: 20, marginLeft: 20 }}>
                 <FormControl>
                   <InputLabel shrink htmlFor="age-native-label-placeholder">
                     구장선택
@@ -557,27 +649,55 @@ function ReservationDetail({ location, history }) {
                   </NativeSelect>
                 </FormControl>
               </Grid>
-              <Grid item xs={9}>
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">시간선택</FormLabel>
-                  <RadioGroup
-                    row
-                    aria-label="position"
-                    name="r_time"
-                    defaultValue={1}
-                    id="r_time"
-                    onChange={handleRadio}
-                  >
-                    {timeradio(1)}
-                    {timeradio(2)}
-                    {timeradio(3)}
-                    {timeradio(4)}
-                    {timeradio(5)}
-                    {timeradio(6)}
-                    {timeradio(7)}
-                    {timeradio(8)}
-                  </RadioGroup>
-                </FormControl>
+              <Grid item xs={8}>
+                <BrowserView>
+                  <Grid item xs={12}>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">시간선택</FormLabel>
+                      <RadioGroup
+                        row
+                        aria-label="position"
+                        name="r_time"
+                        defaultValue={1}
+                        id="r_time"
+                        onChange={handleRadio}
+                      >
+                        {timeradio(1)}
+                        {timeradio(2)}
+                        {timeradio(3)}
+                        {timeradio(4)}
+                        {timeradio(5)}
+                        {timeradio(6)}
+                        {timeradio(7)}
+                        {timeradio(8)}
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </BrowserView>
+                <MobileView>
+                  <Grid item xs={11}>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">시간선택</FormLabel>
+                      <RadioGroup
+                        row
+                        aria-label="position"
+                        name="r_time"
+                        defaultValue={1}
+                        id="r_time"
+                        onChange={handleRadio}
+                      >
+                        {timeradio(1)}
+                        {timeradio(2)}
+                        {timeradio(3)}
+                        {timeradio(4)}
+                        {timeradio(5)}
+                        {timeradio(6)}
+                        {timeradio(7)}
+                        {timeradio(8)}
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </MobileView>
               </Grid>
               <Grid item xs={5} style={{ marginLeft: 10 }}></Grid>
               <Grid container justifyContent="center" alignItems="center">
@@ -596,6 +716,7 @@ function ReservationDetail({ location, history }) {
                 </FormControl>
               </Grid>
             </Grid>
+
             <Grid
               container
               justifyContent="center"
@@ -612,30 +733,39 @@ function ReservationDetail({ location, history }) {
                 aria-describedby="alert-dialog-description"
               >
                 <DialogTitle id="alert-dialog-title">
-                  {"결제하시겠습니까?"}
+                  <Typography variant="h5">{"결제하시겠습니까?"}</Typography>
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                    경기장 이름 : {ground.title}
-                    <br/>
-                    주소 : {ground.address}
-                    <br/>
-                    경기장 연락처 : {ground.phonenum}
-                    <br/>
-                    구장 : {submititem.ground_num} 구장
-                    <br/>
-                    날짜 : {r_date} / 시간 : {timelabel[r_time-1]}
-                    <br/>
-                    경기인원 : {vscount}
-                    <br/>
-                    매치여부 : {checkbox.checkbox ? "매치개설" : "매치미개설" }
-                    <br/>
-                    <br/>
-                    <b>가격 : {ground.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}</b>
+                    <Typography>
+                      경기장 이름 : {ground.title}
+                      <br />
+                      주소 : {ground.address}
+                      <br />
+                      경기장 연락처 : {ground.phonenum}
+                      <br />
+                      구장 : {submititem.ground_num} 구장
+                      <br />
+                      날짜 : {r_date} / 시간 : {timelabel[r_time - 1]}
+                      <br />
+                      경기인원 : {vscount}
+                      <br />
+                      매치여부 : {checkbox.checkbox ? "매치개설" : "매치미개설"}
+                      <br />
+                      <hr />
+                      <b>
+                        가격 :{" "}
+                        {ground.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}
+                      </b>
+                    </Typography>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={dialogClose} color="secondary">결제 취소</Button>
+                  <Button onClick={dialogClose} color="secondary">
+                    취소
+                  </Button>
                   <Button onClick={dialogsubmit} color="primary" autoFocus>
                     결제 하기
                   </Button>

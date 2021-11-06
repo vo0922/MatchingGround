@@ -8,6 +8,7 @@ import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
+import '../font/font.css';
 
 export default function ControlledAccordions() {
   const [expanded, setExpanded] = useState(false);
@@ -71,13 +72,13 @@ export default function ControlledAccordions() {
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
               >
-                <Typography sx={{ width: '80%', flexShrink: 0 }} style={{fontSize:18}}>
+                <Typography sx={{ width: '80%', flexShrink: 0 }} style={{fontFamily:'Jua', fontSize:18}}>
                   {data.title}
                 </Typography>        
-                <Typography sx={{ color: 'text.secondary' }}>{data.author}</Typography>
+                <Typography sx={{ color: 'text.secondary' }} style={{fontFamily:'Gamja_Flower'}}>{data.author}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>
+                <Typography style={{fontFamily:'Gamja_Flower'}}>
                   {data.content}
                 </Typography>
               </AccordionDetails>
@@ -97,7 +98,7 @@ export default function ControlledAccordions() {
         container
         justifyContent="center"
       >
-        {getnotice.list} 
+        {getnotice.list}
       </Grid>
     </div>
   );
