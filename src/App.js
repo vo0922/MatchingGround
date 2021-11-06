@@ -26,7 +26,7 @@ const theme = createTheme({
     },
     h4:{
       fontFamily:[
-        'Jua',
+        'Dongle-Reqular',
       ],
     },
     h5:{

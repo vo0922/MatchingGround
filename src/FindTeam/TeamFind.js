@@ -191,8 +191,9 @@ function TeamFind({ history }) {
     <React.Fragment>
       <Container
         maxWidth="md"
-        style={{ minHeight:"100vh", height:"100%", marginTop: 10 }}
+        style={{ minHeight:"100vh", height:"100%", marginTop: 25 }}
       >
+        <Typography component="div">
           <Grid
             container
             direction="column"
@@ -206,7 +207,7 @@ function TeamFind({ history }) {
             container
             justifyContent="center"
             alignItems="center"
-            style={{ display: "flex" }}
+            style={{ display: "flex", marginTop: 20}}
           >
               <FormControl variant="outlined">
                 <InputLabel htmlFor="outlined-age-native-simple">
@@ -281,6 +282,7 @@ function TeamFind({ history }) {
               </Grid>
             </Grid>
           </Grid>
+        </Typography>
       </Container>
     </React.Fragment>
   );
