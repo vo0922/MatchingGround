@@ -137,7 +137,6 @@ function TeamFind({ history }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         setteamlist({
           list: json.map((data) => (
             <Grid item xs={12} md={4} key={data.team_no}>
@@ -254,7 +253,7 @@ function TeamFind({ history }) {
                   name="team_class"
                   value={team_class}
                   onChange={onChange}
-                  style={{ minWidth: 100, textAlign: "center", margin:10 }}
+                  style={{ minWidth: 120, textAlign: "center", margin:10 }}
                 >
                   <MenuItem value="전체">
                     <em>전체</em>

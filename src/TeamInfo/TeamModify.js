@@ -119,7 +119,13 @@ function Teammodify({ history, location }) {
     formData.append("team_age", e.target.team_age.value);
     formData.append("team_manage_name", window.sessionStorage.getItem("id"));
 
-    teammodify(formData);
+
+    if(e.target.team_image.files[0] != null){
+      teammodify_photo(formData);
+    }
+    else{
+      teammodify_notphoto(formData);
+    }   
   };
 
   let boxstyle = {
@@ -130,9 +136,9 @@ function Teammodify({ history, location }) {
     },
   };
 
-  //팀 생성 API
-  function teammodify(teaminfo) {
-    fetch("http://localhost:3001/team/modify", {
+  //팀 수정 API
+  function teammodify_photo(teaminfo) {
+    fetch("http://localhost:3001/team/modify_photo", {
       method: "post",
       body: teaminfo,
     })
@@ -141,6 +147,38 @@ function Teammodify({ history, location }) {
         console.log(data.msg);
         alert("클럽 수정이 완료되었습니다.");
         history.push("/team");
+      });
+  }
+
+  function teammodify_notphoto(teaminfo) {
+    fetch("http://localhost:3001/team/modify_notphoto", {
+      method: "post",
+      body: teaminfo,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.msg);
+        alert("클럽 수정이 완료되었습니다.");
+        history.push("/team");
+      });
+  }
+
+  //팀 삭제 API
+  function teamdelete() {
+    console.log(teaminfo.team_name)
+    fetch("http://localhost:3001/team/modify/delete", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ team_name : teaminfo.team_name }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        
+        alert(data.msg);
+        history.push('/');
+        window.sessionStorage.setItem('team_name', 'none');
       });
   }
 
@@ -363,10 +401,17 @@ function Teammodify({ history, location }) {
               </Box>
             </Grid>
             <Grid>
+            <Button
+                variant="contained"
+                style={{ width: 100, height: 60, margin:5}}
+                onClick={teamdelete}
+              >
+                클럽삭제
+            </Button>
               <Button
                 endIcon={<SendIcon />}
                 variant="contained"
-                style={{ width: 706, height: 60 }}
+                style={{ width: 600, height: 60, margin:5 }}
                 type="submit"
               >
                 수정완료

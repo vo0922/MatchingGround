@@ -15,15 +15,13 @@ const useStyles = makeStyles({
     
 });
 
-export default function TeamMember({location}) {
+export default function TeamMember({history}) {
     const classes = useStyles();
 
     const [info, setinfo] = useState({
         team_name: window.sessionStorage.getItem("team_name"),
         email: window.sessionStorage.getItem("id"),
     });
-
-    const [teaminfo, setteaminfo] = useState(location.state.teaminfo);
 
     const [tablelist, settablelist] = useState({
         list: <TableRow>
@@ -51,9 +49,9 @@ export default function TeamMember({location}) {
         })
             .then((res)=> res.json())
             .then((json) =>{
-                
+                alert(data.user_name + "클럽장 위임이 완료되었습니다.")
+                window.location.replace('/team');
             })            
-            console.log(data)
     }
 
     const deleteclick = (data) => {
@@ -66,9 +64,9 @@ export default function TeamMember({location}) {
         })
             .then((res)=> res.json())
             .then((json) =>{
-                
-            })            
-            console.log(data)
+                alert(data.user_name + "클럽원 제명이 완료되었습니다.")
+                window.location.replace('/team');
+            })
     }
 
 
@@ -90,7 +88,7 @@ export default function TeamMember({location}) {
                             <TableCell align="right">{year - data.birthyear + 1}</TableCell>
                             <TableCell align="right">{data.height}</TableCell>
                             <TableCell align="right">{data.position}</TableCell>
-                            <TableCell align="right"><Button onClick={()=>assignclick(data)} variant="contained" color="primary">위임</Button><Button onClick={()=>deleteclick(data)} variant="contained" color="primary">제명</Button></TableCell>
+                            <TableCell align="right"><Button style={{ margin:10 }} onClick={()=>assignclick(data)} variant="contained" color="primary">위임</Button><Button style={{ margin:10 }} onClick={()=>deleteclick(data)} variant="contained" color="primary">제명</Button></TableCell>
                         </TableRow>
                     )),
                 });
@@ -111,7 +109,7 @@ export default function TeamMember({location}) {
                             <TableCell align="right">나이</TableCell>
                             <TableCell align="right">키</TableCell>
                             <TableCell align="right">포지션</TableCell>
-                            <TableCell align="right">위임 or 제명</TableCell>
+                            <TableCell align="right">위임하기 or 제명하기</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>{tablelist.list}</TableBody>

@@ -84,6 +84,7 @@ export default function TeamApplyModal() {
     })
       .then((res) => res.json())
       .then((json) => {
+        window.location.replace('/team');
       });
   }
 
