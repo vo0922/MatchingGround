@@ -228,14 +228,11 @@ function Teammodify({ history, location }) {
   useEffect(() => {}, []);
 
   return (
-    <Container maxWidth="md">
+    <React.Fragment>
+    <Container maxWidth="md" style={{height:"100%", minHeight: "100vh", paddingTop: 20 }}>
       <MainLogo />
-      <Typography
-        component="div"
-        style={{ backgroundColor: "#F3F3F3", height: "90vh", paddingTop: 20 }}
-      >
         <Grid container direction="column">
-          <h1>클럽 수정하기</h1>
+          <Typography variant="h4" style={{textAlign:"center"}}>팀 수정하기</Typography>
         </Grid>
         <form
           onSubmit={handleSubmit}
@@ -419,8 +416,8 @@ function Teammodify({ history, location }) {
             </Grid>
           </Grid>
         </form>
-      </Typography>
     </Container>
+    </React.Fragment>
   );
 }
 

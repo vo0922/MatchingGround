@@ -183,9 +183,8 @@ function TeamLoad({ history }) {
     <React.Fragment>
       <Container
         maxWidth="md"
-        style={{ backgroundColor: "white", height: "100%" }}
+        style={{ height: "100%", minHeight:"100vh", paddingTop: 20 }}
       >
-        <Typography component="div" style={{ height: "100vh", paddingTop: 20 }}>
           <Grid container spacing={4}>
             <Grid
               item
@@ -317,7 +316,6 @@ function TeamLoad({ history }) {
               </Grid>
             </Grid>
           </Grid>
-        </Typography>
       </Container>
     </React.Fragment>
   );

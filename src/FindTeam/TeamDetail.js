@@ -131,9 +131,8 @@ function TeamDetail({ location }) {
           >
             <Container
                 maxWidth="md"
-                style={{ backgroundColor: "white", height: "100%" }}
+                style={{height: "100%", minHeight:"100vh", paddingTop:20 }}
             >
-                <Typography component="div" style={{ height: "100vh", paddingTop: 20 }}>
                     <Grid container spacing={3}>
                         <Grid
                             item
@@ -208,7 +207,6 @@ function TeamDetail({ location }) {
                             </Grid>
                         </Grid>
                     </Grid>
-                </Typography>
             </Container>
             </form>
         </React.Fragment>

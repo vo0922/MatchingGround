@@ -245,8 +245,7 @@ function ManageReservation({ location }) {
     <React.Fragment>
       <MainLogo />
       <CssBaseline />
-      <Container maxWidth="lg" style={{ backgroundColor: "#F3F3F3" }}>
-        <Typography component="div" style={{ height: "100vh" }}>
+      <Container maxWidth="lg" style={{ height:"100%", minHeight:"100vh"}}>
           <Typography
             component="h4"
             variant="h4"
@@ -285,7 +284,6 @@ function ManageReservation({ location }) {
               <TableBody>{tablebody.body}</TableBody>
             </Table>
           </TableContainer>
-        </Typography>
 
         <Dialog open={managerReservationOpen} onClose={handleManagerReservationClose} area-labelledby = "관리자 예약시 예약자명 입력 다이얼로그" >
           <DialogTitle>{"예약할 사람의 이름을 입력하세요."}</DialogTitle>              

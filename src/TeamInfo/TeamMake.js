@@ -209,12 +209,9 @@ function TeamMake({ history }) {
   useEffect(() => {}, []);
 
   return (
-    <Container maxWidth="md">
+    <React.Fragment>
       <MainLogo />
-      <Typography
-        component="div"
-        style={{ backgroundColor: "#F3F3F3", height: "90vh", paddingTop: 20 }}
-      >
+    <Container maxWidth="md" style={{minHeight:"100vh", height: "100%", paddingTop: 20 }}>
         <Grid container direction="column">
           <h1>팀 만들기</h1>
         </Grid>
@@ -411,8 +408,8 @@ function TeamMake({ history }) {
             </Grid>
           </Grid>
         </form>
-      </Typography>
     </Container>
+    </React.Fragment>
   );
 }
 

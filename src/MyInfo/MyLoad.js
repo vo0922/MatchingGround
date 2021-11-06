@@ -112,9 +112,8 @@ function MyLoad({ history }) {
     <React.Fragment>
       <Container
         maxWidth="md"
-        style={{ backgroundColor: "white", height: "100%" }}
+        style={{ minHeight:"100vh", height: "100%", paddingTop: 20}}
       >
-        <Typography component="div" style={{ height: "100vh", paddingTop: 20 }}>
           <Grid container spacing={3}>
             <Grid
               item
@@ -177,7 +176,6 @@ function MyLoad({ history }) {
               </Button>
             </Grid>
           </Grid>
-        </Typography>
       </Container>
     </React.Fragment>
   );

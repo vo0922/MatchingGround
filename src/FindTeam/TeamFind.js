@@ -193,9 +193,8 @@ function TeamFind({ history }) {
     <React.Fragment>
       <Container
         maxWidth="md"
-        style={{ backgroundColor: "#F5F5F5", marginTop: 10 }}
+        style={{ minHeight:"100vh", height:"100%", marginTop: 10 }}
       >
-        <Typography component="div" style={{ height: "100vh" }}>
           <Grid
             container
             direction="column"
@@ -284,7 +283,6 @@ function TeamFind({ history }) {
               </Grid>
             </Grid>
           </Grid>
-        </Typography>
       </Container>
     </React.Fragment>
   );

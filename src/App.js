@@ -26,7 +26,7 @@ const theme = createTheme({
     },
     h4:{
       fontFamily:[
-        'ELAND_B',
+        'Jua',
       ],
     },
     h5:{
