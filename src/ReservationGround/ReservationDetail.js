@@ -24,6 +24,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import {BrowserView, MobileView,} from "react-device-detect"
 
 function ReservationDetail({ location, history }) {
   //구장 정보
@@ -425,14 +426,16 @@ function ReservationDetail({ location, history }) {
     //     });
     // }
 
+
   };
 
   return (
     <React.Fragment>
       <MainLogo />
       <CssBaseline />
-      <Container maxWidth="md" style={{ backgroundColor: "white" }}>
-        <Typography component="div" style={{ height: "140vh" }}>
+      <Container maxWidth="md"
+                  style={{marginTop: 25, minHeight:"100vh", height:"100%"}}>
+        <Typography component="div">
           <Grid
             container
             direction="column"
@@ -440,7 +443,7 @@ function ReservationDetail({ location, history }) {
             alignItems="center"
           >
             <h1>{ground.title}</h1>
-            <img src={ground.img} height="450" />
+            <img src={ground.img} width="90%" />
           </Grid>
           <form
             onSubmit={onreservation}
@@ -448,7 +451,7 @@ function ReservationDetail({ location, history }) {
             autoComplete="off"
             encType="multipart/form-data"
           >
-          <Grid container spacing={3} style={{ marginTop: 30 }}>
+          <Grid container spacing={2} style={{ marginTop: 30 }}>
             <Grid item xs={5} style={{ marginLeft: 20 }}>
               <h3>상세정보</h3>
               <p>주소 : {ground.address}</p>
@@ -458,7 +461,8 @@ function ReservationDetail({ location, history }) {
                 {ground.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
                 원
               </p>
-              <Grid item xs={11} style={{ marginTop:40 ,marginLeft: 10 }}>
+              <Grid item style={{ marginTop:40 ,marginLeft: 10 }}>
+                <BrowserView>
                 <h5> - 경기인원 - </h5>
                 <ToggleButtonGroup
                   color="primary"
@@ -472,20 +476,47 @@ function ReservationDetail({ location, history }) {
                   <ToggleButton value="5vs5">5 vs 5</ToggleButton>
                   <ToggleButton value="6vs6">6 vs 6</ToggleButton>
                 </ToggleButtonGroup>
+                </BrowserView>
+                <MobileView>
+                <h5> - 경기인원 - </h5>
+                <ToggleButtonGroup
+                  color="primary"
+                  exclusive
+                  value={vscount}
+                  onChange={vshandle}
+                  name="vs_count"
+                  id="vs_count"
+                >
+                  <ToggleButton value="4vs4">4vs4</ToggleButton>
+                  <ToggleButton value="5vs5">5vs5</ToggleButton>
+                  <ToggleButton value="6vs6">6vs6</ToggleButton>
+                </ToggleButtonGroup>
+                </MobileView>
               </Grid>
             </Grid>
             <Grid item xs={6}>
               <h3>이용안내</h3>
-              {ground.parking_lot === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_parking.png"} style={{ width: 80, height: 80, margin:30}}/> : null}
-              {ground.shower_room === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shower.png"} style={{ width:80, height:80, margin:30}}/> : null}
-              {ground.foot_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shoe.png"} style={{ width:80, height:80,  margin:30}}/> : null}
-              {ground.wifi === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_wifi.png"} style={{ width:80, height:80, margin:30}}/> : null}
-              {ground.ball_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_ball.png"} style={{ width:80, height:80, margin:30}}/> : null}
-              {ground.uniform_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_uniform.png"} style={{ width:80, height:80, margin:30}}/> : null}
+              <BrowserView>
+              {ground.parking_lot === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_parking.png"} style={{ width:"20%", margin:20}}/> : null}
+              {ground.shower_room === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shower.png"} style={{ width:"20%", margin:20}}/> : null}
+              {ground.foot_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shoe.png"} style={{ width:"20%", margin:20}}/> : null}
+              {ground.wifi === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_wifi.png"} style={{ width:"20%", margin:20}}/> : null}
+              {ground.ball_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_ball.png"} style={{ width:"20%", margin:20}}/> : null}
+              {ground.uniform_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_uniform.png"} style={{ width:"20%", margin:20}}/> : null}
+              </BrowserView>
+              <MobileView>
+              {ground.parking_lot === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_parking.png"} style={{ width:"20%", margin:10}}/> : null}
+              {ground.shower_room === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shower.png"} style={{ width:"20%", margin:10}}/> : null}
+              {ground.foot_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_shoe.png"} style={{ width:"20%", margin:10}}/> : null}
+              {ground.wifi === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_wifi.png"} style={{ width:"20%", margin:10}}/> : null}
+              {ground.ball_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_ball.png"} style={{ width:"20%", margin:10}}/> : null}
+              {ground.uniform_rent === "true" ? <img src={process.env.PUBLIC_URL + "/icons/icon_uniform.png"} style={{ width:"20%", margin:10}}/> : null}
+              </MobileView>
             </Grid>
           </Grid>
-            <Grid container spacing={3}>
-              <Grid item xs={3} style={{ marginLeft: 10 }}>
+          <br/>
+            <Grid container spacing={4}>
+              <Grid item style={{ marginLeft: 20 }}>
                 <TextField
                   id="r_date"
                   name="r_date"
@@ -498,8 +529,8 @@ function ReservationDetail({ location, history }) {
                   }}
                 />
               </Grid>
-              <Grid item xs={8}>
-                <Grid style={{ display: "flex" }}>
+              <Grid item xs={9} style={{ marginLeft: 20 }}>
+                <Grid style={{display: "flex" }}>
                   <Paper
                     variant="outlined"
                     style={{ height: 20, width: 20, marginRight: 10 }}
@@ -541,7 +572,7 @@ function ReservationDetail({ location, history }) {
                   00
                 </Grid>
               </Grid>
-              <Grid item xs={3} style={{ paddingLeft: 20 }}>
+              <Grid item xs={3} style={{ paddingLeft: 20, marginLeft:20 }}>
                 <FormControl>
                   <InputLabel shrink htmlFor="age-native-label-placeholder">
                     구장선택
@@ -557,7 +588,9 @@ function ReservationDetail({ location, history }) {
                   </NativeSelect>
                 </FormControl>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={8}>
+                <BrowserView>
+                <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">시간선택</FormLabel>
                   <RadioGroup
@@ -578,6 +611,32 @@ function ReservationDetail({ location, history }) {
                     {timeradio(8)}
                   </RadioGroup>
                 </FormControl>
+                </Grid>
+                </BrowserView>
+                <MobileView>
+                <Grid item xs={11}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">시간선택</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-label="position"
+                    name="r_time"
+                    defaultValue={1}
+                    id="r_time"
+                    onChange={handleRadio}
+                  >
+                    {timeradio(1)}
+                    {timeradio(2)}
+                    {timeradio(3)}
+                    {timeradio(4)}
+                    {timeradio(5)}
+                    {timeradio(6)}
+                    {timeradio(7)}
+                    {timeradio(8)}
+                  </RadioGroup>
+                </FormControl>
+                </Grid>
+                </MobileView>
               </Grid>
               <Grid item xs={5} style={{ marginLeft: 10 }}></Grid>
               <Grid container justifyContent="center" alignItems="center">
@@ -596,6 +655,7 @@ function ReservationDetail({ location, history }) {
                 </FormControl>
               </Grid>
             </Grid>
+            
             <Grid
               container
               justifyContent="center"

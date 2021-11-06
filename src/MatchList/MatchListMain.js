@@ -363,7 +363,6 @@ export default function MatchListMain() {
   // 검색 데이터 변경시 매치리스트 재렌더링
   useEffect(() => {
     getmatchlist();
-    console.log(searchdata)
   }, [searchdata])
 
   return (

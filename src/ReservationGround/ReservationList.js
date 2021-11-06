@@ -17,7 +17,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
-import { CardActionArea } from '@mui/material';
+import {BrowserView, MobileView,} from "react-device-detect"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -86,6 +86,7 @@ function ReservationCard({history}) {
                setgroundinfo({
                 list: res.map((data) =>
                 <Card className={classes.card} key={data.ground_name} onClick={() => cardclick(data.ground_name)}>
+                <BrowserView>
                 <CardContent>
                   <img src={data.photo} style={{float: "left", marginRight: 20, marginBottom: 15}} height="120" width="200"/>
                   <Typography className={classes.content} variant="h6" component="h2" gutterBottom>
@@ -104,6 +105,28 @@ function ReservationCard({history}) {
                     {data.uniform_rent === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>유니폼</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>유니폼</Button>}
                   </Typography>
                 </CardContent>
+                </BrowserView>
+                <MobileView>
+                <CardContent>
+                  <img src={data.photo} style={{float: "left", marginRight: 20, marginBottom: 15}} height="120" width="100%"/>
+                  <Typography className={classes.content} variant="h6" component="h2" gutterBottom>
+                    {data.ground_name}
+                  </Typography>
+                  <Typography className={classes.content} color="textSecondary">
+                    {data.address}
+                  </Typography>
+                  <Typography className={classes.content} variant="body2" component="div" align="center" style={{marginTop:10}}>
+                    {data.parking_lot === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>주차장</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>주차장</Button>}
+                    {data.shower_room === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>샤워장</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>샤워장</Button>}
+                    {data.foot_rent === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>풋살화</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>풋살화</Button>}
+                    <Typography component="div" style={{marginTop:10}}>
+                    {data.wifi === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>WIFI</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>WIFI</Button>}
+                    {data.ball_rent === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>볼 대여</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>볼 대여</Button>}
+                    {data.uniform_rent === "true" ? <Button variant="outlined" color="primary" style={{marginRight:10}}>유니폼</Button>:<Button variant="outlined" disabled style={{marginRight:10}}>유니폼</Button>}
+                    </Typography>
+                  </Typography>
+                </CardContent>
+                </MobileView>
               </Card>
                 ),
                })
@@ -209,8 +232,9 @@ function ReservationCard({history}) {
   return (
     <React.Fragment>
     <CssBaseline />
-    <Container maxWidth="md" style={{marginTop:10,}}>
-      <Typography component="div" style={{ backgroundColor: '#F3F3F3', height: '90vh', paddingTop: 20}} >    
+    <Container maxWidth="md"
+                  style={{marginTop: 25, minHeight:"100vh", height:"100%"}}>
+      <Typography component="div">    
         <Grid
          container
          direction="column"
