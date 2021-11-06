@@ -67,7 +67,7 @@ function TeamFind({ history }) {
         console.log(team_name.value);
         setteamlist({
           list: json.map((data) => (
-            <Grid item xs={4} key={data.team_no}>
+            <Grid item xs={12} md={4} key={data.team_no}>
               <Card>
                 <CardMedia
                   style={{ justifyContent: "center", display: "flex" }}
@@ -140,7 +140,7 @@ function TeamFind({ history }) {
         console.log(json);
         setteamlist({
           list: json.map((data) => (
-            <Grid item xs={4} key={data.team_no}>
+            <Grid item xs={12} md={4} key={data.team_no}>
               <Card>
                 <CardMedia
                   style={{ justifyContent: "center", display: "flex" }}
@@ -212,7 +212,6 @@ function TeamFind({ history }) {
             alignItems="center"
             style={{ display: "flex" }}
           >
-            <Grid item xs={3}>
               <FormControl variant="outlined">
                 <InputLabel htmlFor="outlined-age-native-simple">
                   시/도 선택
@@ -221,7 +220,7 @@ function TeamFind({ history }) {
                   value={city}
                   name="city"
                   label="시/도"
-                  style={{ width: 200, textAlign: "center" }}
+                  style={{ minWidth: 150, textAlign: "center", margin:10 }}
                   onChange={onChange}
                 >
                   <MenuItem value="전체">
@@ -245,8 +244,7 @@ function TeamFind({ history }) {
                   <MenuItem value={"제주특별자치도"}>제주특별자치도</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={3}>
+
               <FormControl variant="outlined">
                 <InputLabel htmlFor="outlined-age-native-simple">
                   클럽 수준
@@ -256,7 +254,7 @@ function TeamFind({ history }) {
                   name="team_class"
                   value={team_class}
                   onChange={onChange}
-                  style={{ width: 150, textAlign: "center" }}
+                  style={{ minWidth: 100, textAlign: "center", margin:10 }}
                 >
                   <MenuItem value="전체">
                     <em>전체</em>
@@ -267,16 +265,14 @@ function TeamFind({ history }) {
                   <MenuItem value={"월드클래스"}>월드클래스</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={5}>
               <TextField
                 id="team_name"
                 name="team_name"
                 style={{
-                  width: 380,
+                  width: 200,
+                  margin:10,
                 }}
               />
-            </Grid>
             <Button>
               <SearchIcon onClick={searchbutton} />
             </Button>

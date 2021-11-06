@@ -11,7 +11,9 @@ import {
   DialogContent,
   DialogActions,
   DialogContentText,
+  Grid,
 } from "@material-ui/core";
+import { BrowserView, MobileView } from "react-device-detect";
 
 export default function Reservation_current() {
   var timelabel = [
@@ -41,24 +43,24 @@ export default function Reservation_current() {
 
   const [ReservationCancelOpen, setReservationCancelOpen] = useState(false);
   const [ReservationCancelData, setReservationCancelData] = useState({
-    r_no : 0,
-    ground_name : "",
-    ground_num : 0,
-    user_email : "",
-    r_date : "",
-    r_time : "",
-    manager_id : "",
+    r_no: 0,
+    ground_name: "",
+    ground_num: 0,
+    user_email: "",
+    r_date: "",
+    r_time: "",
+    manager_id: "",
   });
   const handleReservationCancelOpen = (data) => {
     setReservationCancelOpen(true);
     setReservationCancelData({
-      r_no : data.r_no,
-      ground_name : data.ground_name,
-      ground_num : data.ground_num,
-      user_email : data.user_email,
-      r_date : data.r_date,
-      r_time : data.r_time + "타임(" + timelabel[data.r_time] + ")",
-      manager_id : data.manager_id
+      r_no: data.r_no,
+      ground_name: data.ground_name,
+      ground_num: data.ground_num,
+      user_email: data.user_email,
+      r_date: data.r_date,
+      r_time: data.r_time + "타임(" + timelabel[data.r_time] + ")",
+      manager_id: data.manager_id,
     });
   };
   const handleReservationCancelClose = () => {
@@ -86,17 +88,23 @@ export default function Reservation_current() {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        send_id : ReservationCancelData.user_email,
-        receive_id : ReservationCancelData.manager_id,
-        title : "예약취소알림",
-        contents : ReservationCancelData.ground_name + "경기장 / " + ReservationCancelData.ground_num + "구장 / " + ReservationCancelData.r_date + " / " + ReservationCancelData.r_time + "예약을 사용자가 취소하였습니다.",
-        link:"http://localhost:3000/groundmananger",
+        send_id: ReservationCancelData.user_email,
+        receive_id: ReservationCancelData.manager_id,
+        title: "예약취소알림",
+        contents:
+          ReservationCancelData.ground_name +
+          "경기장 / " +
+          ReservationCancelData.ground_num +
+          "구장 / " +
+          ReservationCancelData.r_date +
+          " / " +
+          ReservationCancelData.r_time +
+          "예약을 사용자가 취소하였습니다.",
+        link: "http://localhost:3000/groundmananger",
       }),
     })
       .then((res) => res.json())
-      .then((res) => {
-    });
-    
+      .then((res) => {});
   };
 
   function getreservation() {
@@ -134,12 +142,15 @@ export default function Reservation_current() {
                 key={json.r_no}
               >
                 <CardContent>
-                  <img
-                    src={json.photo}
-                    style={{ float: "left", marginRight: 20 }}
-                    height="130"
-                    width="200"
-                  />
+                  <BrowserView>
+                    <img
+                      src={json.photo}
+                      style={{ float: "left", marginRight: 20 }}
+                      height="130"
+                      width="200"
+                    />
+                  </BrowserView>
+
                   <Typography variant="h6" component="h2" gutterBottom>
                     {json.ground_name}
                   </Typography>
@@ -186,17 +197,15 @@ export default function Reservation_current() {
         <DialogTitle>{"정말 예약을 취소하시겠습니까?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="cancel_confirm_text">
-            취소시 취소수수료가 부과된 나머지 금액이 환불됩니다. 
+            취소시 취소수수료가 부과된 나머지 금액이 환불됩니다.
           </DialogContentText>
           <DialogContentText id="cancel_confirm_text2">
             그래도 예약을 취소하시겠습니까?
           </DialogContentText>
-          <br/>
+          <br />
           <DialogContentText id="cancel_confirm_text3">
             예약시 개설된 매치는 자동으로 삭제됩니다.
           </DialogContentText>
-            
-          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleReservationCancelClose} color="primary">

@@ -12,7 +12,6 @@ import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
-    marginRight: 10,
   },
   title: {
     fontSize: 14,

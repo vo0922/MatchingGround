@@ -9,7 +9,6 @@ import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
-    marginLeft:10,
   },
   title: {
     fontSize: 14,
@@ -68,7 +67,7 @@ export default function MainScreen_Myinfo() {
 
   return (
     <div>
-      <Typography variant="h5" style={{marginLeft:10}}>내 정보</Typography>
+      <Typography variant="h5">내 정보</Typography>
       <Card className={classes.root} elevation={3}>
         <CardContent>
             <Grid container spacing={3}>

@@ -15,7 +15,7 @@ import {
 
 const useStyles = makeStyles({
   matchlistcard: {
-    margin: 15,
+    marginTop:20
   },
   cardtitle: {
     marginBottom: 5,

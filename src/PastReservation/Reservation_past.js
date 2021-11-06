@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import {withRouter} from 'react-router-dom'
 import { Typography, Container, CssBaseline, Card, CardContent, Button } from "@material-ui/core";
+import { BrowserView, MobileView } from "react-device-detect"
 
 function Reservation_past({history}) {
   var timelabel = [
@@ -68,12 +69,14 @@ function Reservation_past({history}) {
                 key={json.r_no}
               >
                 <CardContent>
+                  <BrowserView>
                   <img
                     src={json.photo}
                     style={{ float: "left", marginRight: 20 }}
                     height="130"
                     width="200"
                   />
+                  </BrowserView>
                   <Typography variant="h6" component="h2" gutterBottom>
                     {json.ground_name}
                   </Typography>
@@ -89,6 +92,7 @@ function Reservation_past({history}) {
                   >
                     다시 예약하기
                   </Button>
+                  
                 </CardContent>
               </Card>
             )),

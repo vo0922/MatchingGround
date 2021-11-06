@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import { CssBaseline, Typography, Container, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@material-ui/core";
-import { minWidth } from "@material-ui/system";
-import {LocalParking, Bathtub} from '@material-ui/icons';
+import { BrowserView, MobileView } from "react-device-detect"
 
 const useStyles = makeStyles({
   root: {
@@ -118,51 +117,57 @@ function GroundManager({history}) {
     <React.Fragment>
       <MainLogo />
       <CssBaseline />
-      <Container maxWidth="md" style={{backgroundColor : "white"}}>
-        <Typography
-          component="div"
-          style={{ minHeight: "100vh"}}
-        >
-          
+      <Container maxWidth="md" style={{minHeight:"100vh", height:"100%"}}>          
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Typography component="h4" variant="h4" style={{textAlign:"center", marginTop:"50px", marginBottom:"50px"}}>
-                {groundinfo.ground_name} 경기장
+              <Typography style={{textAlign:"center", marginTop:25, marginBottom:25, fontSize:45}}>
+                {groundinfo.ground_name}
               </Typography>
             </Grid>  
             
-            <Grid item xs={12}>
-              <Paper className={classes.paper} style={{backgroundColor : "#F3F3F3"}}>
-                <img src={groundinfo.photo} width="100%" height="512px"></img>
-              </Paper>
+            <Grid container item xs={12} justifyContent="center" alignItems="center" direction="column">
+                <BrowserView>
+                  <img src={groundinfo.photo} height="450"></img>
+                </BrowserView>
+                <MobileView>
+                  <img src={groundinfo.photo} width="100%"></img>
+                </MobileView>
             </Grid>
-
-            <Grid item xs={6}>
-              <Typography component="h6" variant="h6">경기장 정보</Typography>
-              <Table className={classes.table} aria-label="simple table">
-                
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.category}>
-                      <TableCell component="th" scope="row">
-                        {row.category}
-                      </TableCell>
-                      <TableCell align="center">{row.contents}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography component="h6" variant="h6" >편의 시설</Typography>
-              {groundinfo.parking_lot === "true" ? <img src="icons/icon_parking.png" style={{ width: 80, height: 80, margin:30}}/> : null}
-              {groundinfo.shower_room === "true" ? <img src="icons/icon_shower.png" style={{ width:80, height:80, margin:30}}/> : null}
-              {groundinfo.foot_rent === "true" ? <img src="icons/icon_shoe.png" style={{ width:80, height:80,  margin:30}}/> : null}
-              {groundinfo.wifi === "true" ? <img src="icons/icon_wifi.png" style={{ width:80, height:80, margin:30}}/> : null}
-              {groundinfo.ball_rent === "true" ? <img src="icons/icon_ball.png" style={{ width:80, height:80, margin:30}}/> : null}
-              {groundinfo.uniform_rent === "true" ? <img src="icons/icon_uniform.png" style={{ width:80, height:80, margin:30}}/> : null}
-            </Grid>
-
+              <Grid item xs={12} sm={6}>
+                <Typography component="h6" variant="h6">경기장 정보</Typography>
+                <Table className={classes.table} aria-label="simple table">
+                  
+                  <TableBody>
+                    {rows.map((row) => (
+                      <TableRow key={row.category}>
+                        <TableCell component="th" scope="row" style={{fontSize:16}}>
+                          {row.category}
+                        </TableCell>
+                        <TableCell align="center" style={{fontSize:16}}>{row.contents}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography component="h6" variant="h6" >편의 시설</Typography>
+                <BrowserView>
+                {groundinfo.parking_lot === "true" ? <img src="icons/icon_parking.png" style={{ width: 80, height: 80, margin:30}}/> : null}
+                {groundinfo.shower_room === "true" ? <img src="icons/icon_shower.png" style={{ width:80, height:80, margin:30}}/> : null}
+                {groundinfo.foot_rent === "true" ? <img src="icons/icon_shoe.png" style={{ width:80, height:80,  margin:30}}/> : null}
+                {groundinfo.wifi === "true" ? <img src="icons/icon_wifi.png" style={{ width:80, height:80, margin:30}}/> : null}
+                {groundinfo.ball_rent === "true" ? <img src="icons/icon_ball.png" style={{ width:80, height:80, margin:30}}/> : null}
+                {groundinfo.uniform_rent === "true" ? <img src="icons/icon_uniform.png" style={{ width:80, height:80, margin:30}}/> : null}
+                </BrowserView>
+                <MobileView>
+                {groundinfo.parking_lot === "true" ? <img src="icons/icon_parking.png" style={{ width: "25%", height: "25%", margin:10}}/> : null}
+                {groundinfo.shower_room === "true" ? <img src="icons/icon_shower.png" style={{ width: "25%", height: "25%", margin:10}}/> : null}
+                {groundinfo.foot_rent === "true" ? <img src="icons/icon_shoe.png" style={{ width: "25%", height: "25%", margin:10}}/> : null}
+                {groundinfo.wifi === "true" ? <img src="icons/icon_wifi.png" style={{ width: "25%", height: "25%", margin:10}}/> : null}
+                {groundinfo.ball_rent === "true" ? <img src="icons/icon_ball.png" style={{ width: "25%", height: "25%", margin:10 }}/> : null}
+                {groundinfo.uniform_rent === "true" ? <img src="icons/icon_uniform.png" style={{ width: "25%", height: "25%", margin:10}}/> : null}
+                </MobileView>
+              </Grid>
             <Grid item xs={3}/>
             <Grid item xs={3} style={{marginTop:20}}>
                 <Button onClick={link_Modify} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
@@ -171,7 +176,6 @@ function GroundManager({history}) {
                 <Button onClick={link_reservation} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 예약 관리</Button>
             </Grid>
           </Grid>
-        </Typography>
       </Container>
     </React.Fragment>
   );
