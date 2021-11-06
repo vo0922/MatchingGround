@@ -34,7 +34,6 @@ export default function ControlledAccordions() {
   })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.msg);
         window.location.replace('/notice');
       });
   }

@@ -49,7 +49,7 @@ function TeamApplyModal({ history, location }) {
           email: myinfo.email,
           introduce: "",
         });
-        console.log(json);
+
       });
   };
 
@@ -69,7 +69,6 @@ function TeamApplyModal({ history, location }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json.msg);
         alert("가입 신청이 완료되었습니다.");
         history.push("/");
       });

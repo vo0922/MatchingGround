@@ -87,7 +87,7 @@ function MyLoad({ history }) {
           introduce: json[0].introduce,
           email: info.email,
         });
-        console.log(json);
+
       });
   };
 

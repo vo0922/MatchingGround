@@ -89,7 +89,6 @@ function TeamLoad({ history }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         setteaminfo({
           team_name: teaminfo.team_name,
           team_image: json[0].team_image,
@@ -105,7 +104,6 @@ function TeamLoad({ history }) {
           user_name: json[0].user_name,
           user_email: teaminfo.user_email,
         });
-        console.log(json);
       });
   };
 

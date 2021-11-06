@@ -80,7 +80,6 @@ function TeamDetail({ location }) {
         })
             .then((res) => res.json())
             .then((json) => {
-                console.log(json);
                 setteaminfo({
                     team_name: teaminfo.team_name,
                     team_manage_name: json[0].team_manage_name,
@@ -117,7 +116,6 @@ function TeamDetail({ location }) {
 
     useEffect(() => {
         teamdetail();
-        console.log(teaminfo);
     }, []);
 
     return (

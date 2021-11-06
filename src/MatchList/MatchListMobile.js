@@ -219,8 +219,6 @@ export default function MatchListMoblie() {
 
   // 광역시, 도 선택 시 이벤트 함수 -> 세부주소 버튼 출력, 검색 데이터 변경
   const handleLocation = (e) => {
-    console.log(e.target.value)
-    
     setcity({
       location : e.target.value,
       locationdetail : "전체",
@@ -392,7 +390,6 @@ export default function MatchListMoblie() {
 
   // 검색 데이터 변경시 매치리스트 재렌더링
   useEffect(() => {
-    console.log(searchdata)
     getmatchlist();
   }, [searchdata])
 

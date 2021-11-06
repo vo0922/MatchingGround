@@ -332,19 +332,16 @@ function ReservationDetail({ location, history }) {
         if (parseInt(month) == parseInt(dateSplit[1])) {
           if (parseInt(day) <= parseInt(dateSplit[2])) {
             setr_date(e.target.value);
-            console.log(e.target.value);
           } else {
             datecheck = 0;
           }
         } else if (parseInt(month) < parseInt(dateSplit[1])) {
           setr_date(e.target.value);
-          console.log(e.target.value);
         } else {
           datecheck = 0;
         }
       } else if (parseInt(year) < parseInt(dateSplit[0])) {
         setr_date(e.target.value);
-        console.log(e.target.value);
       } else {
         datecheck = 0;
       }

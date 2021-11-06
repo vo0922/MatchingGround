@@ -63,8 +63,6 @@ function TeamFind({ history }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(inputs);
-        console.log(team_name.value);
         setteamlist({
           list: json.map((data) => (
             <Grid item xs={12} md={4} key={data.team_no}>

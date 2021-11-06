@@ -163,8 +163,6 @@ function TeamMake({ history }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.msg);
-        console.log(data.team_name);
         window.sessionStorage.setItem("team_manager", data.success);
         window.sessionStorage.setItem("team_name", data.team_name);
         alert("클럽 생성이 완료되었습니다.");

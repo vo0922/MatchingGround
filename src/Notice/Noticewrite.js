@@ -37,7 +37,6 @@ function FullScreenDialog({history}) {
     })
         .then((res) => res.json())
         .then((res) => {
-            console.log(res);
             setOpen(false);
             window.location.replace("/notice")
         });

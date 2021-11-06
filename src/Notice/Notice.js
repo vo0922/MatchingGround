@@ -11,14 +11,11 @@ export default class Notice extends Component {
         return (
           <div>
             <MainLogo />
-            <Container maxWidth="md" style={{backgroundColor : "white"}}>
-              <Typography
-              component="div"
-              style={{ height: "100vh" }}
-            >
+            <Container maxWidth="md" style={{height:"100%", minHeight:"100vh"}}>
+            
           <Grid container spacing={3}>
             <Grid item xs={7}>
-            <Typography component="div" style={{fontSize:30, padding:20, fontWeight:"bolder"}}>
+            <Typography variant="body1" style={{fontSize:30, padding:20, fontWeight:"bolder"}}>
                 공지사항
               </Typography>
             </Grid>
@@ -27,7 +24,6 @@ export default class Notice extends Component {
             </Grid>
           </Grid>
                 <NoticeList/>
-              </Typography>
           </Container>
           </div>
         )

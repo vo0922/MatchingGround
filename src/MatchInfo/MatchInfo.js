@@ -11,11 +11,9 @@ export default class MatchInfo extends Component {
         return (
             <div>
         <MainLogo />
-        <Container maxWidth="md" style={{backgroundColor : "white"}}>
-          <Typography
-              component="div"
-              style={{ minHeight:'100vh',height: "100%" }}
-            >
+        <Container maxWidth="md" style={{
+           minHeight:'100vh',height: "100%" 
+        }}>
           <Grid 
           container spacing={3}
           container
@@ -24,7 +22,7 @@ export default class MatchInfo extends Component {
           alignItems="center"
           >
             <Grid>
-            <Typography component="div" style={{fontSize:20, padding:40, fontWeight:"bolder"}}>
+            <Typography variant="h5" style={{paddingTop:40,}}>
                 진행중인 매칭
               </Typography>
             </Grid>
@@ -32,7 +30,7 @@ export default class MatchInfo extends Component {
                 <Matchinglist />
             </Grid>
             <Grid style={{marginTop:10}}>
-            <Typography component="div" style={{fontSize:20, fontWeight:"bolder", marginTop:50}}>
+            <Typography variant="h5" style={{ marginTop:50}}>
                 대기중인 매칭
               </Typography>
             </Grid>
@@ -40,7 +38,7 @@ export default class MatchInfo extends Component {
                 <Matchwatelist />
             </Grid>
             <Grid style={{marginTop:10}}>
-            <Typography component="div" style={{fontSize:20, fontWeight:"bolder", marginTop:50}}>
+            <Typography variant="h5" style={{marginTop:50}}>
                 지난 매칭
               </Typography>
             </Grid>
@@ -48,7 +46,6 @@ export default class MatchInfo extends Component {
                 <Matchedlist />
             </Grid>
           </Grid>
-          </Typography>
         </Container>
             </div>
         )

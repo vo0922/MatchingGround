@@ -68,7 +68,6 @@ export default function TeamApplyModal() {
       />    
         })
         
-        console.log(json);
       });
   };
 

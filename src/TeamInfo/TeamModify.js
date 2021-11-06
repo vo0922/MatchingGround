@@ -144,7 +144,6 @@ function Teammodify({ history, location }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.msg);
         alert("클럽 수정이 완료되었습니다.");
         history.push("/team");
       });
@@ -157,7 +156,6 @@ function Teammodify({ history, location }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.msg);
         alert("클럽 수정이 완료되었습니다.");
         history.push("/team");
       });
@@ -165,7 +163,6 @@ function Teammodify({ history, location }) {
 
   //팀 삭제 API
   function teamdelete() {
-    console.log(teaminfo.team_name)
     fetch("http://localhost:3001/team/modify/delete", {
       method: "post",
       headers: {
