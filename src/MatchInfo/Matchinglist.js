@@ -53,50 +53,55 @@ export default function Matchinglist() {
   const [open, setOpen] = useState(false);
   const [match_num, setmatch_num] = useState(0);
   const [vs_user, setvs_user] = useState({
-    user : '',
-    vs_user : '',
+    user: "",
+    vs_user: "",
   });
 
   const [MatchCancel, setMatchCancel] = useState({
-    user_email : window.sessionStorage.getItem('id'),
-    vs_user_email : '',
-    user_team : window.sessionStorage.getItem('team_name'),
-    vs_user_team : '',
+    user_email: window.sessionStorage.getItem("id"),
+    vs_user_email: "",
+    user_team: window.sessionStorage.getItem("team_name"),
+    vs_user_team: "",
   });
-  const dialogClickOpen = (key, vs_user_email, vs_team_name, user_email, user_team) => {
+  const dialogClickOpen = (
+    key,
+    vs_user_email,
+    vs_team_name,
+    user_email,
+    user_team
+  ) => {
     setOpen(true);
     setmatch_num(key);
-    if(MatchCancel.user_email === user_email){
+    if (MatchCancel.user_email === user_email) {
       setMatchCancel({
         ...MatchCancel,
-        vs_user_email : vs_user_email,
-        vs_user_team : vs_team_name,
-      })
-    }else{
+        vs_user_email: vs_user_email,
+        vs_user_team: vs_team_name,
+      });
+    } else {
       setMatchCancel({
         ...MatchCancel,
-        vs_user_email : user_email,
-        vs_user_team : user_team,
-      })
+        vs_user_email: user_email,
+        vs_user_team: user_team,
+      });
     }
   };
-
 
   const dialogClose = () => {
     setOpen(false);
   };
 
   const matchcancel = () => {
-    var user_team = '';
-    var vs_team = '';
-    if(MatchCancel.user_team !== 'none'){
+    var user_team = "";
+    var vs_team = "";
+    if (MatchCancel.user_team !== "none") {
       user_team = MatchCancel.user_team;
-    }else{
+    } else {
       user_team = MatchCancel.user_email;
     }
-    if(MatchCancel.vs_user_team !== 'none'){
+    if (MatchCancel.vs_user_team !== "none") {
       vs_team = MatchCancel.vs_user_team;
-    }else{
+    } else {
       vs_team = MatchCancel.vs_user_email;
     }
     fetch("http://localhost:3001/matchlist/matchapplyalert", {
@@ -105,29 +110,28 @@ export default function Matchinglist() {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        send_id : MatchCancel.user_email,
-        receive_id : MatchCancel.vs_user_email,
-        title : "매치취소",
-        contents : user_team + " : " + vs_team + "의 매치가 취소되었습니다."
+        send_id: MatchCancel.user_email,
+        receive_id: MatchCancel.vs_user_email,
+        title: "매치취소",
+        contents: user_team + " : " + vs_team + "의 매치가 취소되었습니다.",
       }),
     })
       .then((res) => res.json())
-      .then((res) => {
-    });
+      .then((res) => {});
     fetch("http://localhost:3001/matchinfo/matchcancel", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({match_num : match_num}),
+      body: JSON.stringify({ match_num: match_num }),
     })
       .then((res) => res.json())
       .then((res) => {
         alert(res.msg);
-      })
-      setOpen(false);
-      window.location.reload();
-  }
+      });
+    setOpen(false);
+    window.location.reload();
+  };
 
   function list() {
     fetch("http://localhost:3001/matchinfo/matchinglist", {
@@ -187,7 +191,14 @@ export default function Matchinglist() {
                     매치개설자 : {data.user_email}
                   </Typography>
                   <Typography className={classes.cardcontent}>
-                    {data.vs_count} &nbsp; {data.team_name !== 'none' ? data.team_name : data.user_eamil} vs {data.vs_team_name !== 'none' ? data.vs_team_name : data.vs_user_email}
+                    {data.vs_count} &nbsp;{" "}
+                    {data.team_name !== "none"
+                      ? data.team_name
+                      : data.user_eamil}{" "}
+                    vs{" "}
+                    {data.vs_team_name !== "none"
+                      ? data.vs_team_name
+                      : data.vs_user_email}
                   </Typography>
                   <Grid
                     container
@@ -198,7 +209,15 @@ export default function Matchinglist() {
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() => dialogClickOpen(data.match_num, data.vs_user_email, data.vs_team_name, data.user_email, data.team_name)}
+                      onClick={() =>
+                        dialogClickOpen(
+                          data.match_num,
+                          data.vs_user_email,
+                          data.vs_team_name,
+                          data.user_email,
+                          data.team_name
+                        )
+                      }
                     >
                       매치 취소
                     </Button>
@@ -223,14 +242,29 @@ export default function Matchinglist() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"매치취소"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h5">{"매치취소"}</Typography>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description"></DialogContentText>
-          {MatchCancel.user_team ? MatchCancel.user_team : MatchCancel.user_email} : {MatchCancel.vs_user_team ? MatchCancel.vs_user_team : MatchCancel.vs_user_email} 와의 매칭을 정말 취소 하시겠습니까?
+          <Typography style={{ fontSize: 16 }}>
+            {MatchCancel.user_team
+              ? MatchCancel.user_team
+              : MatchCancel.user_email}{" "}
+            :{" "}
+            {MatchCancel.vs_user_team
+              ? MatchCancel.vs_user_team
+              : MatchCancel.vs_user_email}{" "}
+            와의 매칭을 정말 취소 하시겠습니까?
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={dialogClose} color="secondary">취소</Button>
-          <Button onClick={matchcancel} color="primary" autoFocus>확인</Button>
+          <Button onClick={dialogClose} color="secondary">
+            취소
+          </Button>
+          <Button onClick={matchcancel} color="primary" autoFocus>
+            확인
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
