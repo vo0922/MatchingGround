@@ -9,6 +9,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import '../font/font.css'
 
 const useStyles = makeStyles({
   matchlistcard: {
@@ -128,9 +129,9 @@ export default function Matchinglist() {
       .then((res) => res.json())
       .then((res) => {
         alert(res.msg);
+        window.location.reload();
       });
     setOpen(false);
-    window.location.reload();
   };
 
   function list() {
@@ -242,8 +243,8 @@ export default function Matchinglist() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          <Typography variant="h5">{"매치취소"}</Typography>
+        <DialogTitle id="alert-dialog-title" style={{fontFamily:'Jua'}}>
+          매치취소
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description"></DialogContentText>

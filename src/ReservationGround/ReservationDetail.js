@@ -25,6 +25,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { BrowserView, MobileView } from "react-device-detect";
+import '../font/font.css'
 
 function ReservationDetail({ location, history }) {
   //구장 정보
@@ -729,12 +730,11 @@ function ReservationDetail({ location, history }) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
               >
-                <DialogTitle id="alert-dialog-title">
-                  <Typography variant="h5">{"결제하시겠습니까?"}</Typography>
+                <DialogTitle id="alert-dialog-title" style={{fontFamily:'Jua'}}>
+                  결제하시겠습니까?
                 </DialogTitle>
                 <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    <Typography>
+                  <DialogContentText id="alert-dialog-description" style={{fontFamily:'Gamja_Flower'}}>
                       경기장 이름 : {ground.title}
                       <br />
                       주소 : {ground.address}
@@ -749,14 +749,12 @@ function ReservationDetail({ location, history }) {
                       <br />
                       매치여부 : {checkbox.checkbox ? "매치개설" : "매치미개설"}
                       <br />
-                      <hr />
                       <b>
                         가격 :{" "}
                         {ground.price
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}
                       </b>
-                    </Typography>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
