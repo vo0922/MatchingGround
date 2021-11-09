@@ -9,6 +9,7 @@ import {
   Container,
   Button,
 } from "@material-ui/core";
+import { BrowserView, MobileView } from "react-device-detect";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -26,11 +27,7 @@ export default function NotGroundManager() {
       <React.Fragment>
         <MainLogo />
         <CssBaseline />
-        <Container maxWidth="md">
-          <Typography
-            component="div"
-            style={{ backgroundColor: "#F3F3F3", height: "80vh" }}
-          >
+        <Container maxWidth="md" minHeight="100vh" height="100%">
             <Typography
               component="h6"
               variant="h6"
@@ -41,8 +38,8 @@ export default function NotGroundManager() {
             </Typography>
             
               <Grid container spacing={3}>
-                <Grid item xs />
-                <Grid item xs={6}>
+                <Grid container justifyContent="center" alignItems="center" alignContent="center" item xs={12}>
+                  <BrowserView>
                   <Link to="/groundregister">
                     <Button
                       variant="outlined"
@@ -53,11 +50,15 @@ export default function NotGroundManager() {
                       경기장 등록 신청하기
                     </Button>
                   </Link>
+                  </BrowserView>
+                  <MobileView>
+                    <Typography component="h6" variant="h6" color="secondary" style={{textAlign : "center", marginTop: 10}}>
+                      경기장 등록 신청은 PC에서만 가능합니다.
+                    </Typography>
+                  </MobileView>
                 </Grid>
-                <Grid item xs />
+                
               </Grid>
-            
-          </Typography>
         </Container>
       </React.Fragment>
     </div>

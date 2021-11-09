@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-    width: 150,
-    height:150,
+    width: 300,
+    height:300,
   },
   form: {
     width: '100%',
@@ -98,48 +98,13 @@ export default function Signin() {
     <Grid container className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} md={7} className={classes.image} />
-      <Grid item xs={12} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} md={5} component={Paper} elevation={6} square style={{ paddingTop:"5%" }}>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar} src="/backgroundimage/logo2.png"/>
-          <Typography component="h1" variant="h5">
-            MatchingGround
+          <Avatar className={classes.avatar} src="/backgroundimage/logo2.png" />
+          <Typography component="h1" variant="h5" style={{ fontFamily:"Dongle-Bold", fontSize:70, marginBottom:25}}>
+            매칭그라운드
           </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              name="email"
-              label="Email Address"
-              onChange={e => setUserName(e.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              onChange={e => setPassword(e.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              align="center"
-            >
-              로그인
-            </Button>
-            <Link to="/" style={{float: "right"}}>회원가입</Link>
-            <br/><br/><hr/>
             <div id="naverIdLogin" style={{textAlign: "center", marginTop: 20}}></div>
-          </form>
         </div>
       </Grid>
     </Grid>

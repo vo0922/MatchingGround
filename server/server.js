@@ -815,7 +815,7 @@ app.post("/matchlist", (req, res) =>{
   const today_date = today.getFullYear() + "-" +((today.getMonth()+1) < 10 ? "0" + (today.getMonth()+1) : today.getMonth()+1) + "-" + (today.getDate() < 10 ? "0" + today.getDate() : today.getDate());
   
   if(r_date === today_date){
-    connection.query("select a.*, b.team_class from matchlist as a, Team as b where r_date like ? and address like ? and r_time > ? and a.team_name = b.team_name order by match_success asc", [r_date, address, r_time],
+    connection.query("select a.*, b.team_class from matchlist a left join Team b on a.team_name = b.team_name where a.r_date like ? and a.address like ? and a.r_time > ? order by match_success asc", [r_date, address, r_time],
     function(err, rows, fields){
     if(err){
       console.log("매치리스트 정보 불러오기 실패" + err);
@@ -826,7 +826,7 @@ app.post("/matchlist", (req, res) =>{
     });
   }
   else{
-    connection.query("select a.*, b.team_class from matchlist as a, Team as b where r_date like ? and address like ? and a.team_name = b.team_name order by match_success asc", [r_date, address],
+    connection.query("select a.*, b.team_class from matchlist a left join Team b on a.team_name = b.team_name where a.r_date like ? and a.address like ? order by match_success asc", [r_date, address],
     function(err, rows, fields){
     if(err){
       console.log("매치리스트 정보 불러오기 실패" + err);

@@ -202,7 +202,7 @@ export default function MatchListMain() {
                     {json.user_email !== window.sessionStorage.getItem('id') ?
                     (json.match_success ? 
                     <Button disabled variant="contained"><Typography>신청마감</Typography></Button> : 
-                    ((json.r_time - 1) === current_r_time ? 
+                    (((json.r_time - 1) === current_r_time && json.r_date === today ) ? 
                     <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="error"><Typography>마감임박</Typography></Button> :
                     <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary"><Typography>매치신청</Typography></Button>))
                     : <Button disabled variant="contained"><Typography>매치신청</Typography></Button>}

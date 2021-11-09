@@ -11,22 +11,22 @@ const theme = createTheme({
     ],
     h1:{
       fontFamily:[
-        'Dongle-Reqular',
+        'Gamja_Flower',
       ],
     },
     h2:{
       fontFamily:[
-        'Dongle-Reqular',
+        'Gamja_Flower',
       ],
     },
     h3:{
       fontFamily:[
-        'Dongle-Reqular',
+        'Jua',
       ],
     },
     h4:{
       fontFamily:[
-        'Dongle-Reqular',
+        'Jua',
       ],
     },
     h5:{
