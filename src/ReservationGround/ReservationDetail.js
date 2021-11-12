@@ -25,7 +25,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { BrowserView, MobileView } from "react-device-detect";
-import '../font/font.css'
+import IconButton from "@material-ui/core/IconButton";
+import "../font/font.css";
 
 function ReservationDetail({ location, history }) {
   //구장 정보
@@ -43,6 +44,7 @@ function ReservationDetail({ location, history }) {
     uniform_rent: "",
     price: "",
     manage_email: "",
+    likes: "",
   });
   //구장 수
   const [groundlist, setgroundlist] = useState({
@@ -56,6 +58,80 @@ function ReservationDetail({ location, history }) {
   const [checkbox, setcheckbox] = useState({
     checkbox: 0,
   });
+  //좋아요 데이터
+  const [like_icon, setlike_icon] = useState({
+    like: "",
+    checked: false,
+  });
+  //좋아요 check
+  const likecheck = () => {
+    fetch("http://localhost:3001/reservation/detail/likecheck", {
+      method: "post", //통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        ground_name: location.state.cardkey,
+        user_email: window.sessionStorage.getItem("id"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res[0].success) {
+          setlike_icon({
+            like: process.env.PUBLIC_URL + "/icons/like.svg",
+            checked: true,
+          });
+        } else {
+          setlike_icon({
+            like: process.env.PUBLIC_URL + "/icons/nonelike.svg",
+            checked: false,
+          });
+        }
+      });
+  };
+  //좋아요 클릭
+  const likeClick = () => {
+    if (like_icon.checked) {
+      setlike_icon({
+        like: process.env.PUBLIC_URL + "/icons/nonelike.svg",
+        checked: false,
+      });
+      fetch("http://localhost:3001/reservation/detail/likeclick", {
+        method: "post", //통신방법
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          ground_name: location.state.cardkey,
+          user_email: window.sessionStorage.getItem("id"),
+          checked: true,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {});
+    } else {
+      setlike_icon({
+        like: process.env.PUBLIC_URL + "/icons/like.svg",
+        checked: true,
+      });
+      fetch("http://localhost:3001/reservation/detail/likeclick", {
+        method: "post", //통신방법
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          ground_name: location.state.cardkey,
+          user_email: window.sessionStorage.getItem("id"),
+          checked: false,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {});
+    }
+    reqground();
+  };
+
   //vs count
   const [vscount, setvscount] = useState("4vs4");
   //다이어로그 state
@@ -199,6 +275,7 @@ function ReservationDetail({ location, history }) {
           price: res[0].price,
           phonenum: res[0].phonenum,
           manage_email: res[0].manager_id,
+          likes: res[0].likes,
         });
       });
   };
@@ -305,10 +382,16 @@ function ReservationDetail({ location, history }) {
       />
     );
   };
+
+
+  useEffect(() => {
+    reqgroundlist();
+    likecheck();
+  }, []);
+
   useEffect(() => {
     reqground();
-    reqgroundlist();
-  }, []);
+  }, [like_icon]);
 
   const [r_date, setr_date] = useState(current_date);
   const [ground_num, setground_num] = useState(1);
@@ -439,7 +522,20 @@ function ReservationDetail({ location, history }) {
             justifyContent="center"
             alignItems="center"
           >
-            <h1>{ground.title}</h1>
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              direction="row"
+            >
+              <h1>{ground.title}</h1>
+              <IconButton onClick={likeClick}>
+                <img src={like_icon.like} />
+              </IconButton>
+              <Typography style={{fontSize:24}}>
+              {ground.likes}
+              </Typography>
+            </Grid>
             <img src={ground.img} width="90%" />
           </Grid>
           <form
@@ -730,31 +826,37 @@ function ReservationDetail({ location, history }) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
               >
-                <DialogTitle id="alert-dialog-title" style={{fontFamily:'Jua'}}>
+                <DialogTitle
+                  id="alert-dialog-title"
+                  style={{ fontFamily: "Jua" }}
+                >
                   결제하시겠습니까?
                 </DialogTitle>
                 <DialogContent>
-                  <DialogContentText id="alert-dialog-description" style={{fontFamily:'Gamja_Flower'}}>
-                      경기장 이름 : {ground.title}
-                      <br />
-                      주소 : {ground.address}
-                      <br />
-                      경기장 연락처 : {ground.phonenum}
-                      <br />
-                      구장 : {submititem.ground_num} 구장
-                      <br />
-                      날짜 : {r_date} / 시간 : {timelabel[r_time - 1]}
-                      <br />
-                      경기인원 : {vscount}
-                      <br />
-                      매치여부 : {checkbox.checkbox ? "매치개설" : "매치미개설"}
-                      <br />
-                      <b>
-                        가격 :{" "}
-                        {ground.price
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}
-                      </b>
+                  <DialogContentText
+                    id="alert-dialog-description"
+                    style={{ fontFamily: "Gamja_Flower" }}
+                  >
+                    경기장 이름 : {ground.title}
+                    <br />
+                    주소 : {ground.address}
+                    <br />
+                    경기장 연락처 : {ground.phonenum}
+                    <br />
+                    구장 : {submititem.ground_num} 구장
+                    <br />
+                    날짜 : {r_date} / 시간 : {timelabel[r_time - 1]}
+                    <br />
+                    경기인원 : {vscount}
+                    <br />
+                    매치여부 : {checkbox.checkbox ? "매치개설" : "매치미개설"}
+                    <br />
+                    <b>
+                      가격 :{" "}
+                      {ground.price
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}
+                    </b>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>

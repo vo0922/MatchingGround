@@ -91,24 +91,36 @@ function ReservationCard({ history }) {
             >
               <BrowserView>
                 <CardContent>
-                  <img
-                    src={data.photo}
-                    style={{ float: "left", marginRight: 20, marginBottom: 15 }}
-                    height="120"
-                    width="200"
-                  />
-                  <Typography
-                    className={classes.content}
-                    variant="h6"
-                    component="h2"
-                    gutterBottom
-                  >
-                    {data.ground_name}
-                  </Typography>
+                    <img
+                      src={data.photo}
+                      style={{
+                        float: "left",
+                        marginRight: 20,
+                        marginBottom: 15,
+                      }}
+                      height="120"
+                      width="200"
+                    />
+                    <Typography
+                      className={classes.content}
+                      variant="h6"
+                      component="h2"
+                      gutterBottom
+                      style={{float: 'left'}}
+                    >
+                      {data.ground_name}
+                    </Typography>
+                    <Typography className={classes.content} component="p" align="right" style={{fontSize:24}} >
+                      <img
+                        src={process.env.PUBLIC_URL + "/icons/nonelike.svg"}
+                      />
+                      &nbsp;
+                      {data.likes}
+                    </Typography>
+                    <br/>
                   <Typography className={classes.content} color="textSecondary">
                     {data.address}
                   </Typography>
-                  <br />
                   <Typography
                     className={classes.content}
                     variant="body2"
@@ -234,6 +246,11 @@ function ReservationCard({ history }) {
                     gutterBottom
                   >
                     {data.ground_name}
+                    <img
+                        src={process.env.PUBLIC_URL + "/icons/nonelike.svg"}
+                      />
+                      &nbsp;
+                      {data.likes}
                   </Typography>
                   <Typography className={classes.content} color="textSecondary">
                     {data.address}
