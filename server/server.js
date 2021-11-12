@@ -629,7 +629,7 @@ app.post("/team/teamlist", (req, res) =>{
 app.post("/team/teamdetail", (req, res) =>{
   const team_name = req.body.team_name;
 
-  connection.query("select *from Team where team_name = ? ", [team_name],
+  connection.query("select team_name, team_image, team_count, win, lose, date_format(team_date, '%Y-%m-%d') AS 'team_date', team_class, team_introduce, team_manage_name, team_age, activity_area from Team where team_name = ? ", [team_name],
   function(err, rows, fields){
     if(err){
       console.log("팀 정보 불러오기 실패" + err);
