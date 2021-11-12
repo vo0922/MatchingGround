@@ -184,7 +184,7 @@ function MainLogo({history}) {
               </BrowserView>
             </Typography>
           <Chip
-            avatar={<Avatar alt="toolbar_profile" src={myinfo.profile_image} />}
+            avatar={<Avatar alt="toolbar_profile" src={process.env.PUBLIC_URL + "/" + myinfo.profile_image} />}
             label={myinfo.user_name}
             variant="outlined"
             style={{marginRight:20, fontFamily:"Dongle-Bold", fontSize:24}}

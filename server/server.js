@@ -1076,6 +1076,62 @@ app.post("/mainscreen/matchlist", (req, res)=>{
   });
 });
 
+app.post("/signup/overlapcheck", (req, res)=>{
+  const email = req.body.email
+
+  connection.query("select count(*) as cnt from users where email = ?", [email],
+  function(err, rows, fields){
+    if(err){
+      console.log("회원가입 아이디 중복확인 실패" + err)
+    } 
+    else {
+      console.log("회원가입 아이디 중복확인 성공" + rows)
+      res.send(rows);
+    }
+  });
+});
+
+app.post("/signup", (req, res)=>{
+  const email = req.body.email;
+  const user_name = req.body.user_name;
+  const pw = req.body.pw;
+  const birthyear = req.body.birthyear;
+  const mobile = req.body.mobile;
+  const gender = req.body.gender;
+  const position = req.body.position;
+  const height = req.body.height;
+  const introduce = req.body.introduce;
+
+  connection.query("insert into users (email, pw, user_name, birthyear, mobile, gender, position, height, introduce) values (?,password(?),?,?,?,?,?,?,?)", [email, pw, user_name, birthyear, mobile, gender, position, height, introduce],
+  function(err, rows, fields){
+    if(err){
+      console.log("회원가입 실패" + err)
+    } 
+    else {
+      console.log("회원가입 성공")
+      res.send({success:1});
+    }
+  });
+});
+
+app.post("/signin/check", (req, res)=>{
+  const email = req.body.email;
+  const pw = req.body.pw;
+
+  connection.query("select EXISTS (select * from users where email = ? and pw = password(?)) as data_exist", [email, pw],
+  function(err, rows, fields){
+    if(err){
+      console.log("로그인 실패" + err)
+    } 
+    else {
+      console.log("로그인 요청 성공")
+      res.send(rows);
+    }
+  });
+});
+
+
+
 
 
 app.listen(port, ()=>{
