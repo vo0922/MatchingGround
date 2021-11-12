@@ -52,7 +52,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1500,
+  width: '60%',
   height: 550,
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -67,8 +67,6 @@ function TeamLoad({ history }) {
     team_name: window.sessionStorage.getItem("team_name"),
     team_image: "",
     team_count: "",
-    win: "",
-    lose: "",
     team_date: "",
     team_class: "",
     team_introduce: "",
@@ -93,8 +91,6 @@ function TeamLoad({ history }) {
           team_name: teaminfo.team_name,
           team_image: json[0].team_image,
           team_count: json[0].team_count,
-          win: json[0].win,
-          lose: json[0].lose,
           team_date: json[0].team_date,
           team_class: json[0].team_class,
           team_introduce: json[0].team_introduce,
@@ -169,7 +165,6 @@ function TeamLoad({ history }) {
     createData("활동지역 ", teaminfo.activity_area),
     createData("클럽 수준 ", teaminfo.team_class),
     createData("클럽 연령대 ", teaminfo.team_age),
-    createData("최근전적 ", teaminfo.win + "승 " + teaminfo.lose + "패"),
   ];
 
   

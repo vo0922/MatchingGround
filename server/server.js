@@ -565,10 +565,10 @@ app.post("/team/modify_photo", teaminfo_upload.single("team_image"), (req,res)=>
   );
 });
 
-// 내 정보 수정하기 (사진 수정 x)
+// 팀 정보 수정하기 (사진 수정 x)
 app.post("/team/modify_notphoto", form_data.array(), function(req, res){ 
   
-  connection.query("update users set team_class = ?, team_introduce = ?, team_age = ?, where team_name = ?",[req.body.team_class, req.body.team_introduce, req.body.team_age, req.body.team_name],
+  connection.query("update Team set team_class=?, team_introduce=?, team_age=? where team_name = ?",[req.body.team_class, req.body.team_introduce, req.body.team_age, req.body.team_name],
   function(err,rows,fields){
     if(err){
         console.log(err);
@@ -598,7 +598,7 @@ app.post("/team/info", (req, res) =>{
 app.post("/team/teaminfo", (req, res) =>{
   const team_name = req.body.team_name;
 
-  connection.query("select *from Team, users where Team.team_manage_name = (select team_manage_name from Team where team_name=?) and users.email = (select team_manage_name from Team where team_name=?)", [team_name, team_name],
+  connection.query("select users.*, Team.team_name, Team.team_image, Team.team_count, date_format(Team.team_date, '%Y-%m-%d') AS 'team_date', Team.team_class, Team.team_introduce, Team.team_manage_name, Team.team_age, Team.activity_area from Team, users where Team.team_manage_name = (select team_manage_name from Team where team_name=?) and users.email = (select team_manage_name from Team where team_name=?)", [team_name, team_name],
   function(err, rows, fields){
     if(err){
       console.log("팀 정보 불러오기 실패" + err);
@@ -629,7 +629,7 @@ app.post("/team/teamlist", (req, res) =>{
 app.post("/team/teamdetail", (req, res) =>{
   const team_name = req.body.team_name;
 
-  connection.query("select *from Team where team_name = ? ", [team_name],
+  connection.query("select team_name, team_image, team_count, win, lose, date_format(team_date, '%Y-%m-%d') AS 'team_date', team_class, team_introduce, team_manage_name, team_age, activity_area from Team where team_name = ? ", [team_name],
   function(err, rows, fields){
     if(err){
       console.log("팀 정보 불러오기 실패" + err);

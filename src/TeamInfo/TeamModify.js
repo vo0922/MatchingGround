@@ -101,11 +101,6 @@ function Teammodify({ history, location }) {
   //form API
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (e.target.team_image.files[0] == null) {
-      alert("사진을 등록해주세요");
-      return;
-    }
     
     const formData = new FormData();
 
@@ -113,9 +108,7 @@ function Teammodify({ history, location }) {
     formData.append("team_image", e.target.team_image.files[0]);
     formData.append("team_class", e.target.team_class.value);
     formData.append("team_introduce", e.target.team_introduce.value);
-    formData.append(
-      "activity_area",
-      teaminfo.activity_area);
+    formData.append("activity_area", teaminfo.activity_area);
     formData.append("team_age", e.target.team_age.value);
     formData.append("team_manage_name", window.sessionStorage.getItem("id"));
 
@@ -144,7 +137,7 @@ function Teammodify({ history, location }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert("클럽 수정이 완료되었습니다.");
+        alert(data.msg);
         history.push("/team");
       });
   }
@@ -156,7 +149,7 @@ function Teammodify({ history, location }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert("클럽 수정이 완료되었습니다.");
+        alert(data.msg);
         history.push("/team");
       });
   }
@@ -174,8 +167,7 @@ function Teammodify({ history, location }) {
       .then((data) => {
         
         alert(data.msg);
-        history.push('/');
-        window.sessionStorage.setItem('team_name', 'none');
+        window.location.replace('team_name', 'none');
       });
   }
 

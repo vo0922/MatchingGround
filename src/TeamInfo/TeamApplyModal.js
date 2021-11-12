@@ -10,10 +10,10 @@ export default function TeamApplyModal() {
       field: "age",
       headerName: "Age",
       type: "number",
-      width: 130,
+      width: 100,
     },
     { field: "position", headerName: "position", width: 150 },
-    { field: "introduce", headerName: "introduce", width: 750 },
+    { field: "introduce", headerName: "introduce", width: 400 },
   ];
 
   const rows = [];
@@ -118,11 +118,12 @@ export default function TeamApplyModal() {
         justifyContent="flex-end"
         alignItems="center"
       >
-        <Grid item xs={1}>
+        <Grid>
           <Button
             variant="outlined"
             color="primary"
             size="large"
+            style={{ margin: 10 }}
             onClick={applybutton}
           >
             가입승인

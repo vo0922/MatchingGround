@@ -88,7 +88,7 @@ export default function TeamMember({history}) {
                             <TableCell align="right">{year - data.birthyear + 1}</TableCell>
                             <TableCell align="right">{data.height}</TableCell>
                             <TableCell align="right">{data.position}</TableCell>
-                            <TableCell align="right"><Button style={{ margin:10 }} onClick={()=>assignclick(data)} variant="contained" color="primary">위임</Button><Button style={{ margin:10 }} onClick={()=>deleteclick(data)} variant="contained" color="primary">제명</Button></TableCell>
+                            {window.sessionStorage.getItem('id') == data.email ? <TableCell align="right"> 클럽장 </TableCell> : <TableCell align="right"><Button style={{ margin:10 }} onClick={()=>assignclick(data)} variant="contained" color="primary">위임</Button><Button style={{ margin:10 }} onClick={()=>deleteclick(data)} variant="contained" color="primary">제명</Button></TableCell>}
                         </TableRow>
                     )),
                 });
