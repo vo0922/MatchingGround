@@ -6,10 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { Box } from '@mui/system';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
+import { FormControl } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -39,16 +41,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-async function loginUser(credentials) {
-  return fetch('https://www.mecallapi.com/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
- }
+// async function loginUser(credentials) {
+//   return fetch('https://www.mecallapi.com/api/login', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(credentials)
+//   })
+//     .then(data => data.json())
+//  }
 
  const { naver } = window;
 
@@ -72,27 +74,86 @@ export default function Signin() {
   useEffect(() => {
     NaverLogin();
   });
-  //네이버 로그인 API 요청
-  const handleSubmit = async e => {
-    e.preventDefault();
-    const response = await loginUser({
-      username,
-      password
+
+  async function signin_check(signindata){
+    fetch("http://localhost:3001/signin/check", {
+      method: "post", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(signindata),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if(res[0].data_exist === 0){
+        alert("존재하지 않는 아이디이거나 비밀번호가 틀렸습니다.")
+        return;
+        }
+        else{
+         signin(signindata.email);
+        }
     });
-    if ('accessToken' in response) {
-      swal("Success", response.message, "success", {
-        buttons: false,
-        timer: 2000,
-      })
-      .then((value) => {
-        localStorage.setItem('accessToken', response['accessToken']);
-        localStorage.setItem('user', JSON.stringify(response['user']));
-        window.location.href = "/profile";
-      });
-    } else {
-      swal("오류", response.message, "error");
+  }
+
+  async function signin(email){
+    fetch("http://localhost:3001/myinfo" , {
+      method : "post", // 통신방법
+      headers : {
+          "content-type" : "application/json",
+      },
+      body : JSON.stringify({
+        email : email
+      }),
+    })
+    .then((res)=>res.json())
+    .then((res)=>{
+        window.sessionStorage.setItem('id', email);
+        window.sessionStorage.setItem('ground_manager', res[0].ground_manager);
+        window.sessionStorage.setItem('team_manager', res[0].team_manager);
+        window.sessionStorage.setItem('team_name', res[0].team_name);
+
+        window.location.replace('/');
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const data = new FormData(e.currentTarget);
+    const signindata ={
+      email : data.get("email"),
+      pw : data.get("password"),
     }
+
+    if(signindata.email === "" || signindata.pw === ""){
+      alert("아이디와 비밀번호를 입력하세요.")
+      return;
+    }
+
+    signin_check(signindata)
+
+
+
+    // const response = await loginUser({
+    //   username,
+    //   password
+    // });
+    // if ('accessToken' in response) {
+    //   swal("Success", response.message, "success", {
+    //     buttons: false,
+    //     timer: 2000,
+    //   })
+    //   .then((value) => {
+    //     localStorage.setItem('accessToken', response['accessToken']);
+    //     localStorage.setItem('user', JSON.stringify(response['user']));
+    //     window.location.href = "/profile";
+    //   });
+    // } else {
+    //   swal("오류", response.message, "error");
+    // }
   };
+
+
 
   return (
     <Grid container className={classes.root}>
@@ -104,7 +165,7 @@ export default function Signin() {
           <Typography component="h1" variant="h5">
             MatchingGround
           </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+          <Box component="form" className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -113,7 +174,6 @@ export default function Signin() {
               id="email"
               name="email"
               label="Email Address"
-              onChange={e => setUserName(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -124,7 +184,6 @@ export default function Signin() {
               name="password"
               label="Password"
               type="password"
-              onChange={e => setPassword(e.target.value)}
             />
             <Button
               type="submit"
@@ -136,13 +195,12 @@ export default function Signin() {
             >
               로그인
             </Button>
-            <Link to="/" style={{float: "right"}}>회원가입</Link>
+            <Link to="/signup" style={{float: "right"}}>회원가입</Link>
             <br/><br/><hr/>
-            <div id="naverIdLogin" style={{textAlign: "center", marginTop: 20}}></div>
-          </form>
+          </Box>
+          <div id="naverIdLogin" style={{textAlign: "center", marginTop: 20}}></div>
         </div>
       </Grid>
     </Grid>
   );
 }
-

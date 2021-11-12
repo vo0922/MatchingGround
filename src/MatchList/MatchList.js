@@ -15,7 +15,6 @@ export default class MatchList extends Component {
                 <MobileView>
                     <MatchListMoblie/>
                 </MobileView>
-                
             </div>
         )
     }

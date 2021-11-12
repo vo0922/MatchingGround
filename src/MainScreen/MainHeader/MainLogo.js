@@ -33,6 +33,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Box from '@mui/material/Box'
 import MailSystem from './MailSystem'
 import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
+import { BrowserView, MobileView } from 'react-device-detect';
 import '../../font/font.css';
 
 const drawerWidth = 240;
@@ -177,11 +178,13 @@ function MainLogo({history}) {
       >
         <Toolbar>
           <Link to = "/"><img width="100%" height="50px" src={process.env.PUBLIC_URL + "/backgroundimage/logo3.jpg"}/></Link>
-          <Typography variant="h6" noWrap className={classes.title} style={{ fontFamily:"Dongle-Bold", fontSize:40, marginLeft:10}}> 
-            매칭그라운드
-          </Typography>
+            <Typography variant="h6" noWrap className={classes.title} style={{ fontFamily:"Dongle-Bold", fontSize:40, marginLeft:10}}>
+              <BrowserView>
+                매칭그라운드
+              </BrowserView>
+            </Typography>
           <Chip
-            avatar={<Avatar alt="toolbar_profile" src={myinfo.profile_image} />}
+            avatar={<Avatar alt="toolbar_profile" src={process.env.PUBLIC_URL + "/" + myinfo.profile_image} />}
             label={myinfo.user_name}
             variant="outlined"
             style={{marginRight:20, fontFamily:"Dongle-Bold", fontSize:24}}

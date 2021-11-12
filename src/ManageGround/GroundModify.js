@@ -172,8 +172,8 @@ function GroundModify({history, location}) {
       .then((data) => {
         setDeleteDialogOpen(false);
         alert(data.msg);
-        history.push('/');
         window.sessionStorage.setItem('ground_manager', 0);
+        history.push('/');
       });
   }
 

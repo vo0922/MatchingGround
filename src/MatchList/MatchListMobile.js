@@ -64,6 +64,7 @@ export default function MatchListMoblie() {
   var today = new Date(); // 오늘 날짜 받아오기
   var current_time = today.getHours();
   var current_r_time = parseInt(current_time / 2) - 3;
+  var date_format = today.getFullYear() + "-" +((today.getMonth()+1) < 10 ? "0" + (today.getMonth()+1) : today.getMonth()+1) + "-" + (today.getDate() < 10 ? "0" + today.getDate() : today.getDate());
 
   const [searchdata, setsearchdata] = useState({
     r_date: today.getFullYear() + "-" +((today.getMonth()+1) < 10 ? "0" + (today.getMonth()+1) : today.getMonth()+1) + "-" + (today.getDate() < 10 ? "0" + today.getDate() : today.getDate()),
@@ -195,7 +196,7 @@ export default function MatchListMoblie() {
                     {json.user_email !== window.sessionStorage.getItem('id') ?
                     (json.match_success ? 
                     <Button disabled variant="contained"><Typography>신청마감</Typography></Button> : 
-                    ((json.r_time - 1) === current_r_time ? 
+                    (((json.r_time - 1) === current_r_time && json.r_date === date_format) ? 
                     <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="error"><Typography>마감임박</Typography></Button> :
                     <Button onClick={() => handleApplyOpen(json.match_num, json.user_email, json.team_name, json.ground_name, json.r_date, json.r_time, json.ground_num, json.address)} variant="outlined" color="primary"><Typography>매치신청</Typography></Button>))
                     : <Button disabled variant="contained"><Typography>매치신청</Typography></Button>}

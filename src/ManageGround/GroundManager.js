@@ -168,11 +168,14 @@ function GroundManager({history}) {
                 </MobileView>
               </Grid>
             <Grid item xs={3}/>
-            <Grid item xs={3} style={{marginTop:20}}>
-                <Button onClick={link_Modify} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 정보 수정</Button>
+            <Grid item xs={6} style={{marginTop:20}}>
+                <BrowserView>
+                  <Button onClick={link_Modify} variant="outlined" color="primary" style={{ width: "100%", margin: 5 }}>경기장 정보 수정</Button>
+                </BrowserView>
+                <Button onClick={link_reservation} variant="outlined" color="primary" style={{ width: "100%", margin : 5 }}>경기장 예약 관리</Button>
             </Grid>
             <Grid item xs={3} style={{marginTop:20}}>
-                <Button onClick={link_reservation} variant="outlined" color="primary" style={{ width: "100%" }}>경기장 예약 관리</Button>
+                
             </Grid>
           </Grid>
       </Container>

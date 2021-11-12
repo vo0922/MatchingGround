@@ -125,13 +125,13 @@ function GroundRegister({history}) {
   function groundRegister(groundinfo) {
     fetch("http://localhost:3001/ground/info/register", {
       method: "post",
-      body: groundinfo,
+      body: groundinfo
     })
       .then((res) => res.json())
       .then((data) => {
         alert(data.msg)
-        window.sessionStorage.setItem('ground_manager', data.success);
-        history.push('/groundmanager');
+        window.sessionStorage.setItem('ground_manager', 1);
+        window.location.replace='/notgroundmanager';
       });
   }
 
@@ -143,7 +143,7 @@ function GroundRegister({history}) {
         <Container
           maxWidth="md"
           className={classes.container}
-          style={{ backgroundColor: "#F3F3F3", minHeight:"100vh", height:"100%"}}
+          style={{ minHeight:"100vh", height:"100%"}}
         >
             <Typography
               component="h4"

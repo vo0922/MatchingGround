@@ -31,6 +31,7 @@ import Matchinfo from '../MatchInfo/MatchInfo'
 import PastReservation from '../PastReservation/PastReservation';
 import FindTeam from '../FindTeam/FindTeam';
 import TeamDetail from '../FindTeam/TeamDetail';
+import SignUp from '../Login/SignUp';
 
 const Routes = () => {
     return (
@@ -38,6 +39,7 @@ const Routes = () => {
             <Switch>
                 <PrivateRouteL exact path="/login" component={Login}/>
                 <PrivateRouteL exact path="/login/callback" component={LoginCallBack}/>
+                <PrivateRouteL exact path="/signup" component={SignUp}/>
                 <PrivateRoute exact path="/" component={Main}/>
 
                 <PrivateRoute exact path="/reservation" component={Reservation}/>
