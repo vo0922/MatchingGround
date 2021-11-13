@@ -177,11 +177,14 @@ function MainLogo({history}) {
         })}
       >
         <Toolbar>
-          <Link to = "/"><img width="100%" height="50px" src={process.env.PUBLIC_URL + "/backgroundimage/logo3.jpg"}/></Link>
+          <Link to = "/"><img width="100%" height="50px" src={process.env.PUBLIC_URL + "/backgroundimage/logo5.png"}/></Link>
             <Typography variant="h6" noWrap className={classes.title} style={{ fontFamily:"Dongle-Bold", fontSize:40, marginLeft:10}}>
               <BrowserView>
                 매칭그라운드
               </BrowserView>
+              <MobileView>
+                M.G
+              </MobileView>
             </Typography>
           <Chip
             avatar={<Avatar alt="toolbar_profile" src={process.env.PUBLIC_URL + "/" + myinfo.profile_image} />}
