@@ -497,7 +497,8 @@ app.post("/myinfo", (req, res) =>{
   });
 });
 
-// 내 정보 수정하기
+
+// 내 정보 수정하기 (사진 수정 o)
 const myinfo_storage = multer.diskStorage({
   destination : function(req, file, cb){
     cb(null, "../public/profileimage/");    
@@ -509,9 +510,9 @@ const myinfo_storage = multer.diskStorage({
 
 var myinfo_upload = multer({ storage : myinfo_storage });
 
-app.post("/myinfo/modify", myinfo_upload.single("profile_image"), (req,res)=>{
+app.post("/myinfo/modify_photo", myinfo_upload.single("profile_image"), (req,res)=>{
   connection.query(
-    "UPDATE users set profile_image = ?, mobile = ?, height = ?, position = ?, introduce = ? where email=?",["profileimage/"+req.file.filename, req.body.mobile, req.body.height, req.body.position, req.body.introduce, req.body.email],
+    "UPDATE users set profile_image = ?, gender = ?, height = ?, position = ?, introduce = ? where email=?",["profileimage/"+req.file.filename, req.body.gender, req.body.height, req.body.position, req.body.introduce, req.body.email],
 function(err,rows,fields){
     if(err){
         console.log(err);
@@ -521,6 +522,23 @@ function(err,rows,fields){
 });
 });
 
+// 내 정보 수정하기 (사진 수정 x)
+app.post("/myinfo/modify_notphoto", form_data.array(), function(req, res){
+  const gender = req.body.gender;
+  const height = req.body.height;
+  const position = req.body.position;
+  const introduce = req.body.introduce;
+  const email = req.body.email;
+  
+  connection.query("update users set gender = ?, height = ?, position = ?, introduce = ? where email = ?",[gender, height, position, introduce, email],
+  function(err,rows,fields){
+    if(err){
+        console.log(err);
+    }else{
+        //console.log("성공");
+    };
+});
+});
 
 // 팀 정보 만들기
 const teaminfo_storage = multer.diskStorage({
@@ -537,7 +555,7 @@ var teaminfo_upload = multer({ storage : teaminfo_storage });
 app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
   console.log(req.body);
   connection.query(
-    "insert into Team (team_image, team_name, team_date, team_class, team_introduce, team_manage_name, activity_area, team_age) values(?,?,?,?,?,?,?,?)",
+    "call team_create(?,?,?,?,?,?,?,?)",
     [
       "teamlogo/" + req.file.filename,
       req.body.team_name,
@@ -558,6 +576,7 @@ app.post("/team/team_make", teaminfo_upload.single("team_image"), (req,res)=>{
     }
   );
 });
+
 
 // 팀 정보 수정하기
 app.post("/team/modify", teaminfo_upload.single("team_image"), (req,res)=>{
@@ -720,22 +739,20 @@ app.post("/team/delete", (req, res) =>{
 });
 
 // 클럽 삭제하기
-/*
+
 app.post("/team/modify/delete", (req, res) =>{
   const team_name = req.body.team_name;
-  console.log(team_name);
 
-  connection.query("delete from Team where team_name = ?", [team_name],
+  connection.query("call team_delete(?)", [team_name],
   function(err, rows, fields){
     if(err){
       console.log("클럽 정보 삭제하기 실패" + err);
     } else {
       res.send({msg:"클럽이 성공적으로 삭제되었습니다."});
-      console.log("클럽 정보 삭제하기 성공");
+      console.log("클럽 정보 삭제하기 성공");      
     }
   });
 });
-*/
 
 // 클럽원 불러오기
 app.post("/team/member", (req, res) =>{
@@ -746,6 +763,39 @@ app.post("/team/member", (req, res) =>{
       console.log("1성공");
     } else {
       res.send(rows);
+    }
+  });
+});
+
+// 클럽원 제명하기
+app.post("/team/member/delete", (req, res) =>{
+  const user_no = req.body.user_no;
+
+  connection.query("update users set team_name = 'none' where user_no = ?", [user_no],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽 제명 실패" + err);
+    } else {
+      res.send({msg:"클럽원이 성공적으로 제명되었습니다."});
+      console.log("클럽원 제명 성공");
+    }
+  });
+});
+
+// 클럽장 위임하기
+app.post("/team/member/assign", (req, res) =>{
+  const user_no = req.body.user_no;
+  const email = req.body.email;
+
+  connection.query("update users SET team_manager = CASE when user_no = ? then 1 when user_no = (select user_no from users where email=?) then 0 ELSE team_manager END", [user_no, email],
+  function(err, rows, fields){
+    if(err){
+      console.log("클럽장 위임 실패" + err);
+    } else {
+      res.send({msg:"클럽장 성공적으로 위임되었습니다.", success:0});
+      console.log(user_no);
+      console.log(email);
+      console.log("클럽장 위임 성공");
     }
   });
 });
@@ -774,6 +824,23 @@ app.post("/findteam/applybutton", (req,res)=>{
   );
 });
 
+// 클럽 찾기 조회 버튼
+app.post("/findteam/search", (req,res)=>{
+  const activity_area = req.body.activity_area;
+  const team_class = req.body.team_class;
+  const team_name = req.body.team_name;
+
+  connection.query(
+    "select *from Team where activity_area like ? and team_class like ? and team_name like ?",[activity_area, team_class, team_name],
+    function (err, rows, fields) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(rows);
+      }
+    }
+  );
+});
 
 
 // 매치리스트 불러오기

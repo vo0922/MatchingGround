@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,7 @@ export default function MainScreen_Teaminfo() {
     team_date: "",
     team_class: "",
     activity_area : "",
+    team_introduce : "",
     
   });
   const [teamcard, setteamcard] = useState({
@@ -115,8 +117,12 @@ export default function MainScreen_Teaminfo() {
             
             <Grid item xs={8}>
               <Typography color="textSecondary" style={{textAlign:"center", fontSize:15, marginTop:5}}>가입된 팀이 없습니다.</Typography>
-              <Button variant="outlined" color="primary" style={{marginTop:10, marginBottom:6,}} fullWidth>팀 생성하기</Button>
-              <Button variant="outlined" color="primary" style={{marginTop:6, marginBottom:6,}} fullWidth>팀 가입하기</Button>
+              <Link to ="/teammake">
+                <Button variant="outlined" color="primary" style={{marginTop:10, marginBottom:6, textDecoration:'none'}} fullWidth>팀 생성하기</Button>
+              </Link>
+              <Link to="/findteam">
+                <Button variant="outlined" color="primary" style={{marginTop:6, marginBottom:6, textDecoration:'none'}} fullWidth>팀 가입하기</Button>
+              </Link>
             </Grid>
             <Grid item xs={2}/>
           </Grid>
