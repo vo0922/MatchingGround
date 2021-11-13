@@ -167,7 +167,8 @@ function Teammodify({ history, location }) {
       .then((data) => {
         
         alert(data.msg);
-        window.location.replace('team_name', 'none');
+        window.sessionStorage.setItem('team_name', 'none');
+        window.location.replace('/');
       });
   }
 
