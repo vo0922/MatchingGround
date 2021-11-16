@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Modal, Box } from "@material-ui/core";
+
 
 export default function TeamApplyModal() {
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: '60%',
+    height: 550,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+  
+
   const columns = [
     { field: "email", headerName: "email", width: 200 },
     { field: "user_name", headerName: "user_name", width: 150 },
@@ -80,12 +96,13 @@ export default function TeamApplyModal() {
         "content-type": "application/json",
       },
       body: JSON.stringify(selectionModel),
-    })
+    })    
       .then((res) => res.json())
-      .then((json) => {
-        window.location.replace('/team');
+      .then((json) => {        
       });
-  }
+      alert('클럽원 가입신청이 승인되었습니다.');    
+      window.location.replace('/team');
+    }
 
   // 거절 버튼
   const leavebutton = () => {
@@ -99,7 +116,10 @@ export default function TeamApplyModal() {
       .then((res) => res.json())
       .then((json) => {
       });
+      alert('클럽원 가입신청이 거절되었습니다.'); 
+      window.location.replace('/team');
   }
+
 
   useEffect(()=>{
   }, [selectionModel])
@@ -127,7 +147,7 @@ export default function TeamApplyModal() {
             onClick={applybutton}
           >
             가입승인
-          </Button>
+          </Button>          
         </Grid>
         <Grid>
           <Button

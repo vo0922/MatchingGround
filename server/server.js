@@ -702,7 +702,7 @@ app.post("/team/apply", (req, res) =>{
   function(err, rows, fields){
     if(err){
       console.log("클럽 가입신청승인 실패" + err);      
-    } else {  
+    } else {        
       console.log("클럽 가입신청승인 성공");
     }
   })
@@ -716,7 +716,7 @@ app.post("/team/leave", (req, res) =>{
   function(err, rows, fields){
     if(err){
       console.log("클럽 가입신청거절 실패" + err);      
-    } else {  
+    } else {
       console.log("클럽 가입신청거절 성공");
     }
   })
