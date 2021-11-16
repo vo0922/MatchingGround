@@ -109,7 +109,7 @@ export default function Matchinglist() {
           "타임(" +
           timelabel[ReservationCancelData.r_time] +
           ")예약을 사용자가 취소하였습니다.",
-        link: "http://smartit-16.iptime.org/groundmananger",
+        link: "/groundmananger",
       }),
     })
       .then((res) => res.json())
@@ -148,7 +148,7 @@ export default function Matchinglist() {
                 variant="h5"
                 style={{ textAlign: "center", marginTop: 20 }}
               >
-                대기중인 매칭이 없습니다.
+                대기중인 매치가 없습니다.
               </Typography>
             ),
           });

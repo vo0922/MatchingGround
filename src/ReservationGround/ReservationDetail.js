@@ -226,7 +226,7 @@ function ReservationDetail({ location, history }) {
                 send_id: window.sessionStorage.getItem("id"),
                 receive_id: ground.manage_email,
                 title: "예약신청",
-                link: "http://localhost:3000/notgroundmananger",
+                link: "/notgroundmananger",
                 contents:
                   window.sessionStorage.getItem("id") +
                   " 님이 " +
@@ -801,7 +801,7 @@ function ReservationDetail({ location, history }) {
                     <FormControlLabel
                       value="1"
                       control={<Checkbox color="primary" />}
-                      label="상대방과 매칭 희망"
+                      label="상대방과 매치 희망"
                       name="checked1"
                       labelPlacement="end"
                       onChange={handleChecked}
