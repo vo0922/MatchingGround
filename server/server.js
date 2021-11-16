@@ -986,7 +986,7 @@ app.post("/matchinfo/matchcancel", (req, res) => {
 app.post("/matchinfo/matchwatelist", (req, res) => {
   const email = req.body.id;
   const r_time = req.body.r_time;
-  connection.query("select a.*, b.manager_id from matchlist a, groundinfo b where (a.user_email = ? or a.vs_user_email = ?) and a.match_success = 0 and (date(a.r_date) > date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time > ?)) and a.ground_name = b.ground_name;",[email, email,r_time],
+  connection.query("select a.*, b.manager_id from matchlist a, groundinfo b where (a.user_email = ? or a.vs_user_email = ?) and a.match_success = 0 and (date(a.r_date) > date_format(now(), '%Y-%m-%d') or (date(a.r_date) = date_format(now(), '%Y-%m-%d') and a.r_time > ?)) and a.ground_name = b.ground_name and a.user_email = ?;",[email, email, r_time, email],
   function(err, rows, fields){
     if(err){
     } else {
