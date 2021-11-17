@@ -131,7 +131,7 @@ function GroundRegister({history}) {
       .then((data) => {
         alert(data.msg)
         window.sessionStorage.setItem('ground_manager', 1);
-        window.location.replace='/notgroundmanager';
+        window.location.replace('/notgroundmanager');
       });
   }
 

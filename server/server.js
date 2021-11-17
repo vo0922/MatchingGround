@@ -927,33 +927,21 @@ app.post("/mail/count", (req, res) =>{
   });
 });
 
-// 쪽지 리스트 받아오기
+// 쪽지 리스트 받아오기, 읽음처리
 app.post("/mail/list", (req, res) =>{
+  console.log("ddd")
   const user_email = req.body.user_email
   
-  connection.query("select * from mail where receive_id = ? order by mail_no desc", [user_email],
+  connection.query("call alert(?)", [user_email],
   function(err, rows, fields){
     if(err){
       console.log("쪽지 리스트 받아오기 실패" + err);
     } else {
-      res.send(rows);
+      res.send(rows[0]);
     }
   });
 });
 
-// 알림 읽었을 때 읽음 표시
-app.post("/mail/read", (req, res) =>{
-  const user_email = req.body.user_email
-  
-  connection.query("update mail set readed = 1 where receive_id = ?", [user_email],
-  function(err, rows, fields){
-    if(err){
-      console.log(user_email + "님의 메일 확인여부 확인 실패" + err);
-    } else {
-      console.log(user_email + "님이 메일을 모두 확인함");
-    }
-  });
-});
 
 // 진행중인 매칭
 app.post("/matchinfo/matchinglist", (req, res) => {
