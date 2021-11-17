@@ -153,7 +153,7 @@ export default function Matchinglist() {
                 variant="h5"
                 style={{ textAlign: "center", marginTop: 20 }}
               >
-                진행중인 매치가 없습니다.
+                경기 대기중인 매치가 없습니다.
               </Typography>
             ),
           });
@@ -195,8 +195,8 @@ export default function Matchinglist() {
                     {data.vs_count} &nbsp;{" "}
                     {data.team_name !== "none"
                       ? data.team_name
-                      : data.user_eamil}{" "}
-                    vs{" "}
+                      : data.user_email} {" "}
+                    vs {" "}
                     {data.vs_team_name !== "none"
                       ? data.vs_team_name
                       : data.vs_user_email}
@@ -249,14 +249,14 @@ export default function Matchinglist() {
         <DialogContent>
           <DialogContentText id="alert-dialog-description"></DialogContentText>
           <Typography style={{ fontSize: 16 }}>
-            {MatchCancel.user_team
+            {MatchCancel.user_team !== "none"
               ? MatchCancel.user_team
               : MatchCancel.user_email}{" "}
             :{" "}
-            {MatchCancel.vs_user_team
+            {MatchCancel.vs_user_team !== "none"
               ? MatchCancel.vs_user_team
               : MatchCancel.vs_user_email}{" "}
-            와의 매칭을 정말 취소 하시겠습니까?
+            와의 매치를 정말 취소 하시겠습니까?
           </Typography>
         </DialogContent>
         <DialogActions>

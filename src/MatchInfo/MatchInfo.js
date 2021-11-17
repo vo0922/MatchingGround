@@ -23,7 +23,7 @@ export default class MatchInfo extends Component {
           >
             <Grid>
             <Typography variant="h5" style={{paddingTop:40,}}>
-                진행중인 매칭
+                경기 대기중
               </Typography>
             </Grid>
             <Grid style={{width:'100%'}}>
@@ -31,7 +31,7 @@ export default class MatchInfo extends Component {
             </Grid>
             <Grid style={{marginTop:10}}>
             <Typography variant="h5" style={{ marginTop:50}}>
-                대기중인 매칭
+                매치 대기중
               </Typography>
             </Grid>
             <Grid style={{width:'100%'}}>
@@ -39,7 +39,7 @@ export default class MatchInfo extends Component {
             </Grid>
             <Grid style={{marginTop:10}}>
             <Typography variant="h5" style={{marginTop:50}}>
-                지난 매칭
+                지난 매치
               </Typography>
             </Grid>
             <Grid style={{width:'100%'}}>

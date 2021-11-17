@@ -143,6 +143,19 @@ app.post("/reservation/detail", (req,res)=>{
   });
 });
 
+app.post("/reservation/detail/groundlike", (req,res)=>{
+  const key = req.body.ground_name;
+  connection.query(
+      "select likes from groundinfo where ground_name = ?", [key],
+  function(err,rows,fields){
+      if(err){
+          console.log(err);
+      }else{
+          res.send(rows);
+      };
+  });
+});
+
 // 구장별 데이터 불러오기
 app.post("/reservation/detail/list", (req,res)=>{
   const key = req.body.cardkey;
@@ -242,6 +255,7 @@ app.post('/reservation/detail/likeclick', function(req, res, next){
       console.log(err);
     }else{
       console.log('좋아요 클릭성공');
+      res.send({msg: '좋아요 클릭'})
     }
   }
   )
@@ -1155,10 +1169,6 @@ app.post("/signin/check", (req, res)=>{
   });
 });
 
-
-
-
-
 app.listen(port, ()=>{
-    console.log(`Connect at http://localhost:${port}`);
+  console.log(`Connect at http://localhost:${port}`);
 });

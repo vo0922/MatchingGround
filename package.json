@@ -34,9 +34,11 @@
     "react-slick": "^0.28.1",
     "request": "^2.88.2",
     "slick-carousel": "^1.8.1",
+    "socket.io": "^4.3.2",
     "styled-components": "^5.3.1",
     "sweetalert": "^2.1.2",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "ws": "^8.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
