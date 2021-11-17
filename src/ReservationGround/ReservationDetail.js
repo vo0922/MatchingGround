@@ -44,8 +44,8 @@ function ReservationDetail({ location, history }) {
     uniform_rent: "",
     price: "",
     manage_email: "",
-    likes: "",
   });
+  const [groundlike, setgroundlike] = useState(0);
   //구장 수
   const [groundlist, setgroundlist] = useState({
     count: "",
@@ -63,6 +63,24 @@ function ReservationDetail({ location, history }) {
     like: "",
     checked: false,
   });
+
+  //좋아요 수 check
+  const groundlikes = () => {
+    fetch("http://localhost:3001/reservation/detail/groundlike", {
+      method: "post", //통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        ground_name: location.state.cardkey,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setgroundlike(res[0].likes);
+      });
+  }
+
   //좋아요 check
   const likecheck = () => {
     fetch("http://localhost:3001/reservation/detail/likecheck", {
@@ -109,7 +127,7 @@ function ReservationDetail({ location, history }) {
         }),
       })
         .then((res) => res.json())
-        .then((res) => {});
+        .then((res) => {groundlikes();});
     } else {
       setlike_icon({
         like: process.env.PUBLIC_URL + "/icons/like.svg",
@@ -127,9 +145,8 @@ function ReservationDetail({ location, history }) {
         }),
       })
         .then((res) => res.json())
-        .then((res) => {});
+        .then((res) => {groundlikes();});
     }
-    reqground();
   };
 
   //vs count
@@ -387,6 +404,7 @@ function ReservationDetail({ location, history }) {
   useEffect(() => {
     reqgroundlist();
     likecheck();
+    groundlikes();
   }, []);
 
   useEffect(() => {
@@ -533,7 +551,7 @@ function ReservationDetail({ location, history }) {
                 <img src={like_icon.like} />
               </IconButton>
               <Typography style={{fontSize:24}}>
-              {ground.likes}
+              {groundlike}
               </Typography>
             </Grid>
             <img src={ground.img} width="90%" />
