@@ -100,7 +100,7 @@ export default function Reservation_current() {
           " / " +
           ReservationCancelData.r_time +
           "예약을 사용자가 취소하였습니다.",
-        link: "http://localhost:3000/groundmananger",
+        link: "/groundmananger",
       }),
     })
       .then((res) => res.json())

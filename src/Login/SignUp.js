@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { InputLabel, Select, MenuItem, FormControl } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import debounce from "lodash.debounce";
 
 function Copyright(props) {
   return (
@@ -42,10 +43,12 @@ export default function SignUp({history}) {
   }
 
   const [email, setemail] = React.useState("");
-  const emailChange = (event) => {
+  
+  const emailChange = debounce((event) => {
       setemail(event.target.value);
       overlap = 0;
-  }
+      console.log(overlap);
+  }, 800);
   
   var overlap = 0;
 

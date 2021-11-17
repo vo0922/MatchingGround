@@ -9,15 +9,15 @@ import ListItemText from "@mui/material/ListItemText";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton"
+import { throttle, debounce } from "lodash";
 
 export default function MailSystem() {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
+  const handleClick = ((event) => {
     getMailList();
-    mailread();
     setAnchorEl(event.currentTarget);
-  };
+  });
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -33,6 +33,15 @@ export default function MailSystem() {
     body: "",
   });
 
+  function ListButtonEvent(link){
+    if(link === null){
+      return;
+    }
+    else{
+      window.location.replace(link);
+    }
+  }
+
   function getMailCount() {
     fetch("http://localhost:3001/mail/count", {
       method: "post", // 통신방법
@@ -47,7 +56,7 @@ export default function MailSystem() {
       });
   }
 
-  function getMailList() {
+  const getMailList = (() => {
     fetch("http://localhost:3001/mail/list", {
       method: "post", // 통신방법
       headers: {
@@ -66,7 +75,7 @@ export default function MailSystem() {
         }
         setmailList({
           body: res.map((res) => (
-            <ListItemButton component="a" href={res.link} key={res.mail_no}>
+            <ListItemButton component="a" onClick={() => ListButtonEvent(res.link)} key={res.mail_no}>
             <div>
               <ListItem alignItems="flex-start">
                 <ListItemText
@@ -105,21 +114,7 @@ export default function MailSystem() {
           )),
         });
       });
-  }
-
-  function mailread(){
-    fetch("http://localhost:3001/mail/read", {
-      method: "post", // 통신방법
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ user_email: window.sessionStorage.getItem("id") }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        
-    });
-  }
+  });
 
   useEffect(() => {
     getMailCount();

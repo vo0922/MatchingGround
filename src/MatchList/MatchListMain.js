@@ -325,7 +325,7 @@ export default function MatchListMain() {
         receive_id : applyContent.user_email,
         title : "매치신청",
         contents : "지금바로 내매칭정보에서 확인해보세요!",
-        link:"http://localhost:3000/matchinfo"
+        link:"/matchinfo"
       }),
     })
       .then((res) => res.json())
