@@ -14,6 +14,8 @@ import {
   Typography,
   TextField,
   Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material/";
 
 function TeamMake({ history }) {
@@ -158,7 +160,7 @@ function TeamMake({ history }) {
     },
   };
 
-  //팀 생성 API
+  //클럽 생성 API
   function teammodify(teaminfo) {
     fetch("http://localhost:3001/team/team_make", {
       method: "post",
@@ -254,44 +256,32 @@ function TeamMake({ history }) {
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      클럽명
-                    </Typography>
-                  </TableCell>
                   <TableCell>
                     <TextField
                       id="team_name"
                       name="team_name"
                       label="클럽명"
                       variant="outlined"
-                      style={{ marginTop: 4, width: "28.5ch" }}
+                      style={{ marginTop: 4, width: '100%' }}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      활동지역
-                    </Typography>
-                  </TableCell>
                   <TableCell>
+                  <Grid container>
+                  <Grid item xs>
+                  <FormControl fullWidth>
+                      <InputLabel id="inputlabel1">시/도 선택</InputLabel>
                     <Select
                       id="area"
                       name="area"
+                      labelId="inputlabel1"
+                      label="시/도 선택"
                       value={city}
                       onChange={handleSelectcity}
-                      style={{ marginTop: 4, width: "12.5ch" }}
+                      style={{ margin: 4 }}
                     >
                       <MenuItem value={"서울"}>서울</MenuItem>
                       <MenuItem value={"부산"}>부산</MenuItem>
@@ -311,92 +301,87 @@ function TeamMake({ history }) {
                       <MenuItem value={"경상남도"}>경남</MenuItem>
                       <MenuItem value={"제주"}>제주</MenuItem>
                     </Select>
+                    </FormControl>
+                    </Grid>
+                    <Grid item xs>
+                    <FormControl fullWidth>
+                    <InputLabel id="inputlabel2">구/군/구 선택</InputLabel>
                     <Select
                       id="areamenu"
                       name="areamenu"
+                      labelId="inputlabel2"
+                      label="구/군/구 선택"
                       value={area}
                       onChange={handleSelectarea}
-                      style={{ marginTop: 4, width: "12.5ch" }}
+                      style={{ margin: 4 }}
                     >
                       {areamenu}
                     </Select>
+                    </FormControl>
+                    </Grid>
+                    </Grid>
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      클럽 수준
-                    </Typography>
-                  </TableCell>
                   <TableCell>
-                  <Select
-                    id="team_class"
-                    name="team_class"
-                    value={team_class}
-                    onChange={onChange}
-                    style={{ marginTop: 4, width: '25ch' }}
-                  >
-                    <MenuItem value={"아마추어"}>아마추어</MenuItem>
-                    <MenuItem value={"세미프로"}>세미프로</MenuItem>
-                    <MenuItem value={"프로"}>프로</MenuItem>
-                    <MenuItem value={"월드클래스"}>월드클래스</MenuItem>
-                  </Select>
+                    <FormControl fullWidth>
+                      <InputLabel id="inputlabel">클럽 수준</InputLabel>
+                      <Select
+                        id="team_class"
+                        name="team_class"
+                        labelId="inputlabel"
+                        label="클럽 수준"
+                        value={team_class}
+                        onChange={onChange}
+                        style={{ marginTop: 4, width: "100%" }}
+                      >
+                        <MenuItem value={"아마추어"}>아마추어</MenuItem>
+                        <MenuItem value={"세미프로"}>세미프로</MenuItem>
+                        <MenuItem value={"프로"}>프로</MenuItem>
+                        <MenuItem value={"월드클래스"}>월드클래스</MenuItem>
+                      </Select>
+                    </FormControl>
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      연령대
-                    </Typography>
-                  </TableCell>
                   <TableCell>
-                  <Select
-                    id="team_age"
-                    name="team_age"
-                    value={team_age}
-                    onChange={onChange}
-                    style={{ marginTop: 4, width: '25ch' }}
-                  >
-                    <MenuItem value={"10 ~ 20대"}>10 ~ 20대</MenuItem>
-                    <MenuItem value={"20 ~ 30대"}>20 ~ 30대</MenuItem>
-                    <MenuItem value={"30 ~ 40대"}>30 ~ 40대</MenuItem>
-                    <MenuItem value={"40 ~ 50대"}>40 ~ 50대</MenuItem>
-                    <MenuItem value={"50대 ~ ..."}>50대 ~ ...</MenuItem>
-                  </Select>
+                  <FormControl fullWidth>
+                      <InputLabel id="inputlabel">희망 연령대</InputLabel>
+                    <Select
+                      id="team_age"
+                      name="team_age"
+                      labelId="inputlabel"
+                      label="희망 연령대"
+                      value={team_age}
+                      onChange={onChange}
+                      style={{ marginTop: 4, width: "100%" }}
+                    >
+                      <MenuItem value={"10 ~ 20대"}>10 ~ 20대</MenuItem>
+                      <MenuItem value={"20 ~ 30대"}>20 ~ 30대</MenuItem>
+                      <MenuItem value={"30 ~ 40대"}>30 ~ 40대</MenuItem>
+                      <MenuItem value={"40 ~ 50대"}>40 ~ 50대</MenuItem>
+                      <MenuItem value={"50대 ~ ..."}>50대 ~ ...</MenuItem>
+                    </Select>
+                    </FormControl>
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      클럽소개
-                    </Typography>
-                  </TableCell>
                   <TableCell>
-                  <TextField
-                    id="team_introduce"
-                    name="team_introdcue"
-                    multiline
-                    rows={7}
-                    style={{ width: "28.5ch", marginTop: 4 }}
-                  />
+                    <TextField
+                      id="team_introduce"
+                      name="team_introdcue"
+                      label="클럽 소개"
+                      placeholder="클럽 소개글을 적어주세요."
+                      multiline
+                      rows={7}
+                      style={{ width: "100%", marginTop: 4 }}
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -405,7 +390,7 @@ function TeamMake({ history }) {
               <Button
                 endIcon={<SendIcon />}
                 variant="contained"
-                style={{ width:'30ch', height: 60 }}
+                style={{ width: "100%", height: 60 }}
                 type="submit"
               >
                 클럽 생성하기

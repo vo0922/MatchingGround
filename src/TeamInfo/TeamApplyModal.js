@@ -49,7 +49,9 @@ export default function TeamApplyModal() {
     introduce: "",
   });
 
-  const [selectionModel, setselectionModel] = useState();
+  const [selectionModel, setselectionModel] = useState({
+    selectionModel : "",
+  });
 
   const applymanager = () => {
     fetch("http://localhost:3001/team/teamapply", {
@@ -79,7 +81,7 @@ export default function TeamApplyModal() {
         rowsPerPageOptions={[5]}
         checkboxSelection
         onSelectionModelChange={(newSelectionModel) => {
-          setselectionModel(newSelectionModel);
+          setselectionModel({selectionModel : newSelectionModel});
         }}          
       />    
         })
@@ -100,7 +102,7 @@ export default function TeamApplyModal() {
       .then((res) => res.json())
       .then((json) => {        
       });
-      alert('클럽원 가입신청이 승인되었습니다.');    
+      alert('클럽원 가입신청이 승인되었습니다.');
       window.location.replace('/team');
     }
 

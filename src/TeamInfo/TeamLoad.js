@@ -18,6 +18,7 @@ import {
 import TeamMember from "./TeamMember";
 import TeamApplyModal from "./TeamApplyModal";
 import TeamMemberModal from "./TeamMemberModal";
+import { BrowserView, MobileView } from "react-device-detect";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -129,6 +130,13 @@ function TeamLoad({ history }) {
     user_email: window.sessionStorage.getItem("id"),
   });
 
+  const handleapply = () => {
+    history.push("/team/apply")
+  }
+  const handlemember = () => {
+    history.push("/team/member")
+  }
+
   const quit = () => {
     if (window.sessionStorage.getItem("team_manager") === "1") {
       alert("클럽장권한을 가지고 있습니다. 탈퇴가 불가능합니다.");
@@ -236,7 +244,9 @@ function TeamLoad({ history }) {
             >
               <Grid>
                 {window.sessionStorage.getItem("id") ===
-                teaminfo.team_manage_name ? (
+                teaminfo.team_manage_name ?
+                <div>
+                <BrowserView>                 
                   <Button
                     variant="outlined"
                     color="primary"
@@ -245,8 +255,20 @@ function TeamLoad({ history }) {
                     style={{ margin: 10}}
                   >
                     클럽 가입신청 관리
-                  </Button>
-                ) : null}
+                  </Button>                
+                </BrowserView>                
+                <MobileView>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    onClick={handleapply}
+                    style={{ margin: 10}}
+                  >
+                    클럽 가입신청 관리
+                  </Button> 
+                </MobileView>
+                </div> : null}
                 <Modal
                   open={applyopen}
                   onClose={handleapplyClose}
@@ -259,6 +281,7 @@ function TeamLoad({ history }) {
                 </Modal>
               </Grid>
               <Grid>
+                <BrowserView>
                 {window.sessionStorage.getItem("id") ===
                 teaminfo.team_manage_name ? (
                   <Button
@@ -281,6 +304,21 @@ function TeamLoad({ history }) {
                     <TeamMemberModal/>
                   </Box>
                 </Modal>
+</BrowserView>
+<MobileView>
+{window.sessionStorage.getItem("id") ===
+                teaminfo.team_manage_name ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    onClick={handlemember}
+                    style={{ margin: 10}}
+                  >
+                    클럽원 관리
+                  </Button>
+                ) : null}
+</MobileView>
               </Grid>
               <Grid>
                 {window.sessionStorage.getItem("id") ===

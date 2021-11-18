@@ -3,6 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
+import "../font/font.css";
 import {
   Grid,
   Table,
@@ -12,6 +13,8 @@ import {
   Typography,
   TextField,
   Select,
+  InputLabel,
+  FormControl,
 } from "@mui/material/";
 
 function Teammodify({ history, location }) {
@@ -129,7 +132,7 @@ function Teammodify({ history, location }) {
     },
   };
 
-  //팀 수정 API
+  //클럽 수정 API
   function teammodify_photo(teaminfo) {
     fetch("http://localhost:3001/team/modify_photo", {
       method: "post",
@@ -154,7 +157,7 @@ function Teammodify({ history, location }) {
       });
   }
 
-  //팀 삭제 API
+  //클럽 삭제 API
   function teamdelete() {
     fetch("http://localhost:3001/team/modify/delete", {
       method: "post",
@@ -261,15 +264,7 @@ function Teammodify({ history, location }) {
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      클럽명
-                    </Typography>
-                  </TableCell>
+
                   <TableCell>
                     <TextField
                       id="team_name"
@@ -280,23 +275,15 @@ function Teammodify({ history, location }) {
                     InputProps={{
                       readOnly: true,
                     }}
-                      style={{ marginTop: 4, width: "28.5ch" }}
+                      style={{ marginTop: 4, width: "100%" }}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      활동지역
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
+
+                  <TableCell>                    
                   <TextField
                       id="activity_area"
                       name="activity_area"
@@ -306,56 +293,51 @@ function Teammodify({ history, location }) {
                     InputProps={{
                       readOnly: true,
                     }}
-                      style={{ marginTop: 4, width: "28.5ch" }}
+                      style={{ marginTop: 4, width: "100%" }}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      클럽 수준
-                    </Typography>
-                  </TableCell>
+
                   <TableCell>
+                  <FormControl
+                    style={{ marginTop: 4, width: "100%" }}>
+                    <InputLabel id="team_class">클럽 수준</InputLabel>
                   <Select
                     id="team_class"
                     name="team_class"
+                    labelId="team_class"
+                    label="클럽 수준"
                     onChange={onChange}
                     defaultValue={teaminfo.team_class}
-                    style={{ marginTop: 4, width: '25ch' }}
                   >
+                    <em></em>
                     <MenuItem value={"아마추어"}>아마추어</MenuItem>
                     <MenuItem value={"세미프로"}>세미프로</MenuItem>
                     <MenuItem value={"프로"}>프로</MenuItem>
                     <MenuItem value={"월드클래스"}>월드클래스</MenuItem>
                   </Select>
+                  </FormControl>
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      연령대
-                    </Typography>
-                  </TableCell>
+
                   <TableCell>
+                  <FormControl
+                    style={{ marginTop: 4, width: "100%" }}>
+                    <InputLabel id="team_age">희망 연령대</InputLabel>
                   <Select
                     id="team_age"
                     name="team_age"
+                    labelId="team_age"
+                    label="희망 연령대"
                     defaultValue={teaminfo.team_age}
                     onChange={onChange}
-                    style={{ marginTop: 4, width: '25ch' }}
+                    style={{ marginTop: 4, width: "100%" }}
                   >
                     <MenuItem value={"10 ~ 20대"}>10 ~ 20대</MenuItem>
                     <MenuItem value={"20 ~ 30대"}>20 ~ 30대</MenuItem>
@@ -363,28 +345,22 @@ function Teammodify({ history, location }) {
                     <MenuItem value={"40 ~ 50대"}>40 ~ 50대</MenuItem>
                     <MenuItem value={"50대 ~ ..."}>50대 ~ ...</MenuItem>
                   </Select>
+                  </FormControl>
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      클럽소개
-                    </Typography>
-                  </TableCell>
+
                   <TableCell>
                   <TextField
                     id="team_introduce"
                     name="team_introdcue"
+                    label="클럽 소개"
                     multiline
                     rows={7}
                     defaultValue={teaminfo.team_introduce}
-                    style={{ width: "28.5ch", marginTop: 4 }}
+                    style={{ width: "100%", marginTop: 4 }}
                   />
                   </TableCell>
                 </TableRow>
@@ -394,7 +370,7 @@ function Teammodify({ history, location }) {
             <Button
                 variant="contained"
                 style={{ width:'30%', height: 60, margin:5 }}
-                type="submit"
+                onClick={teamdelete}
               >
                 클럽 삭제
               </Button>

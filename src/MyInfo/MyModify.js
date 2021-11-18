@@ -233,13 +233,13 @@ function Modify({ history, location }) {
                     style={{ width: "30%", textAlign: "center" }}
                   >
                     <Typography component="div" variant="h6">
-                     소속 팀 이름
+                     소속 클럽 이름
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <TextField                    
                       id="team_name"
-                      label="소속 팀 이름"
+                      label="소속 클럽 이름"
                       variant="outlined"
                       value={info.team_name}
                       InputProps={{

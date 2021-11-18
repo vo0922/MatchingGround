@@ -33,7 +33,7 @@ function TeamMain({history}) {
   return (
     <Container maxWidth="md">
       <MainLogo />
-      <Typography className={classes.title}>내 팀 정보</Typography>
+      <Typography className={classes.title}>내 클럽 정보</Typography>
 
       <Container
         maxWidth="md"
@@ -55,7 +55,7 @@ function TeamMain({history}) {
                 fullWidth
                 href="teammake/"
               >
-                팀 만들기
+                클럽 만들기
               </Button>
             </Grid>
             <Grid item xs={3} />
@@ -67,7 +67,7 @@ function TeamMain({history}) {
                 fullWidth
                 onClick={click_teamfind}
               >
-                팀 가입하기
+                클럽 가입하기
               </Button>
             </Grid>
           </Grid>

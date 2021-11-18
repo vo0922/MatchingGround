@@ -73,7 +73,7 @@ function TeamFind({ history }) {
                   <img
                     className={classes.photo}
                     src={data.team_image}
-                    alt="팀 로고"
+                    alt="클럽 로고"
                   />
                 </CardMedia>
                 <CardContent>
@@ -87,8 +87,8 @@ function TeamFind({ history }) {
                   </Typography>
                   <Typography variant="body2" color="inherit">
                     활동 지역 : {data.activity_area} <br />
-                    희망 연령대 : {data.team_age} <br />팀 수준 :{" "}
-                    {data.team_class} <br />팀 인원 : {data.team_count} <br />팀
+                    희망 연령대 : {data.team_age} <br />클럽 수준 :{" "}
+                    {data.team_class} <br />클럽 인원 : {data.team_count} <br />클럽
                     소개 : {data.team_introduce}
                   </Typography>
                 </CardContent>
@@ -101,7 +101,7 @@ function TeamFind({ history }) {
                     size="small"
                     onClick={() => getTeamDetail(data.team_name)}
                   >
-                    팀 상세페이지 버튼
+                    클럽 상세페이지 버튼
                   </Button>
                 </CardActions>
               </Card>
@@ -111,7 +111,7 @@ function TeamFind({ history }) {
       });
   };
 
-  // 팀 상세정보 페이지
+  // 클럽 상세정보 페이지
   const getTeamDetail = (teamkey) => {
     history.push({
       pathname: "/findteam/teamdetail",
@@ -145,7 +145,7 @@ function TeamFind({ history }) {
                   <img
                     className={classes.photo}
                     src={data.team_image}
-                    alt="팀 로고"
+                    alt="클럽 로고"
                   />
                 </CardMedia>
                 <CardContent>
@@ -159,8 +159,8 @@ function TeamFind({ history }) {
                   </Typography>
                   <Typography variant="body2" color="inherit">
                     활동 지역 : {data.activity_area} <br />
-                    희망 연령대 : {data.team_age} <br />팀 수준 :{" "}
-                    {data.team_class} <br />팀 인원 : {data.team_count} <br />팀
+                    희망 연령대 : {data.team_age} <br />클럽 수준 :{" "}
+                    {data.team_class} <br />클럽 인원 : {data.team_count} <br />클럽
                     소개 : {data.team_introduce}
                   </Typography>
                 </CardContent>
@@ -173,7 +173,7 @@ function TeamFind({ history }) {
                     size="small"
                     onClick={() => getTeamDetail(data.team_name)}
                   >
-                    팀 상세페이지 버튼
+                    클럽 상세페이지 버튼
                   </Button>                  
                 </CardActions>
               </Card>
@@ -200,7 +200,7 @@ function TeamFind({ history }) {
             justifyContent="center"
             alignItems="center"
           >
-            <h1>팀 찾기</h1>
+            <h1>클럽 찾기</h1>
           </Grid>
           <hr />
           <Grid
@@ -274,7 +274,7 @@ function TeamFind({ history }) {
               <SearchIcon onClick={searchbutton} />
             </Button>
             <Grid item xs={12}>
-              <h1>팀 리스트</h1>
+              <h1>클럽 리스트</h1>
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={3}>

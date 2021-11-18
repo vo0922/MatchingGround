@@ -32,6 +32,8 @@ import PastReservation from '../PastReservation/PastReservation';
 import FindTeam from '../FindTeam/FindTeam';
 import TeamDetail from '../FindTeam/TeamDetail';
 import SignUp from '../Login/SignUp';
+import TeamApplyMobile from '../TeamInfo/TeamApplyMobile';
+import TeamMemberMobile from '../TeamInfo/TeamMemberMobile';
 
 const Routes = () => {
     return (
@@ -61,7 +63,9 @@ const Routes = () => {
 
                 <PrivateRouteTeam exact path="/team" component={TeamInfo}/>
                 <PrivateRouteNotTeam exact path="/teamnot" component={TeamNot}/>
-                <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>                
+                <PrivateRouteNotTeam exact path="/teammake" component={TeamMake}/>
+                <PrivateRouteTeam exact path="/team/apply" component={TeamApplyMobile}/>
+                <PrivateRouteTeam exact path="/team/member" component={TeamMemberMobile}/>                
                 <PrivateRoute exact path="/findteam" component={FindTeam}/>
                 <PrivateRoute exact path="/findteam/teamdetail" component={TeamDetail}/>
 

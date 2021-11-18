@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-function TeamMake({ history }) {
+function TeamMake({ location }) {
 
   const [inputs, setinputs] = useState({
     team_class: "",
@@ -156,7 +156,7 @@ function TeamMake({ history }) {
     },
   };
 
-  //팀 생성 API
+  //클럽 생성 API
   function teammodify(teaminfo) {
     fetch("http://localhost:3001/team/team_make", {
       method: "post",
@@ -167,7 +167,7 @@ function TeamMake({ history }) {
         window.sessionStorage.setItem("team_manager", data.success);
         window.sessionStorage.setItem("team_name", data.team_name);
         alert("클럽 생성이 완료되었습니다.");
-        history.push("/team");
+        window.location.replace("/team");
       });
   }
 
@@ -212,7 +212,7 @@ function TeamMake({ history }) {
       <MainLogo/>
     <Container maxWidth="md" style={{minHeight:"100vh", height: "100%", paddingTop: 20 }}>
         <Grid container direction="column">
-          <h1>팀 만들기</h1>
+          <h1>클럽 만들기</h1>
         </Grid>
         <form
           onSubmit={handleSubmit}

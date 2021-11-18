@@ -152,7 +152,7 @@ function TeamApplyModal({ history, location }) {
             multiline
             fullWidth
             variant="outlined"
-            placeholder="자기소개 적는곳 왜 테두리가 안보이니"
+            placeholder="자기소개를 적어주세요"
             value={myinfo.introduce}
             onChange={onChange}
             helperText="간략하게 1줄 30자 이내로"
@@ -167,7 +167,7 @@ function TeamApplyModal({ history, location }) {
                 inputProps={{ "aria-label": "controlled" }}
               />
             }
-            label="내 정보를 팀장에게 제공하는 것을 동의합니다."
+            label="내 정보를 클럽장에게 제공하는 것을 동의합니다."
           />
         </Grid>
         <Grid container justifyContent="flex-end" alignItems="center">

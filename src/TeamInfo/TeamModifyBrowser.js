@@ -127,7 +127,7 @@ function Teammodify({ history, location }) {
     },
   };
 
-  //팀 수정 API
+  //클럽 수정 API
   function teammodify_photo(teaminfo) {
     fetch("http://localhost:3001/team/modify_photo", {
       method: "post",
@@ -152,7 +152,7 @@ function Teammodify({ history, location }) {
       });
   }
 
-  //팀 삭제 API
+  //클럽 삭제 API
   function teamdelete() {
     fetch("http://localhost:3001/team/modify/delete", {
       method: "post",
@@ -220,7 +220,7 @@ function Teammodify({ history, location }) {
     <Container maxWidth="md" style={{height:"100%", minHeight: "100vh", paddingTop: 20 }}>
       <MainLogo />
         <Grid container direction="column">
-          <Typography variant="h4" style={{textAlign:"center"}}>팀 수정하기</Typography>
+          <Typography variant="h4" style={{textAlign:"center"}}>클럽 수정하기</Typography>
         </Grid>
         <form
           onSubmit={handleSubmit}
