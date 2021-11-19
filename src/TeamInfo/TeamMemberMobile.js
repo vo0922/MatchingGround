@@ -29,36 +29,59 @@ export default function TeamMember({ history }) {
 
   const assignclick = (data) => {
     fetch("http://localhost:3001/team/member/assign", {
-      method: "post",
+        method: "post",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({
+            user_no : data.user_no,
+            email : window.sessionStorage.getItem('id'),
+        }),
+    })
+        .then((res)=> res.json())
+        .then((json) =>{
+            alert(data.user_name + "클럽장 위임이 완료되었습니다.")
+            applymail(data.email, "위임");
+            window.location.replace('/team');
+            
+        })            
+}
+
+const applymail = (data, state) => {
+    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+      method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        user_no: data.user_no,
-        email: window.sessionStorage.getItem("id"),
-      }),
+        send_id: window.sessionStorage.getItem("id"),
+        receive_id: data,
+        title: state,
+        contents:
+          window.sessionStorage.getItem("id") +
+          " 님이 " +
+          data + (state == "위임" ?  "에게 클럽장을 위임하였습니다.": "를 제명하였습니다." )
+        }),
     })
       .then((res) => res.json())
-      .then((json) => {
-        alert(data.user_name + "클럽장 위임이 완료되었습니다.");
-        window.location.replace("/team");
-      });
-  };
+      .then((res) => {});
+  }
 
-  const deleteclick = (data) => {
+const deleteclick = (data) => {
     fetch("http://localhost:3001/team/member/delete", {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ user_no: data.user_no }),
+        method: "post",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ user_no : data.user_no }),
     })
-      .then((res) => res.json())
-      .then((json) => {
-        alert(data.user_name + "클럽원 제명이 완료되었습니다.");
-        window.location.replace("/team");
-      });
-  };
+        .then((res)=> res.json())
+        .then((json) =>{
+            alert(data.user_name + "클럽원 제명이 완료되었습니다.")
+            applymail(data.email, "제명");
+            window.location.replace('/team');
+        })
+}
 
   // 클럽원 불러오기
   const Member = () => {

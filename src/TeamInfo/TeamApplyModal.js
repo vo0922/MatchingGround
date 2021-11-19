@@ -90,7 +90,6 @@ export default function TeamApplyModal() {
   };
 
 
-  // 승인 버튼
   const applybutton = () => {    
     fetch("http://localhost:3001/team/apply", {
       method: "post",

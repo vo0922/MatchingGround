@@ -880,6 +880,7 @@ app.post("/matchlist/matchapplyalert", (req, res) =>{
   const title = req.body.title
   const contents = req.body.contents;
   const link = req.body.link;
+ 
   
   connection.query("insert into mail(send_id, receive_id, send_date, title, contents, link) values (?, ?, sysdate(), ?, ?, ?)", [send_id, receive_id, title, contents, link],
   function(err, rows, fields){

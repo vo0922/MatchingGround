@@ -112,11 +112,12 @@ function TeamFind({ history }) {
   };
 
   // 클럽 상세정보 페이지
-  const getTeamDetail = (teamkey) => {
+  const getTeamDetail = (teamkey,team_manage) => {
     history.push({
       pathname: "/findteam/teamdetail",
       state: {
         teamkey: teamkey,
+        team_manage : team_manage,
       },
     });
   };
@@ -171,7 +172,7 @@ function TeamFind({ history }) {
                     variant="outlined"
                     color="primary"
                     size="small"
-                    onClick={() => getTeamDetail(data.team_name)}
+                    onClick={() => getTeamDetail(data.team_name, data.team_manage_name)}
                   >
                     클럽 상세페이지 버튼
                   </Button>                  

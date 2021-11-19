@@ -34,6 +34,7 @@ import TeamDetail from '../FindTeam/TeamDetail';
 import SignUp from '../Login/SignUp';
 import TeamApplyMobile from '../TeamInfo/TeamApplyMobile';
 import TeamMemberMobile from '../TeamInfo/TeamMemberMobile';
+import TeamMobileApply from '../FindTeam/TeamMobileApply';
 
 const Routes = () => {
     return (
@@ -68,6 +69,7 @@ const Routes = () => {
                 <PrivateRouteTeam exact path="/team/member" component={TeamMemberMobile}/>                
                 <PrivateRoute exact path="/findteam" component={FindTeam}/>
                 <PrivateRoute exact path="/findteam/teamdetail" component={TeamDetail}/>
+                <PrivateRouteNotTeam exact path="/findteam/teamdetail/apply" component={TeamMobileApply}/>
 
                 <PrivateRouteTeamGM exact path="/team/modify" component={TeamModify}/>
 

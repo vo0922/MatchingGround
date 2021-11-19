@@ -50,9 +50,31 @@ export default function TeamMember({history}) {
             .then((res)=> res.json())
             .then((json) =>{
                 alert(data.user_name + "클럽장 위임이 완료되었습니다.")
+                applymail(data.email, "위임");
                 window.location.replace('/team');
+                
             })            
     }
+
+    const applymail = (data, state) => {
+        fetch("http://localhost:3001/matchlist/matchapplyalert", {
+          method: "POST", // 통신방법
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            send_id: window.sessionStorage.getItem("id"),
+            receive_id: data,
+            title: state,
+            contents:
+              window.sessionStorage.getItem("id") +
+              " 님이 " +
+              data + (state == "위임" ?  "에게 클럽장을 위임하였습니다.": "를 제명하였습니다." )
+            }),
+        })
+          .then((res) => res.json())
+          .then((res) => {});
+      }
 
     const deleteclick = (data) => {
         fetch("http://localhost:3001/team/member/delete", {
@@ -65,6 +87,7 @@ export default function TeamMember({history}) {
             .then((res)=> res.json())
             .then((json) =>{
                 alert(data.user_name + "클럽원 제명이 완료되었습니다.")
+                applymail(data.email, "제명");
                 window.location.replace('/team');
             })
     }
