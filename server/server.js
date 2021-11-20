@@ -695,8 +695,7 @@ app.post("/team/teamdetail", (req, res) =>{
 // 클럽 가입신청 정보 관리 (클럽장)
 app.post("/team/teamapply", (req, res) =>{
   const team_name = req.body.team_name;
-
-  connection.query("select *from teamapply where team_name=? and state='대기'",[team_name],
+  connection.query("select teamapply.* from teamapply, users where teamapply.team_name=? and teamapply.state='대기' and (teamapply.email = users.email and users.team_name = 'none')",[team_name],
   function(err, rows, fields){
     if(err){
       console.log("클럽 가입신청정보 조회 실패" + err);
@@ -710,13 +709,12 @@ app.post("/team/teamapply", (req, res) =>{
 
 // 클럽 가입신청 승인 보내기
 app.post("/team/apply", (req, res) =>{
-  const selectionModel = req.body;
-
+  const selectionModel = req.body.selectionModel;
   connection.query("update teamapply set state='승인' where apply_no in(?)",[selectionModel],
   function(err, rows, fields){
     if(err){
       console.log("클럽 가입신청승인 실패" + err);      
-    } else {  
+    } else {        
       console.log("클럽 가입신청승인 성공");
     }
   })
@@ -724,13 +722,12 @@ app.post("/team/apply", (req, res) =>{
 
 // 클럽 가입신청 거절 보내기
 app.post("/team/leave", (req, res) =>{
-  const selectionModel = req.body;
-
+  const selectionModel = req.body.selectionModel;
   connection.query("update teamapply set state='거절' where apply_no in(?)",[selectionModel],
   function(err, rows, fields){
     if(err){
       console.log("클럽 가입신청거절 실패" + err);      
-    } else {  
+    } else {
       console.log("클럽 가입신청거절 성공");
     }
   })
@@ -897,6 +894,7 @@ app.post("/matchlist/matchapplyalert", (req, res) =>{
   const title = req.body.title
   const contents = req.body.contents;
   const link = req.body.link;
+ 
   
   connection.query("insert into mail(send_id, receive_id, send_date, title, contents, link) values (?, ?, sysdate(), ?, ?, ?)", [send_id, receive_id, title, contents, link],
   function(err, rows, fields){

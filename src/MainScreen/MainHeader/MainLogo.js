@@ -111,7 +111,7 @@ function MainLogo({history}) {
       //history.push('/notgroundmanager');
     }else if(text==='공지사항'){
       history.push('/notice')
-    }else if(text==='내 팀정보') {
+    }else if(text==='내 클럽정보') {
       window.location.href='/team';
       //history.push('/team')
     }else if(text==='내 매칭정보'){
@@ -227,7 +227,7 @@ function MainLogo({history}) {
         </div>
         <Divider />
         <List>
-        {['내 정보', '내 팀정보', '내 매칭정보', '지난 예약'].map((text, index) => (
+        {['내 정보', '내 클럽정보', '내 매칭정보', '지난 예약'].map((text, index) => (
           <ListItem button key={text} onClick={()=>{clickaction(text)}}>
             <ListItemIcon>
             {index===0 && <Accessibility/>}

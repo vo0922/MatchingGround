@@ -191,7 +191,7 @@ export default function MatchListMain() {
                     </Typography>
                   ) : (
                     <Typography className={classes.cardcontent} style={{fontSize:16}}>
-                      매치개설팀 : {json.team_name} / 팀 수준 : {json.team_class} / {json.vs_count}
+                      매치개설클럽 : {json.team_name} / 클럽 수준 : {json.team_class} / {json.vs_count}
                     </Typography>
                   )}
                   <Grid
@@ -481,7 +481,7 @@ export default function MatchListMain() {
             경기장 : {applyContent.ground_name} <br/>
             주소 : {applyContent.address} <br/>
             매치 개설자 : {applyContent.user_email} <br/>
-            팀 이름 : {applyContent.team_name === "none" ? "개인매치" : applyContent.team_name} <br/>
+            클럽 이름 : {applyContent.team_name === "none" ? "개인매치" : applyContent.team_name} <br/>
           </DialogContentText>
           <hr/>
           <DialogContentText color="primary" style={{fontFamily:"Gamja_Flower", textAlign:"center"}}>

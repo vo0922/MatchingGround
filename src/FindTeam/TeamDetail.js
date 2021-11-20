@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import TeamApplyModal from "./TeamApplyModal";
+import { BrowserView, MobileView } from "react-device-detect";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -56,7 +57,7 @@ const style = {
     p: 4,
 };
 
-function TeamDetail({ location }) {
+function TeamDetail({ location, history }) {
     const classes = useStyles();
 
     const [teaminfo, setteaminfo] = useState({
@@ -88,7 +89,7 @@ function TeamDetail({ location }) {
                     activity_area: json[0].activity_area,
                     team_class: json[0].team_class,
                     team_age: json[0].team_age,
-                    team_introduce : json[0].team_introduce,
+                    team_introduce: json[0].team_introduce,
                 })
             });
     }
@@ -103,84 +104,87 @@ function TeamDetail({ location }) {
         createData("클럽 수준 ", teaminfo.team_class),
         createData("클럽 연령대 ", teaminfo.team_age),
     ];
-    
+
     //가입 신청 버튼
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    //검색 기능
-    const handleSubmit = () => {
-
+    const mobilebutton = () => {
+        history.push({
+            pathname: "/findteam/teamdetail/apply",
+            state: {
+              teamkey: teaminfo.team_name,
+              team_manage : teaminfo.team_manage_name,
+            },
+          });
     }
+
 
     useEffect(() => {
         teamdetail();
     }, []);
 
+
+
     return (
         <React.Fragment>
             <MainLogo />
-            <form
-            onSubmit={handleSubmit}
-            noValidate
-            autoComplete="off"
-            encType="multipart/form-data"
-          >
             <Container
                 maxWidth="md"
-                style={{height: "100%", minHeight:"100vh", paddingTop:20 }}
+                style={{ height: "100%", minHeight: "100vh", paddingTop: 20 }}
             >
-                    <Grid container spacing={3}>
-                        <Grid
-                            item
-                            xs
-                            container
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            <Avatar src={teaminfo.team_image} className={classes.photo} />
-                        </Grid>
-                        <Grid item xs>
-                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <TableBody>
-                                    {rows.map((row) => (
-                                        <TableRow
-                                            key={row.name}
-                                            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                                        >
-                                            <TableCell component="th" scope="row">
-                                                {row.name}
-                                            </TableCell>
-                                            <TableCell>{row.content}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography component="div" variant="h5">
-                                클럽소개
-                            </Typography>
-                            <TextField
-                                multiline
-                                fullWidth
-                                rows={4}
-                                defaultValue={teaminfo.team_introduce}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            container
-                            direction="row"
-                            justifyContent="flex-end"
-                            alignItems="center"
-                        >
-                            <Grid item xs={2}>
+                <Grid container spacing={3}>
+                    <Grid
+                        item
+                        xs
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Avatar src={teaminfo.team_image} className={classes.photo} />
+                    </Grid>
+                    <Grid item xs>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableBody>
+                                {rows.map((row) => (
+                                    <TableRow
+                                        key={row.name}
+                                        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {row.name}
+                                        </TableCell>
+                                        <TableCell>{row.content}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography component="div" variant="h5">
+                            클럽소개
+                        </Typography>
+                        <TextField
+                            multiline
+                            fullWidth
+                            rows={4}
+                            defaultValue={teaminfo.team_introduce}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                    >
+                        <Grid item xs={2}>
+                            <BrowserView>
                                 {window.sessionStorage.getItem("team_name") ===
                                     "none" ?
                                     <Button
@@ -199,14 +203,27 @@ function TeamDetail({ location }) {
                                     aria-describedby="modal-modal-description"
                                 >
                                     <Box sx={style}>
-                                        <TeamApplyModal/>
+                                        <TeamApplyModal />
                                     </Box>
                                 </Modal>
-                            </Grid>
+                            </BrowserView>
+                            <MobileView>
+                                {window.sessionStorage.getItem("team_name") ===
+                                    "none" ?
+                                    <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        size="large"
+                                        onClick={mobilebutton}
+                                    >
+                                        가입신청하기
+                                    </Button>
+                                    : null}
+                            </MobileView>
                         </Grid>
                     </Grid>
+                </Grid>
             </Container>
-            </form>
         </React.Fragment>
     );
 }

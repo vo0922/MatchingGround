@@ -101,7 +101,7 @@ function MyLoad({ history }) {
     createData("출생년도 ", info.birthyear),
     createData("키 ", info.height),
     createData("포지션 ", info.position),
-    createData("소속 팀 정보 ", info.team_name),
+    createData("소속 클럽 정보 ", info.team_name),
   ];
 
   useEffect(() => {

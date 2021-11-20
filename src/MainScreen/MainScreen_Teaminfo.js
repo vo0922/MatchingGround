@@ -116,12 +116,12 @@ export default function MainScreen_Teaminfo() {
             <Grid item xs={2}/>
             
             <Grid item xs={8}>
-              <Typography color="textSecondary" style={{textAlign:"center", fontSize:15, marginTop:5}}>가입된 팀이 없습니다.</Typography>
+              <Typography color="textSecondary" style={{textAlign:"center", fontSize:15, marginTop:5}}>가입된 클럽이 없습니다.</Typography>
               <Link to ="/teammake">
-                <Button variant="outlined" color="primary" style={{marginTop:10, marginBottom:6, textDecoration:'none'}} fullWidth>팀 생성하기</Button>
+                <Button variant="outlined" color="primary" style={{marginTop:10, marginBottom:6, textDecoration:'none'}} fullWidth>클럽 생성하기</Button>
               </Link>
               <Link to="/findteam">
-                <Button variant="outlined" color="primary" style={{marginTop:6, marginBottom:6, textDecoration:'none'}} fullWidth>팀 가입하기</Button>
+                <Button variant="outlined" color="primary" style={{marginTop:6, marginBottom:6, textDecoration:'none'}} fullWidth>클럽 가입하기</Button>
               </Link>
             </Grid>
             <Grid item xs={2}/>
@@ -135,7 +135,7 @@ export default function MainScreen_Teaminfo() {
 
   return (
     <div>
-      <Typography variant="h5">내 팀 정보</Typography>
+      <Typography variant="h5">내 클럽 정보</Typography>
       {teamcard.card}
     </div>
   );

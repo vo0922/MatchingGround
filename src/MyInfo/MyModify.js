@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Avatar, Grid, Typography, Button, Container } from "@material-ui/core";
-import Mytotal from "./Mytotal";
+import { Container } from "@material-ui/core";
 import MainLogo from "../MainScreen/MainHeader/MainLogo";
-import MainTab from "../MainScreen/MainHeader/MainTab";
 import { withRouter } from "react-router";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
+  Grid,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Typography,
   TextField,
-} from "@material-ui/core";
+  Select,
+} from "@mui/material/";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -54,7 +57,6 @@ function Modify({ history, location }) {
     });
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -63,8 +65,8 @@ function Modify({ history, location }) {
       return;
     }
 
-    const formData = new FormData();    
-    formData.append("profile_image", e.target.profile_image.files[0]);    
+    const formData = new FormData();
+    formData.append("profile_image", e.target.profile_image.files[0]);
     formData.append("user_name", info.user_name);
     formData.append("birthyear", info.birthyear);
     formData.append("height", e.target.height.value);
@@ -74,14 +76,11 @@ function Modify({ history, location }) {
     formData.append("introduce", e.target.introduce.value);
     formData.append("email", window.sessionStorage.getItem("id"));
 
-    if(e.target.profile_image.files[0] != null){
+    if (e.target.profile_image.files[0] != null) {
       mymodify_photo(formData);
-    }
-    else{
+    } else {
       mymodify_notphoto(formData);
-    }   
-
-
+    }
   };
 
   // 수정하기 함수
@@ -94,21 +93,18 @@ function Modify({ history, location }) {
       .then((data) => {});
     history.push("/myinfo");
   }
-  
+
   function mymodify_notphoto(myinfo) {
     fetch("http://localhost:3001/myinfo/modify_notphoto", {
       method: "post",
-      body: myinfo, 
+      body: myinfo,
     })
       .then((res) => res.json())
       .then((data) => {});
     history.push("/myinfo");
   }
 
-
   //이미지 핸들러
-
-  
 
   //이미지 미리보기
   const [image, setimage] = useState({
@@ -129,27 +125,31 @@ function Modify({ history, location }) {
     if (file == null) {
       setimage({
         ...image,
-        file: '',
+        file: "",
       });
     } else reader.readAsDataURL(file);
   };
 
   let profile_preview = null;
-  var profileimage_url = info.profile_image.substring(0,4);
+  var profileimage_url = info.profile_image.substring(0, 4);
   if (image.file !== "") {
     profile_preview = (
       <img
         className="profile_preview"
         src={image.previewURL}
-        style={{ width: 256, height: 256 }}
+        style={{ width: 160, height: 160 }}
       ></img>
     );
   } else {
     profile_preview = (
       <img
         className="profile_preview"
-        src={info.profile_image.substring(0,4) === "http" ? info.profile_image : '../' + info.profile_image}
-        style={{ width: 256, height: 256 }}
+        src={
+          info.profile_image.substring(0, 4) === "http"
+            ? info.profile_image
+            : "../" + info.profile_image
+        }
+        style={{ width: 160, height: 160 }}
       ></img>
     );
   }
@@ -157,9 +157,15 @@ function Modify({ history, location }) {
   useEffect(() => {}, []);
 
   return (
-    <div>
-      <Container maxWidth="md" style={{ backgroundColor: "white" }}>
-        <MainLogo />
+    <React.Fragment>
+      <MainLogo />
+      <Container
+        maxWidth="md"
+        style={{ minHeight: "100vh", height: "100%", paddingTop: 20 }}
+      >
+        <Grid container direction="column">
+          <h1>내정보 수정하기</h1>
+        </Grid>
         <Typography component="div" style={{ height: "100vh" }}>
           <form
             onSubmit={handleSubmit}
@@ -167,141 +173,203 @@ function Modify({ history, location }) {
             autoComplete="off"
             encType="multipart/form-data"
           >
-            <Grid container spacing={3} style={{ marginTop: 20 }}>
-              <Grid
-                item
-                xs={12}
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <div>{profile_preview}</div>
-                <input
+            <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            item
+            xs
+          >
+            <Grid>
+              <Typography style={{ width: 160, height: 160 }}>
+                {profile_preview}
+              </Typography>
+            </Grid>
+            <Grid>
+            <input
                   accept="image/*"
                   id="profile_image"
                   name="profile_image"
                   type="file"
                   onChange={handleFileOnChange}
                 />
-              </Grid>
-              <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Grid item xs={6}>
-                  <TextField
-                    id="user_name"
-                    label="이름"
-                    variant="standard"
-                    value={info.user_name}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="birthyear"
-                    label="출생년도"
-                    variant="standard"
-                    value={info.birthyear}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="team_name"
-                    label="소속 팀 이름"
-                    variant="standard"
-                    value={info.team_name}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                <FormControl variant="standard" style={{ width: 200 }}>
-                    <InputLabel id="label">포지션</InputLabel>
-                    <Select
-                      labelId="gender"
-                      id="gender"
-                      name="gender"
-                      label="성별"
-                      value={info.gender}
-                      onChange={handleonchange}
-                    >
-                      <MenuItem value={"M"}>남자</MenuItem>
-                      <MenuItem value={"F"}>여자</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="height"
-                    label="키"
-                    defaultValue={info.height}
-                    variant="standard"
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl variant="standard" style={{ width: 200 }}>
-                    <InputLabel id="label">포지션</InputLabel>
-                    <Select
-                      labelId="position"
-                      id="position"
-                      name="position"
-                      label="포지션"
-                      value={info.position}
-                      onChange={handleonchange}
-                    >
-                      <MenuItem value={"FW"}>FW</MenuItem>
+            </Grid>
+          </Grid>
+            <Grid container justifyContent="center" alignItems="center" item xs>
+            <Table sx={{ width: "100%" }} aria-label="simple table">
+              <TableBody>
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "30%", textAlign: "center" }}
+                  >
+                    <Typography component="div" variant="h6">
+                     이름
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="user_name"
+                      label="이름"
+                      variant="outlined"
+                      value={info.user_name}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      style={{ marginTop: 4, width: "28.5ch" }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "30%", textAlign: "center" }}
+                  >
+                    <Typography component="div" variant="h6">
+                     소속 클럽 이름
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <TextField                    
+                      id="team_name"
+                      label="소속 클럽 이름"
+                      variant="outlined"
+                      value={info.team_name}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      style={{ marginTop: 4, width: "28.5ch" }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "30%", textAlign: "center" }}
+                  >
+                    <Typography component="div" variant="h6">
+                     출생년도
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <TextField                    
+                      id="birthyear"
+                      label="출생년도"
+                      variant="outlined"
+                      value={info.birthyear}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      style={{ marginTop: 4, width: "28.5ch" }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "30%", textAlign: "center" }}
+                  >
+                    <Typography component="div" variant="h6">
+                      성별
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                  <Select
+                    labelId="gender"
+                    id="gender"
+                    name="gender"
+                    label="성별"
+                    value={info.gender}
+                    onChange={handleonchange}
+                    style={{ marginTop: 4, width: '25ch' }}
+                  >
+                    <MenuItem value={"M"}>남자</MenuItem>
+                    <MenuItem value={"F"}>여자</MenuItem>
+                  </Select>
+                  </TableCell>
+                </TableRow>
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "30%", textAlign: "center" }}
+                  >
+                    <Typography component="div" variant="h6">
+                      포지션
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                  <Select
+                   id="position"
+                   name="position"
+                   label="포지션"
+                   value={info.position}
+                   onChange={handleonchange}
+                    style={{ marginTop: 4, width: '25ch' }}
+                  >
+                    <MenuItem value={"FW"}>FW</MenuItem>
                       <MenuItem value={"MF"}>MF</MenuItem>
                       <MenuItem value={"DF"}>DF</MenuItem>
                       <MenuItem value={"GK"}>GK</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography component="div" variant="h5">
-                  자기소개
-                </Typography>
-              </Grid>
-              <TextField
-                id="introduce"
-                multiline
-                rows={4}
-                defaultValue={info.introduce}
-                variant="outlined"
-                fullWidth
-              />
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-end"
-                alignItems="center"
-                item
-                xs={12}
-              >
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="large"
-                  type="submit"
+                  </Select>
+                  </TableCell>
+                </TableRow>                
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  수정완료
-                </Button>
-              </Grid>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "30%", textAlign: "center" }}
+                  >
+                    <Typography component="div" variant="h6">
+                      자기소개
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                  <TextField
+                    id="introduce"
+                    name="introduce"
+                    multiline
+                    variant="outlined"
+                    defaultValue={info.introduce}
+                    rows={4}
+                    style={{ width: "28.5ch", marginTop: 4 }}
+                  />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+            <Grid>
+              <Button
+                variant="contained"
+                fullWidth
+                style={{ height: 60 }}
+                type="submit"
+              >
+                내 정보 수정
+              </Button>
+            </Grid>
             </Grid>
           </form>
         </Typography>
       </Container>
-    </div>
+    </React.Fragment>
   );
 }
 

@@ -59,6 +59,7 @@ function TeamApplyModal({ history, location }) {
     introduce: '',
   });
 
+
   const applybutton = () => {
     fetch("http://localhost:3001/findteam/applybutton", {
       method: "post",
@@ -70,9 +71,33 @@ function TeamApplyModal({ history, location }) {
       .then((res) => res.json())
       .then((json) => {
         alert("가입 신청이 완료되었습니다.");
+        applymail();
         history.push("/");
       });
+
   };
+
+  const applymail = () => {
+    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+      method: "POST", // 통신방법
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        send_id: window.sessionStorage.getItem("id"),
+        receive_id: location.state.team_manage,
+        title: "가입 신청",
+        link: "http://localhost:3000/teamnot",
+        contents:
+          window.sessionStorage.getItem("id") +
+          " 님이 " +
+          myinfo.team_name +
+          "클럽에 가입을 신청하였습니다.",
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {});
+  }
 
   //자기소개 글 벨류
   const onChange = (e) => {
@@ -152,7 +177,7 @@ function TeamApplyModal({ history, location }) {
             multiline
             fullWidth
             variant="outlined"
-            placeholder="자기소개 적는곳 왜 테두리가 안보이니"
+            placeholder="자기소개를 적어주세요"
             value={myinfo.introduce}
             onChange={onChange}
             helperText="간략하게 1줄 30자 이내로"
@@ -167,7 +192,7 @@ function TeamApplyModal({ history, location }) {
                 inputProps={{ "aria-label": "controlled" }}
               />
             }
-            label="내 정보를 팀장에게 제공하는 것을 동의합니다."
+            label="내 정보를 클럽장에게 제공하는 것을 동의합니다."
           />
         </Grid>
         <Grid container justifyContent="flex-end" alignItems="center">
