@@ -272,7 +272,7 @@ function TeamFind({ history }) {
                 }}
               />
             <Button>
-              <SearchIcon onClick={searchbutton} />
+              <SearchIcon onClick={() => searchbutton()} />
             </Button>
             <Grid item xs={12}>
               <h1>클럽 리스트</h1>

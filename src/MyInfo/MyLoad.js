@@ -10,10 +10,8 @@ import {
   TableRow,
   TableCell,
   Table,
-  TableHead,
   TableBody,
 } from "@material-ui/core";
-import MainLogo from "../MainScreen/MainHeader/MainLogo";
 import { withRouter } from "react-router";
 
 const useStyles = makeStyles(() => ({
