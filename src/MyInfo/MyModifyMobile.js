@@ -13,6 +13,8 @@ import {
   Typography,
   TextField,
   Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material/";
 
 const useStyles = makeStyles(() => ({
@@ -200,15 +202,6 @@ function Modify({ history, location }) {
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                     이름
-                    </Typography>
-                  </TableCell>
                   <TableCell>
                     <TextField
                       id="user_name"
@@ -218,22 +211,13 @@ function Modify({ history, location }) {
                       InputProps={{
                         readOnly: true,
                       }}
-                      style={{ marginTop: 4, width: "28.5ch" }}
+                      style={{ marginTop: 4, width: "100%" }}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                     소속 클럽 이름
-                    </Typography>
-                  </TableCell>
+                >                 
                   <TableCell>
                     <TextField                    
                       id="team_name"
@@ -243,22 +227,13 @@ function Modify({ history, location }) {
                       InputProps={{
                         readOnly: true,
                       }}
-                      style={{ marginTop: 4, width: "28.5ch" }}
+                      style={{ marginTop: 4, width: "100%" }}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                     출생년도
-                    </Typography>
-                  </TableCell>
                   <TableCell>
                     <TextField                    
                       id="birthyear"
@@ -268,23 +243,17 @@ function Modify({ history, location }) {
                       InputProps={{
                         readOnly: true,
                       }}
-                      style={{ marginTop: 4, width: "28.5ch" }}
+                      style={{ marginTop: 4, width: "100%" }}
                     />
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      성별
-                    </Typography>
-                  </TableCell>
                   <TableCell>
+                  <FormControl
+                    style={{ marginTop: 4, width: "100%" }}>
+                    <InputLabel id="gender">성별</InputLabel>
                   <Select
                     labelId="gender"
                     id="gender"
@@ -292,62 +261,51 @@ function Modify({ history, location }) {
                     label="성별"
                     value={info.gender}
                     onChange={handleonchange}
-                    style={{ marginTop: 4, width: '25ch' }}
+                    style={{ marginTop: 4, width: "100%" }}
                   >
                     <MenuItem value={"M"}>남자</MenuItem>
                     <MenuItem value={"F"}>여자</MenuItem>
                   </Select>
+                  </FormControl>
                   </TableCell>
                 </TableRow>
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      포지션
-                    </Typography>
-                  </TableCell>
                   <TableCell>
+                  <FormControl
+                    style={{ marginTop: 4, width: "100%" }}>
+                    <InputLabel id="position">포지션</InputLabel>
                   <Select
                    id="position"
+                   labelId="position"
                    name="position"
                    label="포지션"
                    value={info.position}
                    onChange={handleonchange}
-                    style={{ marginTop: 4, width: '25ch' }}
+                   style={{ marginTop: 4, width: "100%" }}
                   >
                     <MenuItem value={"FW"}>FW</MenuItem>
                       <MenuItem value={"MF"}>MF</MenuItem>
                       <MenuItem value={"DF"}>DF</MenuItem>
                       <MenuItem value={"GK"}>GK</MenuItem>
                   </Select>
+                  </FormControl>
                   </TableCell>
                 </TableRow>                
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "30%", textAlign: "center" }}
-                  >
-                    <Typography component="div" variant="h6">
-                      자기소개
-                    </Typography>
-                  </TableCell>
                   <TableCell>
                   <TextField
                     id="introduce"
                     name="introduce"
+                    label="자기소개"
                     multiline
                     variant="outlined"
                     defaultValue={info.introduce}
                     rows={4}
-                    style={{ width: "28.5ch", marginTop: 4 }}
+                    style={{ marginTop: 4, width: "100%" }}
                   />
                   </TableCell>
                 </TableRow>
