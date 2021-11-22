@@ -86,7 +86,7 @@ function Modify({ history, location }) {
 
   // 수정하기 함수
   function mymodify_photo(myinfo) {
-    fetch("http://localhost:3001/myinfo/modify_photo", {
+    fetch("http://smartit-16.iptime.org:3001/myinfo/modify_photo", {
       method: "post",
       body: myinfo,
     })
@@ -96,7 +96,7 @@ function Modify({ history, location }) {
   }
 
   function mymodify_notphoto(myinfo) {
-    fetch("http://localhost:3001/myinfo/modify_notphoto", {
+    fetch("http://smartit-16.iptime.org:3001/myinfo/modify_notphoto", {
       method: "post",
       body: myinfo,
     })

@@ -63,7 +63,7 @@ export default function Signin() {
   function NaverLogin() {
     const naverLogin = new naver.LoginWithNaverId({
       clientId: "MSl2rw4UPkjlxqHE2_qJ",
-      callbackUrl: "http://localhost:3000/login/callback",
+      callbackUrl: "http://smartit-16.iptime.org:3000/login/callback",
       isPopup: false,
       loginButton: {color: "green", type: 3, height:50} ,
       callbackHandle: true
@@ -76,7 +76,7 @@ export default function Signin() {
   });
 
   async function signin_check(signindata){
-    fetch("http://localhost:3001/signin/check", {
+    fetch("http://smartit-16.iptime.org:3001/signin/check", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -96,7 +96,7 @@ export default function Signin() {
   }
 
   async function signin(email){
-    fetch("http://localhost:3001/myinfo" , {
+    fetch("http://smartit-16.iptime.org:3001/myinfo" , {
       method : "post", // 통신방법
       headers : {
           "content-type" : "application/json",

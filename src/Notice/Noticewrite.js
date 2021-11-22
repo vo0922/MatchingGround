@@ -31,7 +31,7 @@ function FullScreenDialog({history}) {
     formData.append("title", e.target.title.value)
     formData.append("content", e.target.content.value)
 
-    fetch("http://localhost:3001/notice/write", {
+    fetch("http://smartit-16.iptime.org:3001/notice/write", {
         method: "post",
         body: formData,
     })

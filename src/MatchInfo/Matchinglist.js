@@ -105,7 +105,7 @@ export default function Matchinglist() {
     } else {
       vs_team = MatchCancel.vs_user_email;
     }
-    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+    fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -119,7 +119,7 @@ export default function Matchinglist() {
     })
       .then((res) => res.json())
       .then((res) => {});
-    fetch("http://localhost:3001/matchinfo/matchcancel", {
+    fetch("http://smartit-16.iptime.org:3001/matchinfo/matchcancel", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -135,7 +135,7 @@ export default function Matchinglist() {
   };
 
   function list() {
-    fetch("http://localhost:3001/matchinfo/matchinglist", {
+    fetch("http://smartit-16.iptime.org:3001/matchinfo/matchinglist", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",

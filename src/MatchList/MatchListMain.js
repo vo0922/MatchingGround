@@ -140,7 +140,7 @@ export default function MatchListMain() {
 
   // 매치리스트 받아오기, 렌더링
   function getmatchlist() {
-    fetch("http://localhost:3001/matchlist", {
+    fetch("http://smartit-16.iptime.org:3001/matchlist", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -264,7 +264,7 @@ export default function MatchListMain() {
 
   // 광역시, 도 기반으로 시,군,구 데이터 받아와 버튼렌더링
   function searchlocation(location, location_short) {
-    fetch("http://localhost:3001/reservation/search", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/search", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -315,7 +315,7 @@ export default function MatchListMain() {
   }
 
   function applysend(){
-    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+    fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -332,7 +332,7 @@ export default function MatchListMain() {
       .then((res) => {
     });
 
-    fetch("http://localhost:3001/matchlist/matchapply", {
+    fetch("http://smartit-16.iptime.org:3001/matchlist/matchapply", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",

@@ -43,7 +43,7 @@ export default function MailSystem() {
   }
 
   function getMailCount() {
-    fetch("http://localhost:3001/mail/count", {
+    fetch("http://smartit-16.iptime.org:3001/mail/count", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -57,7 +57,7 @@ export default function MailSystem() {
   }
 
   const getMailList = (() => {
-    fetch("http://localhost:3001/mail/list", {
+    fetch("http://smartit-16.iptime.org:3001/mail/list", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",

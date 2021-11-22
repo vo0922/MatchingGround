@@ -135,7 +135,7 @@ function GroundModify({history, location}) {
   };
 
   function groundModify_photo(groundinfo) {
-    fetch("http://localhost:3001/ground/info/modify/photo", {
+    fetch("http://smartit-16.iptime.org:3001/ground/info/modify/photo", {
       method: "post",
       body: groundinfo,
     })
@@ -148,7 +148,7 @@ function GroundModify({history, location}) {
   }
 
   function groundModify_notphoto(groundinfo) {
-    fetch("http://localhost:3001/ground/info/modify/notphoto", {
+    fetch("http://smartit-16.iptime.org:3001/ground/info/modify/notphoto", {
       method: "post",
       body: groundinfo,
     })
@@ -161,7 +161,7 @@ function GroundModify({history, location}) {
   }
 
   function ground_delete(){
-    fetch("http://localhost:3001/ground/info/modify/delete", {
+    fetch("http://smartit-16.iptime.org:3001/ground/info/modify/delete", {
       method: "post",
       headers: {
         "content-type": "application/json",

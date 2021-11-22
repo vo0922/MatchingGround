@@ -65,7 +65,7 @@ function MyLoad({ history }) {
 
   //정보 API
   const myinfomation = () => {
-    fetch("http://localhost:3001/myinfo", {
+    fetch("http://smartit-16.iptime.org:3001/myinfo", {
       method: "post",
       headers: {
         "content-type": "application/json",

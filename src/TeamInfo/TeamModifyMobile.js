@@ -73,7 +73,7 @@ function Teammodify({ history, location }) {
       address = e.target.value;
     }
     //시군구 검색api 요청
-    fetch("http://localhost:3001/reservation/search", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/search", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -134,7 +134,7 @@ function Teammodify({ history, location }) {
 
   //클럽 수정 API
   function teammodify_photo(teaminfo) {
-    fetch("http://localhost:3001/team/modify_photo", {
+    fetch("http://smartit-16.iptime.org:3001/team/modify_photo", {
       method: "post",
       body: teaminfo,
     })
@@ -146,7 +146,7 @@ function Teammodify({ history, location }) {
   }
 
   function teammodify_notphoto(teaminfo) {
-    fetch("http://localhost:3001/team/modify_notphoto", {
+    fetch("http://smartit-16.iptime.org:3001/team/modify_notphoto", {
       method: "post",
       body: teaminfo,
     })
@@ -159,7 +159,7 @@ function Teammodify({ history, location }) {
 
   //클럽 삭제 API
   function teamdelete() {
-    fetch("http://localhost:3001/team/modify/delete", {
+    fetch("http://smartit-16.iptime.org:3001/team/modify/delete", {
       method: "post",
       headers: {
         "content-type": "application/json",

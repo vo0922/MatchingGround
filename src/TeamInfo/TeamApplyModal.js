@@ -54,7 +54,7 @@ export default function TeamApplyModal() {
   });
 
   const applymanager = () => {
-    fetch("http://localhost:3001/team/teamapply", {
+    fetch("http://smartit-16.iptime.org:3001/team/teamapply", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -91,7 +91,7 @@ export default function TeamApplyModal() {
 
 
   const applybutton = () => {    
-    fetch("http://localhost:3001/team/apply", {
+    fetch("http://smartit-16.iptime.org:3001/team/apply", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -107,7 +107,7 @@ export default function TeamApplyModal() {
 
   // 거절 버튼
   const leavebutton = () => {
-    fetch("http://localhost:3001/team/leave", {
+    fetch("http://smartit-16.iptime.org:3001/team/leave", {
       method: "post",
       headers: {
         "content-type": "application/json",

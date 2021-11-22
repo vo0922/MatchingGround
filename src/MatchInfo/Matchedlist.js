@@ -45,7 +45,7 @@ export default function Matchedlist() {
     "22:00 ~ 24:00",
   ]; // 타임라벨
   function list() {
-    fetch("http://localhost:3001/matchinfo/matchedlist", {
+    fetch("http://smartit-16.iptime.org:3001/matchinfo/matchedlist", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",

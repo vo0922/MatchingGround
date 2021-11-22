@@ -27,7 +27,7 @@ export default function TeamApplyMobile() {
   });
 
   const applymanager = () => {
-    fetch("http://localhost:3001/team/teamapply", {
+    fetch("http://smartit-16.iptime.org:3001/team/teamapply", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -86,7 +86,7 @@ export default function TeamApplyMobile() {
 
   // 승인 버튼
   const applybutton = (data) => {
-    fetch("http://localhost:3001/team/apply", {
+    fetch("http://smartit-16.iptime.org:3001/team/apply", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -102,7 +102,7 @@ export default function TeamApplyMobile() {
 
   // 거절 버튼
   const leavebutton = (data) => {
-    fetch("http://localhost:3001/team/leave", {
+    fetch("http://smartit-16.iptime.org:3001/team/leave", {
       method: "post",
       headers: {
         "content-type": "application/json",

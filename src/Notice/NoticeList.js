@@ -25,7 +25,7 @@ export default function ControlledAccordions() {
   };
 
   const deletnotice = (data_id) => {
-    fetch("http://localhost:3001/notice/delete", {
+    fetch("http://smartit-16.iptime.org:3001/notice/delete", {
       method: "post", //통신방법
       headers: {
           "content-type": "application/json",
@@ -39,7 +39,7 @@ export default function ControlledAccordions() {
   }
 
   const noticegetlist = () => {
-    fetch("http://localhost:3001/notice/list", {
+    fetch("http://smartit-16.iptime.org:3001/notice/list", {
           method: "post", //통신방법
           headers: {
               "content-type": "application/json",

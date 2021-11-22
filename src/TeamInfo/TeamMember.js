@@ -36,7 +36,7 @@ export default function TeamMember() {
 
   // 클럽원 불러오기
   const Member = () => {
-    fetch("http://localhost:3001/team/member", {
+    fetch("http://smartit-16.iptime.org:3001/team/member", {
       method: "post",
       headers: {
         "content-type": "application/json",

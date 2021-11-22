@@ -39,7 +39,7 @@ export default function MainScreen_Myinfo() {
   });
 
   function getMyinfo() {
-    fetch("http://localhost:3001/myinfo", {
+    fetch("http://smartit-16.iptime.org:3001/myinfo", {
       method : "post", // 통신방법
       headers : {
           "content-type" : "application/json",

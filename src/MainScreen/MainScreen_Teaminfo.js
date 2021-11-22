@@ -43,7 +43,7 @@ export default function MainScreen_Teaminfo() {
   });
 
   function getTeamdata() {
-    fetch("http://localhost:3001/team/info", {
+    fetch("http://smartit-16.iptime.org:3001/team/info", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",

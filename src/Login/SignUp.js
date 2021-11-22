@@ -89,7 +89,7 @@ export default function SignUp({history}) {
   };
 
   function overlapCheck(){
-    fetch("http://localhost:3001/signup/overlapcheck", {
+    fetch("http://smartit-16.iptime.org:3001/signup/overlapcheck", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -112,7 +112,7 @@ export default function SignUp({history}) {
   }
 
   function signup(signupdata){
-    fetch("http://localhost:3001/signup", {
+    fetch("http://smartit-16.iptime.org:3001/signup", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",

@@ -116,7 +116,7 @@ function ManageReservation({ location }) {
 
   // 예약 취소 함수(onClick)
   const ReservationCancel = () => {
-    fetch("http://localhost:3001/manage/ground/reservationcancel", {
+    fetch("http://smartit-16.iptime.org:3001/manage/ground/reservationcancel", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -132,7 +132,7 @@ function ManageReservation({ location }) {
         setReservationCancelOpen(false);
     });
 
-    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+    fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -153,7 +153,7 @@ function ManageReservation({ location }) {
 
   // 관리자예약하기 함수(onClick)
   const ReservationManager = () => {
-    fetch("http://localhost:3001/manage/ground/reservationmanager", {
+    fetch("http://smartit-16.iptime.org:3001/manage/ground/reservationmanager", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -172,7 +172,7 @@ function ManageReservation({ location }) {
 
   // 예약정보 받아오기 함수
   function getReservation(r_time) {
-    fetch("http://localhost:3001/manage/ground/reservation", {
+    fetch("http://smartit-16.iptime.org:3001/manage/ground/reservation", {
       method: "post",
       headers: {
         "content-type": "application/json",

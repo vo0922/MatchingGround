@@ -37,7 +37,7 @@ export default function TeamMember({history}) {
     let year = today_date.getFullYear();
 
     const assignclick = (data) => {
-        fetch("http://localhost:3001/team/member/assign", {
+        fetch("http://smartit-16.iptime.org:3001/team/member/assign", {
             method: "post",
             headers: {
                 "content-type": "application/json",
@@ -57,7 +57,7 @@ export default function TeamMember({history}) {
     }
 
     const applymail = (data, state) => {
-        fetch("http://localhost:3001/matchlist/matchapplyalert", {
+        fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
           method: "POST", // 통신방법
           headers: {
             "content-type": "application/json",
@@ -77,7 +77,7 @@ export default function TeamMember({history}) {
       }
 
     const deleteclick = (data) => {
-        fetch("http://localhost:3001/team/member/delete", {
+        fetch("http://smartit-16.iptime.org:3001/team/member/delete", {
             method: "post",
             headers: {
                 "content-type": "application/json",
@@ -95,7 +95,7 @@ export default function TeamMember({history}) {
 
     // 클럽원 불러오기
     const Member = () => {
-        fetch("http://localhost:3001/team/member", {
+        fetch("http://smartit-16.iptime.org:3001/team/member", {
             method: "post",
             headers: {
                 "content-type": "application/json",

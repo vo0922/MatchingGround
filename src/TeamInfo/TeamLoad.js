@@ -79,7 +79,7 @@ function TeamLoad({ history }) {
   });
 
   const getTeamdata = () => {
-    fetch("http://localhost:3001/team/teaminfo", {
+    fetch("http://smartit-16.iptime.org:3001/team/teaminfo", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -141,7 +141,7 @@ function TeamLoad({ history }) {
     if (window.sessionStorage.getItem("team_manager") === "1") {
       alert("클럽장권한을 가지고 있습니다. 탈퇴가 불가능합니다.");
     } else {
-      fetch("http://localhost:3001/team/delete", {
+      fetch("http://smartit-16.iptime.org:3001/team/delete", {
         method: "post",
         headers: {
           "content-type": "application/json",

@@ -50,7 +50,7 @@ function TeamFind({ history }) {
   };
 
   const searchbutton = () => {
-    fetch("http://localhost:3001/findteam/search", {
+    fetch("http://smartit-16.iptime.org:3001/findteam/search", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -127,7 +127,7 @@ function TeamFind({ history }) {
   });
 
   const getteamlist = () => {
-    fetch("http://localhost:3001/team/teamlist", {
+    fetch("http://smartit-16.iptime.org:3001/team/teamlist", {
       method: "post",
       headers: {
         "content-type": "application/json",

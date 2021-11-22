@@ -66,7 +66,7 @@ function ReservationDetail({ location, history }) {
 
   //좋아요 수 check
   const groundlikes = () => {
-    fetch("http://localhost:3001/reservation/detail/groundlike", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/detail/groundlike", {
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -83,7 +83,7 @@ function ReservationDetail({ location, history }) {
 
   //좋아요 check
   const likecheck = () => {
-    fetch("http://localhost:3001/reservation/detail/likecheck", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/detail/likecheck", {
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -115,7 +115,7 @@ function ReservationDetail({ location, history }) {
         like: process.env.PUBLIC_URL + "/icons/nonelike.svg",
         checked: false,
       });
-      fetch("http://localhost:3001/reservation/detail/likeclick", {
+      fetch("http://smartit-16.iptime.org:3001/reservation/detail/likeclick", {
         method: "post", //통신방법
         headers: {
           "content-type": "application/json",
@@ -133,7 +133,7 @@ function ReservationDetail({ location, history }) {
         like: process.env.PUBLIC_URL + "/icons/like.svg",
         checked: true,
       });
-      fetch("http://localhost:3001/reservation/detail/likeclick", {
+      fetch("http://smartit-16.iptime.org:3001/reservation/detail/likeclick", {
         method: "post", //통신방법
         headers: {
           "content-type": "application/json",
@@ -187,7 +187,7 @@ function ReservationDetail({ location, history }) {
     if (!r_time) {
       alert("예약 시간을 선택해주세요.");
     } else {
-      fetch("http://localhost:3001/reservation/detail/overlap", {
+      fetch("http://smartit-16.iptime.org:3001/reservation/detail/overlap", {
         method: "post", //통신방법
         headers: {
           "content-type": "application/json",
@@ -199,7 +199,7 @@ function ReservationDetail({ location, history }) {
           loop = res.length;
           if (!loop) {
             if (!check1) {
-              fetch("http://localhost:3001/reservation/detail/reservation", {
+              fetch("http://smartit-16.iptime.org:3001/reservation/detail/reservation", {
                 method: "post", //통신방법
                 headers: {
                   "content-type": "application/json",
@@ -212,7 +212,7 @@ function ReservationDetail({ location, history }) {
                   history.push("/reservation");
                 });
             } else if (check1) {
-              fetch("http://localhost:3001/reservation/detail/reservation", {
+              fetch("http://smartit-16.iptime.org:3001/reservation/detail/reservation", {
                 method: "post", //통신방법
                 headers: {
                   "content-type": "application/json",
@@ -221,7 +221,7 @@ function ReservationDetail({ location, history }) {
               })
                 .then((res) => res.json())
                 .then((res) => {});
-              fetch("http://localhost:3001/reservation/detail/matchlist", {
+              fetch("http://smartit-16.iptime.org:3001/reservation/detail/matchlist", {
                 method: "post", //통신방법
                 headers: {
                   "content-type": "application/json",
@@ -234,7 +234,7 @@ function ReservationDetail({ location, history }) {
                   history.push("/reservation");
                 });
             }
-            fetch("http://localhost:3001/matchlist/matchapplyalert", {
+            fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
               method: "POST", // 통신방법
               headers: {
                 "content-type": "application/json",
@@ -268,7 +268,7 @@ function ReservationDetail({ location, history }) {
     year + (month >= 10 ? "-" : "-0") + month + (day >= 10 ? "-" : "-0") + day;
   //경기장 정보 가져오기
   const reqground = () => {
-    fetch("http://localhost:3001/reservation/detail", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/detail", {
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -298,7 +298,7 @@ function ReservationDetail({ location, history }) {
   };
   //경기장 수 가져오기
   const reqgroundlist = () => {
-    fetch("http://localhost:3001/reservation/detail/list", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/detail/list", {
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -337,7 +337,7 @@ function ReservationDetail({ location, history }) {
 
   //경기장 예약 정보 가져오기
   const reqreservation = () => {
-    fetch("http://localhost:3001/reservation/detail/book", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/detail/book", {
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -483,7 +483,7 @@ function ReservationDetail({ location, history }) {
     //   formData.append("r_time", e.target.r_time.value);
     //   formData.append("address", ground.address);
     //   formData.append("vs_count", vscount);
-    //   fetch("http://localhost:3001/reservation/detail/overlap", {
+    //   fetch("http://smartit-16.iptime.org:3001/reservation/detail/overlap", {
     //     method: "post",
     //     body: formData,
     //   })
@@ -492,7 +492,7 @@ function ReservationDetail({ location, history }) {
     //       loop = res.length;
     //       if (!loop) {
     //         if (!check1) {
-    //           fetch("http://localhost:3001/reservation/detail/reservation", {
+    //           fetch("http://smartit-16.iptime.org:3001/reservation/detail/reservation", {
     //             method: "post",
     //             body: formData,
     //           })
@@ -502,13 +502,13 @@ function ReservationDetail({ location, history }) {
     //               history.push("/reservation");
     //             });
     //         } else if (check1) {
-    //           fetch("http://localhost:3001/reservation/detail/reservation", {
+    //           fetch("http://smartit-16.iptime.org:3001/reservation/detail/reservation", {
     //             method: "post",
     //             body: formData,
     //           })
     //             .then((res) => res.json())
     //             .then((res) => {});
-    //           fetch("http://localhost:3001/reservation/detail/matchlist", {
+    //           fetch("http://smartit-16.iptime.org:3001/reservation/detail/matchlist", {
     //             method: "post",
     //             body: formData,
     //           })

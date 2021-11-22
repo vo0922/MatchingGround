@@ -123,7 +123,7 @@ function GroundRegister({history}) {
   };
 
   function groundRegister(groundinfo) {
-    fetch("http://localhost:3001/ground/info/register", {
+    fetch("http://smartit-16.iptime.org:3001/ground/info/register", {
       method: "post",
       body: groundinfo
     })

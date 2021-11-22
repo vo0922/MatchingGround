@@ -73,7 +73,7 @@ function ReservationCard({ history }) {
 
   //경기장 리스트 가져오기, 경기장 리스트 UI
   function list(city, country, text) {
-    fetch("http://localhost:3001/reservation/list", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/list", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -423,7 +423,7 @@ function ReservationCard({ history }) {
       setcityname(address);
       list(address, "", "");
       //시군구 검색api 요청
-      fetch("http://localhost:3001/reservation/search", {
+      fetch("http://smartit-16.iptime.org:3001/reservation/search", {
         method: "POST", // 통신방법
         headers: {
           "content-type": "application/json",

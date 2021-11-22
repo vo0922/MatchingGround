@@ -68,7 +68,7 @@ export default function Reservation_current() {
   };
 
   const cancel_reservation = () => {
-    fetch("http://localhost:3001/manage/ground/reservationcancel", {
+    fetch("http://smartit-16.iptime.org:3001/manage/ground/reservationcancel", {
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -82,7 +82,7 @@ export default function Reservation_current() {
       });
     setReservationCancelOpen(false);
 
-    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+    fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -108,7 +108,7 @@ export default function Reservation_current() {
   };
 
   function getreservation() {
-    fetch("http://localhost:3001/pastreservation/current", {
+    fetch("http://smartit-16.iptime.org:3001/pastreservation/current", {
       method: "post",
       headers: {
         "content-type": "application/json",

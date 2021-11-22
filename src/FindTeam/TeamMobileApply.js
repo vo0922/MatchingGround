@@ -37,7 +37,7 @@ export default function TeamMobileApply({ location, history }) {
     });
 
     const myinfomation = () => {
-        fetch("http://localhost:3001/myinfo", {
+        fetch("http://smartit-16.iptime.org:3001/myinfo", {
             method: "post",
             headers: {
                 "content-type": "application/json",
@@ -66,7 +66,7 @@ export default function TeamMobileApply({ location, history }) {
 
 
     const applybutton = () => {
-        fetch("http://localhost:3001/findteam/applybutton", {
+        fetch("http://smartit-16.iptime.org:3001/findteam/applybutton", {
             method: "post",
             headers: {
                 "content-type": "application/json",
@@ -83,7 +83,7 @@ export default function TeamMobileApply({ location, history }) {
     };
 
     const applymail = () => {
-        fetch("http://localhost:3001/matchlist/matchapplyalert", {
+        fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
             method: "POST", // 통신방법
             headers: {
                 "content-type": "application/json",
@@ -92,7 +92,7 @@ export default function TeamMobileApply({ location, history }) {
                 send_id: window.sessionStorage.getItem("id"),
                 receive_id: location.state.team_manage,
                 title: "가입 신청",
-                link: "http://localhost:3000/teamnot",
+                link: "http://smartit-16.iptime.org:3000/teamnot",
                 contents:
                     window.sessionStorage.getItem("id") +
                     " 님이 " +

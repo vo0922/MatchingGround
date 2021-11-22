@@ -77,7 +77,7 @@ function TeamMake({ history }) {
       address = e.target.value;
     }
     //시군구 검색api 요청
-    fetch("http://localhost:3001/reservation/search", {
+    fetch("http://smartit-16.iptime.org:3001/reservation/search", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -162,7 +162,7 @@ function TeamMake({ history }) {
 
   //클럽 생성 API
   function teammodify(teaminfo) {
-    fetch("http://localhost:3001/team/team_make", {
+    fetch("http://smartit-16.iptime.org:3001/team/team_make", {
       method: "post",
       body: teaminfo,
     })

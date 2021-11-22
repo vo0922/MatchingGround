@@ -14,7 +14,7 @@ const Callback = () => {
           gender : gender,
           mobile : mobile
         };
-        fetch("http://localhost:3001/callback/adduser" , {
+        fetch("http://smartit-16.iptime.org:3001/callback/adduser" , {
             method : "post", // 통신방법
             headers : {
                 "content-type" : "application/json",
@@ -36,7 +36,7 @@ const Callback = () => {
             const token = {
                 token : loca,
             }
-            fetch("http://localhost:3001/callback", {
+            fetch("http://smartit-16.iptime.org:3001/callback", {
                 method : "post", // 통신방법
                 headers : {
                     "content-type" : "application/json",
@@ -50,7 +50,7 @@ const Callback = () => {
                 const email = {
                     email : res.response.email,
                 }
-                fetch("http://localhost:3001/myinfo" , {
+                fetch("http://smartit-16.iptime.org:3001/myinfo" , {
                     method : "post", // 통신방법
                     headers : {
                         "content-type" : "application/json",

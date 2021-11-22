@@ -53,7 +53,7 @@ export default function MainScreen_Matchlist() {
 
   // 매치리스트 받아오기, 렌더링
   function getmatchlist() {
-    fetch("http://localhost:3001/mainscreen/matchlist", {
+    fetch("http://smartit-16.iptime.org:3001/mainscreen/matchlist", {
       method: "post",
       headers: {
         "content-type": "application/json",

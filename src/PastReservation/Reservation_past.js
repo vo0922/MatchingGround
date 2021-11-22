@@ -39,7 +39,7 @@ function Reservation_past({history}) {
   }
 
   function getreservation() {
-    fetch("http://localhost:3001/pastreservation/past", {
+    fetch("http://smartit-16.iptime.org:3001/pastreservation/past", {
       method: "post",
       headers: {
         "content-type": "application/json",

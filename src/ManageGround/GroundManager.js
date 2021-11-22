@@ -47,7 +47,7 @@ function GroundManager({history}) {
 
 
   function getgroundinfo(){
-    fetch("http://localhost:3001/ground/info/manager", {
+    fetch("http://smartit-16.iptime.org:3001/ground/info/manager", {
       method: "post",
       headers: {
         "content-type": "application/json",

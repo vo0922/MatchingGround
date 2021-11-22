@@ -72,7 +72,7 @@ function TeamDetail({ location, history }) {
     });
 
     const teamdetail = () => {
-        fetch("http://localhost:3001/team/teamdetail", {
+        fetch("http://smartit-16.iptime.org:3001/team/teamdetail", {
             method: "post",
             headers: {
                 "content-type": "application/json",

@@ -89,7 +89,7 @@ export default function Matchinglist() {
   };
 
   const matchdelete = () => {
-    fetch("http://localhost:3001/matchlist/matchapplyalert", {
+    fetch("http://smartit-16.iptime.org:3001/matchlist/matchapplyalert", {
       method: "POST", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -114,7 +114,7 @@ export default function Matchinglist() {
     })
       .then((res) => res.json())
       .then((res) => {});
-    fetch("http://localhost:3001/matchinfo/reservationcancel", {
+    fetch("http://smartit-16.iptime.org:3001/matchinfo/reservationcancel", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
@@ -130,7 +130,7 @@ export default function Matchinglist() {
   };
 
   function list() {
-    fetch("http://localhost:3001/matchinfo/matchwatelist", {
+    fetch("http://smartit-16.iptime.org:3001/matchinfo/matchwatelist", {
       method: "post", // 통신방법
       headers: {
         "content-type": "application/json",
