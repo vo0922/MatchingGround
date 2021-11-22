@@ -243,7 +243,7 @@ function ReservationDetail({ location, history }) {
                 send_id: window.sessionStorage.getItem("id"),
                 receive_id: ground.manage_email,
                 title: "예약신청",
-                link: "/notgroundmananger",
+                link: "/notgroundmanager",
                 contents:
                   window.sessionStorage.getItem("id") +
                   " 님이 " +
