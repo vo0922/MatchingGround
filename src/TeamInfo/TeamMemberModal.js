@@ -51,6 +51,7 @@ export default function TeamMember({history}) {
             .then((json) =>{
                 alert(data.user_name + "클럽장 위임이 완료되었습니다.")
                 applymail(data.email, "위임");
+                window.sessionStorage.setItem('team_manager', 0)
                 window.location.replace('/team');
                 
             })            

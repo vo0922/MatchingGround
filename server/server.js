@@ -768,7 +768,7 @@ app.post("/team/modify/delete", (req, res) =>{
 // 클럽원 불러오기
 app.post("/team/member", (req, res) =>{
   const team_name = req.body.team_name;
-  connection.query("select *from users where team_name = ? order by FIELD(position, 'FW', 'MF', 'DF', 'GK'), user_name desc ", [team_name],
+  connection.query("select *from users where team_name = ? order by team_manager desc, FIELD(position, 'FW', 'MF', 'DF', 'GK'), user_name desc ", [team_name],
   function(err, rows, fields){
     if(err){
       console.log("1성공");
@@ -941,7 +941,6 @@ app.post("/mail/count", (req, res) =>{
 
 // 쪽지 리스트 받아오기, 읽음처리
 app.post("/mail/list", (req, res) =>{
-  console.log("ddd")
   const user_email = req.body.user_email
   
   connection.query("call alert(?)", [user_email],
